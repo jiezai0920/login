@@ -5,13 +5,13 @@
 
 <div class="login-box">
   <button type="button" name="button" @click="click">登录</button>
-  <w-login :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :jiyanAction="jiyanAction"></w-login>
+  <w-login :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login>
 </div>
 
 ``` vue
 <div class="login-box">
   <button type="button" name="button" @click="click">登录</button>
-  <w-login-wap :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wap>
+  <w-login :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login>
 </div>
 ```
 
@@ -36,17 +36,6 @@
 |close|关闭弹框|Function|是|() => {}|
 |success|登录成功|Function|是|() => {}|
 
-
-
-## 方法
-
-```` html
-<w-login />
-````
-
-|事件名|说明|返回值|
-|---|------|-----|
-|close|点击触发,关闭弹框|false|
 
 <script>
 import WLogin from './index';

@@ -51,10 +51,7 @@ import logined from '../tools/logined';
 
 let go = true;
 let timer = null;
-<<<<<<< HEAD:water/login-wap/Login.vue
 // let canLogin = true;
-=======
->>>>>>> up/master:emlogin/login-wap/Login.vue
 
 export default {
   name: 'WLogin',
