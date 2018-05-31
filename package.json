@@ -19,7 +19,8 @@
     "lint": "npm run eslint && npm run stylelint",
     "lint-staged": "lint-staged",
     "test": "jest --config jest.conf.js --no-cache --verbose",
-    "codecov": "codecov ./coverage/clover.xml"
+    "codecov": "codecov ./coverage/clover.xml",
+    "deploy-gh": "yarn build:site && bash scripts/deploy-gh.sh"
   },
   "dependencies": {
     "babel-helpers": "^6.24.1",

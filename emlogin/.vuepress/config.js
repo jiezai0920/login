@@ -1,7 +1,7 @@
 const base = process.env.GH ? '/login/' : '/'
 
 module.exports = {
-  title: '水滴',
+  title: '登录组件',
   base,
   head: [
     ['link', { rel: 'icon', href: `/logo.png` }]
@@ -9,11 +9,9 @@ module.exports = {
   dest: './docs',
   serviceWorker: true,
   themeConfig: {
-    repo: 'fe6/water',
-    editLinks: true,
-    lastUpdated: '上次更新', // string | boolean
+    editLinks: false,
     searchMaxSuggestions: 5,
-    docsDir: 'login',
+    docsDir: 'emlogin',
     editLinkText: '帮助我们改善此页面！',
     sidebar: [
       '/',
