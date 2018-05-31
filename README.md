@@ -2,16 +2,16 @@
 
 >一套企业级的 UI 设计语言和 Vue.js 实现。
 
-[![Build Status](https://travis-ci.org/fe6/component-template.svg?branch=master)](https://travis-ci.org/fe6/component-template)
-[![Codecov 单元测试覆盖率](https://img.shields.io/codecov/c/github/fe6/component-template/master.svg?style=flat)](https://codecov.io/gh/fe6/component-template/branch/master)
-
-![GitHub language count](https://img.shields.io/github/languages/count/fe6/component-template.svg)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fe6/component-template.svg)
-[![Fork component-template](https://img.shields.io/github/forks/fe6/component-template.svg?style=flat&label=Fork)](https://github.com/fe6/component-template/fork) [![Star component-template](https://img.shields.io/github/stars/fe6/component-template.svg?style=flat&label=Star)](https://github.com/fe6/component-template/stargazers)
-[![watchers in component-template](https://img.shields.io/github/watchers/fe6/component-template.svg?style=flat&label=Watch)](https://github.com/fe6/component-template/watchers)
-
 [![Sauce Labs Test Status (for master branch)](https://badges.herokuapp.com/browsers?googlechrome=7&firefox=7&microsoftedge=10&iexplore=9&safari=10.10)](https://saucelabs.com/u/_wmhilton)
 
+## 安装
+
+```
+## 组件文件夹全局安装
+$ npm link
+## 项目文件夹安装 em-login
+$ npm link em-login
+```
 
 ## 特性
 
