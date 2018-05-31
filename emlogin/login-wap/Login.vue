@@ -1,6 +1,11 @@
 <template>
   <div class="login-wap" v-if="show" @click="closeFlag">
     <div class="login-wap-popup">
+      <div class="login-wap-switch">
+        <p class="login-wap-switch-box login-wap-switch-one">
+          <span id="0" :class="[{'login-wap-switch-box-text-on': index === 0}, 'login-wap-switch-box-text']">短信登录</span>
+        </p>
+      </div>
       <!-- <div class="login-wap-switch" @click="switchLoginWay">
         <p class="login-wap-switch-box">
           <span id="0" :class="[{'login-wap-switch-box-text-on': index === 0}, 'login-wap-switch-box-text']">短信登录</span>
@@ -9,8 +14,8 @@
           <span id="1" :class="[{'login-wap-switch-box-text-on': index === 1}, 'login-wap-switch-box-text']">微信登录</span>
         </p>
       </div> -->
-      <!-- <div class="login-wap-close" @click="popupClose"></div> -->
-      <!-- <div class="login-wap-main" v-show="index === 0">
+      <div class="login-wap-close" @click="popupClose"></div>
+      <div class="login-wap-main" v-show="index === 0">
         <div class="login-wap-main-error" v-show="errorShow">
           <span class="login-wap-main-error-text">{{errorText}}</span>
         </div>
@@ -32,16 +37,16 @@
         <div class="login-wap-main-box login-wap-smscode">
           <input class="login-wap-smscode-input" type="number" placeholder="验证码" v-model="smscode" @blur="codeBlur">
           <div class="login-wap-smscode-send" @click="sendSmsCode">
-            <span class="login-wap-smscode-send-text">{{sendText}}</span>
+            <span :class="['login-wap-smscode-send-text', {'login-wap-smscode-send-text-disabled' : countStart}]">{{sendText}}</span>
           </div>
         </div>
-        <button class="login-wap-main-button" @click="login">{{loginText}}</button>
+        <button :class="['login-wap-main-button', {'login-wap-main-button-disabled' : loginOnFlg}]" @click="login">{{loginText}}</button>
         <p class="login-wap-main-tip">首次登录自动为您创建账号</p>
       </div>
       <div class="login-wap-main login-wap-weixin" v-show="index === 1">
         <div class="login-wap-weixin-ewm"></div>
         <p class="login-wap-weixin-tip">扫一扫 登录账号</p>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -51,7 +56,6 @@ import logined from '../tools/logined';
 
 let go = true;
 let timer = null;
-// let canLogin = true;
 
 export default {
   name: 'WLogin',
@@ -70,6 +74,7 @@ export default {
       errorShow: false,
       errorText: '验证码错误',
       loginText: '登录',
+      loginOnFlg: false,
       nowData: {
         name: '中国',
         tel: '',
@@ -90,6 +95,7 @@ export default {
         sms_code: '',
       },
       countryCode: {},
+      canLogin: true,
     };
   },
   props: {
@@ -97,13 +103,11 @@ export default {
     show: {
       type: Boolean,
       default: false,
-      required: true,
     },
     // 登录弹框 关闭
     close: {
       type: Function,
       default: () => {},
-      required: true,
     },
     headers: {
       type: Object,
@@ -113,25 +117,20 @@ export default {
     },
     orgid: {
       type: String,
-      required: true,
     },
     // 登录成功
     success: {
       type: Function,
       default: () => {},
-      required: true,
     },
     countrycodeAction: {
       type: String,
-      required: true,
     },
     sendAction: {
       type: String,
-      required: true,
     },
     loginAction: {
       type: String,
-      required: true,
     },
     // weixinAction: {
     //   type: String,
@@ -172,7 +171,6 @@ export default {
         }
       },
       onError: (err, response) => {
-        console.log(err, response, 'onError');
         this.errorShow = true;
         this.errorText = response.message;
       },
@@ -241,7 +239,6 @@ export default {
       if (this.telFlg && go) {
         go = false;
         this.sendText = '获取中';
-        console.log(this.nowData, 'this.nowData');
         this.sendData.country_code = this.nowData.prefix;
         this.sendData.mobile = this.nowData.tel;
         //发送验证码
@@ -263,7 +260,6 @@ export default {
             }
           },
           onError: (err, response) => {
-            console.log(err, response, 'onError');
             this.resetAuto();
             this.errorShow = true;
             this.errorText = response.message;
@@ -295,12 +291,13 @@ export default {
     },
     // 登录
     login() {
-      if (this.codeFlg && this.telFlg) {
+      if (this.codeFlg && this.telFlg && this.canLogin) {
+        this.canLogin = false;
         this.loginText = '登录中';
+        this.loginOnFlg = true;
         this.loginData.code = this.nowData.prefix;
         this.loginData.phone = this.nowData.tel;
         this.loginData.sms_code = this.smscode;
-        console.log(this.loginData, 'this.loginData.sms_code');
         //发送验证码
         ajax({
           headers: this.headers,
@@ -308,22 +305,28 @@ export default {
           data: JSON.stringify(this.loginData),
           action: this.loginAction,
           onSuccess: (res) => {
-            console.log(res);
             if (res.code === 10000) {
               this.errorShow = false;
               this.errorText = '';
               logined(res, res.data.org_id, this, () => {
                 this.success(res);
+                this.canLogin = true;
+                this.loginText = '登录';
+                this.loginOnFlg = false;
+                this.close(false);
               });
             } else {
+              this.canLogin = true;
               this.loginText = '登录';
+              this.loginOnFlg = false;
               this.errorShow = true;
               this.errorText = res.message;
             }
           },
           onError: (err, response) => {
-            console.log(err, response, 'onError');
+            this.canLogin = true;
             this.loginText = '登录';
+            this.loginOnFlg = false;
             this.errorShow = true;
             this.errorText = response.message;
           },

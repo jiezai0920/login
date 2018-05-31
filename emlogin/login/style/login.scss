@@ -175,7 +175,6 @@
     box-sizing: border-box;
 
     &-prefix {
-      width: 40%;
       padding: 0 14px;
       box-sizing: border-box;
       cursor: pointer;
@@ -209,7 +208,7 @@
     }
 
     &-flag {
-      width: 100%;
+      width: 130%;
       height: 155px;
       overflow-y: scroll;
       position: absolute;

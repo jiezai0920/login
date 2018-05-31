@@ -13,21 +13,26 @@
   align-items: center;
 
   &-popup {
-    width: 454px;
-    height: 388px;
-    padding: 0 55px;
+    @include px2rem('width', 670px);
+    @include px2rem('height', 712px);
+    @include paddingLeft(30px);
+    @include paddingRight(30px);
+
     box-sizing: border-box;
     background: #fff;
     position: relative;
   }
 
   &-switch {
-    padding: 46px 0 5px;
+    @include paddingTop(104px);
+    @include paddingBottom(10px);
+
     box-sizing: border-box;
 
     &-box {
-      font-size: 20px;
-      line-height: 28px;
+      @include font(28px);
+      @include height(42px, 42px);
+
       color: #999;
       width: 50%;
       text-align: center;
@@ -36,28 +41,25 @@
       margin: 0;
 
       &-text {
-        padding-bottom: 4px;
+        @include paddingBottom(5px);
 
         &-on {
           color: #333;
-          border-bottom: 4px solid #97d4fd;
+
+          @include border(8px, #97d4fd, bottom);
         }
       }
     }
 
     &-one {
       width: 100%;
-
-      span {
-        width: 80px;
-        display: inline-block;
-      }
     }
   }
 
   &-close {
-    width: 16px;
-    height: 16px;
+    @include px2rem('width', 32px);
+    @include px2rem('height', 32px);
+
     position: absolute;
     right: 14px;
     top: 14px;
@@ -66,28 +68,30 @@
   }
 
   &-main {
-    padding-top: 50px;
+    @include paddingTop(68px);
+
     position: relative;
 
     &-box {
       width: 100%;
-      height: 50px;
-      border: 1px solid #eaeaec;
-      border-radius: 2px;
-      margin-bottom: 10px;
+
+      @include px2rem('height', 88px);
+      @include border(2px, #eaeaec);
+      @include radius(4px);
+      @include marginBottom(20px);
     }
 
     &-button {
       width: 100%;
-      height: 44px;
       background: #33aeff;
-      font-size: 18px;
-      line-height: 44px;
       color: #fff;
       text-align: center;
-      border-radius: 2px;
       border: none;
       cursor: pointer;
+
+      @include height(88px, 88px);
+      @include font(28px);
+      @include radius(4px);
 
       &:focus {
         outline: none;
@@ -106,44 +110,50 @@
 
     &-tip {
       width: 100%;
-      margin-top: 22px;
-      font-size: 12px;
-      line-height: 18px;
       color: #999;
       text-align: center;
+
+      @include height(36px, 36px);
+      @include font(24px);
+      @include marginTop(40px);
     }
 
     &-error {
       width: 100%;
-      height: 30px;
-      border: 1px solid #ff9391;
       background: #fff2f2;
       border-radius: 2px;
       position: absolute;
       left: 0;
-      top: 10px;
-      padding: 0 14px;
+      top: 5px;
       box-sizing: border-box;
+
+      @include px2rem('height', 44px);
+      @include border(2px, #ff9391);
+      @include radius(4px);
+      @include paddingLeft(30px);
+      @include paddingRight(30px);
 
       &-text {
         display: block;
         position: relative;
-        font-size: 12px;
-        line-height: 30px;
         color: #f2403c;
-        padding-left: 23px;
         box-sizing: border-box;
+
+        @include font(24px);
+        @include height(40px, 40px);
+        @include paddingLeft(40px);
 
         &::before {
           content: '';
           display: block;
-          width: 15px;
-          height: 28px;
           background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAFM0aXcAAAABGdBTUEAALGPC/xhBQAAAdlJREFUKBWlUc1LG1EQn3m7GzVmU7GQe6GK+NF6qReTsAnVXuqlxoNeREVB/4T+H714EUrpqXrQi1jqLk2aS0W8CKVY9B+waLJKkv14vnn4NptAT32Hmfl9zL6ZtwDi1Iq5dVYv5ja10fFtIuTBmpXlVCEFAsa7Enh7X9qEVBFLlKFeyG7IQgTZi08GgN/eQNqpYPQxcjAGq0yEJWVPHVd25C1uMbsYhvBZCZRRXGDa5V0UF2xxDh+UqOct8L87EmrI1qI5JZNMgjY6BsHJTwlpCFmoQOPS4gpTjhzu6/xEGPC3CPq+advnkSi67sQMyXYXummnbLJ6IVdRgpj2UecpwX9jnPNp1cGDQJUg+CKLkCj43+s4BCaW/6GY8OJClfQox3Lafw5EVtOu9DMNXwr7e0RjnCYlPtqTQOON9dxr+jviX2cJx48w2nqvvtp36FwpXjY3ZvJDnh+eqZWlaJrQs7wCfrUKwemJ8lOuG736C/oIc2esyZYX/u5oJEuzCYn5BcBMhlD8mF7Dv6zNWiOM+8FcXInqVgu46wK/7nw+pTMvmGOoaweK6M7NTx8hvPzTTUscGtoBS311zhIGG0aE+7gLB5+KsUugvZqK01TTzs/SR86v/3rtB4r5vIPMy4DjAAAAAElFTkSuQmCC) no-repeat left center;
-          background-size: 15px 15px;
+          background-size: auto 14px;
           position: absolute;
           left: 0;
           top: 0;
+
+          @include px2rem('width', 28px);
+          @include px2rem('height', 40px);
         }
       }
     }
@@ -154,85 +164,100 @@
     flex-direction: column;
     align-items: center;
 
+    @include paddingTop(34px);
+
     &-ewm {
-      width: 174px;
-      height: 174px;
       background: #f00;
+
+      @include px2rem('width', 320px);
+      @include px2rem('height', 320px);
     }
 
     &-tip {
       width: 100%;
-      font-size: 14px;
-      line-height: 18px;
-      margin-top: 10px;
       color: #727272;
       text-align: center;
+
+      @include height(36px, 36px);
+      @include font(24px);
+      @include marginTop(40px);
     }
   }
 
   &-tel {
     display: flex;
     align-items: center;
-    padding-right: 14px;
     box-sizing: border-box;
 
+    @include paddingRight(30px);
+
     &-prefix {
-      width: 40%;
-      padding: 0 14px;
       box-sizing: border-box;
       cursor: pointer;
       position: relative;
 
+      @include paddingLeft(30px);
+      @include paddingRight(30px);
+
       &-piece {
-        width: 24px;
-        height: 16px;
-        margin-right: 8px;
         display: inline-block;
         float: left;
+
+        @include px2rem('width', 48px);
+        @include px2rem('height', 30px);
+        @include marginRight(16px);
       }
 
       &-text {
-        font-size: 14px;
         color: #929292;
         line-height: 16px;
         display: inline-block;
         float: left;
+
+        @include font(24px);
+        @include height(30px, 30px);
       }
 
       &-arrow {
-        width: 14px;
-        height: 16px;
         background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAAG+Fv5aAAAABGdBTUEAALGPC/xhBQAAAOpJREFUGBljePPmvT8DDLx+/VUSzH716s2d16/f28MkEPT///9ZQbw3b96VMbx+/Z/39eu3JxHSDAzv3r3TAWqfgiwGVPj27evX76LggkBjOOAcJAbY0tev3+z/+PGjEJI40IQ3z4CaGMFiQOOWv3//XgHEAbI/ggWRCaBgD9AR35DFGF+9enuYkfH/HwYGYT9RUcbPyJLo7A8fPij/+vV3DyMjw1qwHMjBQDdsBhpy+cuXLxLoGt68+WgK8iUwXFrR5WAGMAEVzALix2/efNIABoc30IlfgHQGVg3YBN++fesKDGA9bHIgMQD5lYy2z7samQAAAABJRU5ErkJggg==) no-repeat center center;
-        background-size: 14px 6px;
+        background-size: auto 8px;
         display: inline-block;
         float: left;
-        margin-left: 8px;
+
+        @include px2rem('width', 28px);
+        @include px2rem('height', 30px);
+        @include marginLeft(16px);
       }
     }
 
     &-flag {
-      width: 100%;
-      height: 155px;
+      width: 130%;
       overflow-y: scroll;
       position: absolute;
       top: 12px;
       left: 0;
       background-color: #fff;
       z-index: 2;
-      font-size: 12px;
-      padding: 3px 0;
       border-top: none;
       border-radius: 4px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+
+      @include px2rem('height', 296px);
+      @include font(24px);
+      @include paddingTop(6px);
+      @include paddingBottom(6px);
+      @include paddingLeft(0);
     }
 
     &-label {
-      height: 32px;
       cursor: pointer;
-      line-height: 32px;
       display: block;
       padding: 0 8px;
       position: relative;
+
+      @include height(60px, 60px);
+      @include paddingLeft(16px);
+      @include paddingRight(16px);
 
       &:hover {
         background: #f2f9ff;
@@ -240,17 +265,18 @@
     }
 
     &-icon {
-      // float: left;
-      width: 24px;
-      height: 16px;
-      margin: -8px 0 0;
       position: absolute;
       top: 50%;
       left: 8px;
 
+      @include px2rem('width', 48px);
+      @include px2rem('height', 30px);
+      @include marginTop(-15px);
+
       &-piece {
         float: left;
-        padding-left: 32px;
+
+        @include paddingLeft(64px);
 
         &-padding {
           padding-left: 0;
@@ -264,9 +290,10 @@
 
     &-input {
       flex: 1;
-      font-size: 14px;
       color: #333;
       border: none;
+
+      @include font(24px);
 
       &:focus {
         outline: none;
@@ -278,15 +305,17 @@
     width: 100%;
     display: flex;
     align-items: center;
-    padding-left: 14px;
     box-sizing: border-box;
+
+    @include paddingLeft(30px);
 
     &-input {
       flex: 1;
-      font-size: 14px;
       color: #333;
       border: none;
-      padding-right: 6px;
+
+      @include font(24px);
+      @include paddingRight(30px);
 
       &:focus {
         outline: none;
@@ -294,16 +323,15 @@
     }
 
     &-send {
-      width: 106px;
-      text-align: center;
-      padding: 10px 0;
-      border-left: 1px solid #f2f2f3;
       box-sizing: border-box;
       cursor: pointer;
 
+      @include paddingRight(40px);
+
       &-text {
         color: #33aeff;
-        font-size: 14px;
+
+        @include font(24px);
 
         &-disabled {
           color: #6dc5ff;
@@ -312,18 +340,19 @@
       }
     }
   }
-}
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none !important;
-}
+  & input::-webkit-outer-spin-button,
+  & input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+  }
 
-input[type="number"] {
-  -moz-appearance: textfield;
-}
+  & input[type="number"] {
+    -moz-appearance: textfield;
+  }
 
-input::-webkit-input-placeholder {
-  color: #929292;
-  font-size: 14px;
+  & input::-webkit-input-placeholder {
+    color: #929292;
+
+    @include font(24px);
+  }
 }

@@ -58,7 +58,6 @@ import logined from '../tools/logined';
 
 let go = true;
 let timer = null;
-let canLogin = true;
 
 export default {
   name: 'WLogin',
@@ -98,6 +97,7 @@ export default {
         sms_code: '',
       },
       countryCode: {},
+      canLogin: true,
     };
   },
   // components: {
@@ -286,8 +286,8 @@ export default {
     },
     // 登录
     login() {
-      if (this.codeFlg && this.telFlg && canLogin) {
-        canLogin = false;
+      if (this.codeFlg && this.telFlg && this.canLogin) {
+        this.canLogin = false;
         this.loginText = '登录中';
         this.loginOnFlg = true;
         this.loginData.code = this.nowData.prefix;
@@ -305,21 +305,21 @@ export default {
               this.errorText = '';
               logined(res, res.data.org_id, this, () => {
                 this.success(res);
-                canLogin = true;
+                this.canLogin = true;
                 this.loginText = '登录';
                 this.loginOnFlg = false;
                 this.close(false);
               });
             } else {
               this.loginText = '登录';
-              canLogin = true;
+              this.canLogin = true;
               this.loginOnFlg = false;
               this.errorShow = true;
               this.errorText = res.message;
             }
           },
           onError: (err, response) => {
-            canLogin = true;
+            this.canLogin = true;
             this.loginText = '登录';
             this.loginOnFlg = false;
             this.errorShow = true;
