@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "em 登录弹框业务组件",
   "author": "李梦龙 <649076408@qq.com>",
-  "private": true,
   "main": "dist/emlogin.js",
   "unpkg": "dist/emlogin.js",
   "files": [
