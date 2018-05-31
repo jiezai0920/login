@@ -16,9 +16,9 @@ var webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../water'),
+        from: path.resolve(__dirname, '../emlogin'),
         to: '',
-        ignore: ['.*', '*.md', '.vuepress/**/*', '*.test.*', 'water.js']
+        ignore: ['.*', '*.md', '.vuepress/**/*', '*.test.*', 'emlogin.js']
       }
     ]),
   ]

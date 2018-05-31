@@ -13,7 +13,7 @@ var pkg = require( '../package.json' );
 const banner = require( './banner' )(true);
 
 gulp.task( 'compile', function() {
-  gulp.src( '../water/**/*.scss' )
+  gulp.src( '../emlogin/**/*.scss' )
       .pipe( sass.sync().on( 'error', sass.logError ) )
       .pipe( autoprefixer( { browsers: salad.browsers, cascade: false } ) )
       .pipe( postcss( [ salad ] ) ).pipe( cssmin() )
