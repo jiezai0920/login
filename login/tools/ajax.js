@@ -1,4 +1,4 @@
-import VueCookie from 'em-cookie';
+import 'em-cookie';
 
 function getError(action, option, xhr) {
   const msg = `fail to post ${action} ${xhr.status}'`;
@@ -39,7 +39,7 @@ export default function upload(option) {
   }
 
   const xhr = new XMLHttpRequest();
-  const action = option.action;
+  const { action } = option;
 
   // if (xhr.upload) {
   //   xhr.upload.onprogress = function progress(e) {

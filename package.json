@@ -1,15 +1,21 @@
 {
-  "name": "em-login",
+  "name": "login",
   "version": "0.0.1",
   "description": "Vue.js 组件库模板",
   "author": "李梦龙 <649076408@qq.com>",
   "private": true,
+  "main": "dist/login.js",
+  "unpkg": "dist/login.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "start": "vuepress dev water",
-    "build:site": "export GH=1 && vuepress build water",
+    "start": "vuepress dev login",
+    "build:site": "export GH=1 && vuepress build login",
     "build": "cross-env BABEL_ENV=production && node build/build.water.js && gulp --gulpfile build/gulpfile.js",
-    "eslint": "eslint --ext .js,.vue site water --fix",
-    "stylelint": "stylelint site/**/*.scss water/**/*.scss",
+    "eslint": "eslint --ext .js,.vue site login --fix",
+    "stylelint": "stylelint site/**/*.scss login/**/*.scss",
     "lint": "npm run eslint && npm run stylelint",
     "lint-staged": "lint-staged",
     "test": "jest --config jest.conf.js --no-cache --verbose",
@@ -137,7 +143,6 @@
     ]
   },
   "pre-commit": [
-    "lint-staged",
-    "test"
+    "lint-staged"
   ]
 }
