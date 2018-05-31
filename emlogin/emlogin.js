@@ -1,11 +1,9 @@
 // 组件
-import WIcon from './icon/index';
 import WLogin from './login/index';
 import WLoginWap from './login-wap/index';
 import WJiyan from './jiyan/index';
 
 const waterCpt = {
-  WIcon,
   WLogin,
   WLoginWap,
   WJiyan,

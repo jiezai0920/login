@@ -17,7 +17,6 @@ module.exports = {
     editLinkText: '帮助我们改善此页面！',
     sidebar: [
       '/',
-      '/icon/zh-cn',
       '/login/zh-cn',
       '/login-wap/zh-cn',
     ]

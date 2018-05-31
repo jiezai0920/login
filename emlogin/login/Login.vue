@@ -54,7 +54,7 @@
 <script>
 import ajax from '../tools/ajax';
 import logined from '../tools/logined';
-import WJiyan from '../jiyan/index';
+// import WJiyan from '../jiyan/index';
 
 let go = true;
 let timer = null;
@@ -100,21 +100,19 @@ export default {
       countryCode: {},
     };
   },
-  components: {
-    WJiyan,
-  },
+  // components: {
+  //   WJiyan,
+  // },
   props: {
     // 控制登录弹框 显示 / 不显示
     show: {
       type: Boolean,
       default: false,
-      required: true,
     },
     // 登录弹框 关闭
     close: {
       type: Function,
       default: () => {},
-      required: true,
     },
     headers: {
       type: Object,
@@ -122,36 +120,17 @@ export default {
         return {};
       },
     },
-    orgid: {
-      type: String,
-      required: true,
-    },
+    orgid: String,
     // 登录成功
     success: {
       type: Function,
       default: () => {},
-      required: true,
     },
-    countrycodeAction: {
-      type: String,
-      required: true,
-    },
-    sendAction: {
-      type: String,
-      required: true,
-    },
-    loginAction: {
-      type: String,
-      required: true,
-    },
-    jiyanAction: {
-      type: String,
-      required: true,
-    },
-    // weixinAction: {
-    //   type: String,
-    //   required: true,
-    // },
+    countrycodeAction: String,
+    sendAction: String,
+    loginAction: String,
+    jiyanAction: String,
+    // weixinAction: String,
   },
   mounted() {
     //do something after mounting vue instance
@@ -321,7 +300,6 @@ export default {
           data: JSON.stringify(this.loginData),
           action: this.loginAction,
           onSuccess: (res) => {
-            console.log(res);
             if (res.code === 10000) {
               this.errorShow = false;
               this.errorText = '';
@@ -330,6 +308,7 @@ export default {
                 canLogin = true;
                 this.loginText = '登录';
                 this.loginOnFlg = false;
+                this.close(false);
               });
             } else {
               this.loginText = '登录';
@@ -353,13 +332,13 @@ export default {
       }
     },
     // 极验
-    beforeCodeFn() {
-      this.telBlur();
-      return this.telFlg;
-    },
-    sucCodeFn() {
-      console.log('极验成功');
-    },
+    // beforeCodeFn() {
+    //   this.telBlur();
+    //   return this.telFlg;
+    // },
+    // sucCodeFn() {
+    //   console.log('极验成功');
+    // },
   },
   watch: {
     value(val, oldVal) {
