@@ -15,6 +15,35 @@
 </div>
 ```
 
+``` js
+import WLogin from './index';
+
+export default {
+  data() {
+    return {
+      show: false,
+      countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
+      sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
+      loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
+    }
+  },
+  components: {
+    WLogin,
+  },
+  methods: {
+    click() {
+      this.show = true;
+    },
+    close(val) {
+      this.show = val;
+    },
+    success(res) {
+      console.log(res, '登录成功');
+    },
+  },
+}
+```
+
 ## 如何使用
 
 使用 `<w-login />` 标签声明组件，指定图标对应的 type 属性，示例代码如下:
@@ -44,10 +73,9 @@ export default {
   data() {
     return {
       show: false,
-      countrycodeAction: 'http://gateway.inner.evente.cn:8000/public/countrycode',
-      sendAction: 'http://gateway.inner.evente.cn:8000/public/sms/send',
-      loginAction: 'http://gateway.inner.evente.cn:8000/member/user/login',
-      jiyanAction: 'http://gateway.inner.evente.cn:8000/public/verify/geetest/prepare',
+      countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
+      sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
+      loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
     }
   },
   components: {
@@ -66,11 +94,11 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
 @import './style/login.scss';
 
 .login-box {
   padding: 30px 0;
 }
-
 </style>

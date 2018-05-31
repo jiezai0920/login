@@ -15,6 +15,41 @@
 </div>
 ```
 
+``` js
+import WLoginWap from './index';
+
+export default {
+  data() {
+    return {
+      show: false,
+      countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
+      sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
+      loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
+    }
+  },
+  components: {
+    WLoginWap,
+  },
+  mounted() {
+    document.getElementsByTagName('html')[0].className = 'html';
+  },
+  beforeDestroy() {
+    document.getElementsByTagName('html')[0].className = '';
+  },
+  methods: {
+    click() {
+      this.show = true;
+    },
+    close(val) {
+      this.show = val;
+    },
+    success(res) {
+      console.log(res, '登录');
+    },
+  },
+}
+```
+
 ## 如何使用
 
 使用 `<w-login-wap />` 标签声明组件，指定图标对应的 type 属性，示例代码如下:
@@ -54,9 +89,9 @@ export default {
   data() {
     return {
       show: false,
-      countrycodeAction: 'http://gateway.inner.evente.cn:8000/public/countrycode',
-      sendAction: 'http://gateway.inner.evente.cn:8000/public/sms/send',
-      loginAction: 'http://gateway.inner.evente.cn:8000/member/user/login',
+      countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
+      sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
+      loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
     }
   },
   components: {
@@ -88,7 +123,24 @@ export default {
   font-size: 37.5px;
 
   & .navbar {
-    height: 58px;
+    height: 34px;
+    box-sizing: content-box;
+    line-height: 34px;
+    padding: 12px 24px;
+
+    & a {
+      line-height: 32px;
+    }
+
+    & .site-name {
+      font-size: 30px;
+    }
+
+    & .links {
+      right: 24px;
+      top: 12px;
+      line-height: 32px;
+    }
   }
 
   & .sidebar {
@@ -123,6 +175,14 @@ export default {
 
   & .content code {
     padding: 4px 8px;
+  }
+
+  & .search-box input {
+    height: 32px;
+    width: 200px;
+    padding: 0 8px 0 32px;
+    background-size: 20px;
+    background-position: 6px 6px;
   }
 }
 
