@@ -9,6 +9,7 @@ module.exports = {
   dest: './docs',
   serviceWorker: true,
   themeConfig: {
+    repo: 'em-fe/login',
     editLinks: false,
     searchMaxSuggestions: 5,
     docsDir: 'emlogin',
