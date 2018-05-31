@@ -25,13 +25,6 @@ function getBody(xhr) {
 function hOwnProperty(item, attr) {
   return Object.prototype.hasOwnProperty.call(item, attr);
 }
-// console.log(VueCookie.get('X-Session-Id'), 'VueCookie');
-/* eslint-disable no-bitwise */
-const guidS4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-const getGuid = () => (guidS4() + guidS4() + guidS4() +
-guidS4() + guidS4() + guidS4() + guidS4() + guidS4());
-const guid = window.$cookie.get('X-Session-Id') || getGuid();
-window.$cookie.set('X-Session-Id', guid);
 
 export default function upload(option) {
   if (typeof XMLHttpRequest === 'undefined') {
@@ -40,15 +33,6 @@ export default function upload(option) {
 
   const xhr = new XMLHttpRequest();
   const { action } = option;
-
-  // if (xhr.upload) {
-  //   xhr.upload.onprogress = function progress(e) {
-  //     if (e.total > 0) {
-  //       e.percent = (e.loaded / e.total) * 100;
-  //     }
-  //     option.onProgress(e);
-  //   };
-  // }
 
   xhr.onerror = function error(e) {
     option.onError(e);
@@ -67,14 +51,16 @@ export default function upload(option) {
   } else {
     xhr.open('get', action, true);
   }
+  /* eslint-disable no-bitwise */
+  const guidS4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  const getGuid = () => (guidS4() + guidS4() + guidS4() +
+  guidS4() + guidS4() + guidS4() + guidS4() + guidS4());
+  const guid = window.$cookie.get('X-Session-Id') || getGuid();
+  window.$cookie.set('X-Session-Id', guid);
 
   xhr.setRequestHeader('X-Session-Id', guid);
 
   const headers = option.headers || {};
-
-  // if (headers['X-Requested-With'] !== null) {
-  //   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-  // }
 
   Object.keys(headers).forEach((item) => {
     if (hOwnProperty(headers, item) && headers[item] !== null) {
@@ -82,11 +68,6 @@ export default function upload(option) {
     }
   });
 
-  // for (const item in headers) {
-  //   if (O.hOwnProperty(headers, item) && headers[item] !== null) {
-  //     xhr.setRequestHeader(item, headers[item]);
-  //   }
-  // }
   if (option.type === 'POST') {
     xhr.send(option.data);
   } else {
