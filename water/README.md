@@ -4,7 +4,7 @@ title: '水滴'
 description: '好用的组件库'
 heroImage: /logo.png
 actionText: 快速上手
-actionLink: /icon/zh-cn
+actionLink: /login/zh-cn
 features:
 - title: 简洁至上
   details: 超凡脱俗的那么亲近。那么像 ant-desgin ，那么像 iview ，那么像 element-ui ，但它是 water 。

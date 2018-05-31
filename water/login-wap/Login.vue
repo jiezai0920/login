@@ -51,7 +51,7 @@ import logined from '../tools/logined';
 
 let go = true;
 let timer = null;
-let canLogin = true;
+// let canLogin = true;
 
 export default {
   name: 'WLogin',

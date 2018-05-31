@@ -8,6 +8,13 @@
   <w-login :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :jiyanAction="jiyanAction"></w-login>
 </div>
 
+``` vue
+<div class="login-box">
+  <button type="button" name="button" @click="click">登录</button>
+  <w-login-wap :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wap>
+</div>
+```
+
 ## 如何使用
 
 使用 `<w-login />` 标签声明组件，指定图标对应的 type 属性，示例代码如下:
