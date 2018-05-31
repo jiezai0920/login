@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login.vue 检测快照是否一样。 1`] = `"这是一个登录弹框组件。"`;
