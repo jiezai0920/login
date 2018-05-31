@@ -17,7 +17,7 @@ function resolve (dir) {
 
 module.exports = {
   cache: true,
-  entry: `./${utils.outname()}/water.js`,
+  entry: `./${utils.outname()}/login.js`,
   mode: 'development',
   output: {
     publicPath: '/dist/',

@@ -1,4 +1,4 @@
-const base = process.env.GH ? '/water/' : '/'
+const base = process.env.GH ? '/login/' : '/'
 
 module.exports = {
   title: '水滴',
@@ -13,7 +13,7 @@ module.exports = {
     editLinks: true,
     lastUpdated: '上次更新', // string | boolean
     searchMaxSuggestions: 5,
-    docsDir: 'water',
+    docsDir: 'login',
     editLinkText: '帮助我们改善此页面！',
     sidebar: [
       '/',

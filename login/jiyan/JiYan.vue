@@ -53,13 +53,13 @@ export default {
         type: 'GET',
         action: this.jiyanAction,
         onSuccess: (res) => {
-          initGeetest({
+          window.initGeetest({
             ...res.data,
             product: 'bind',
           }, (captchaObj) => {
             this.captchaGlobal = captchaObj;
             captchaObj.appendTo(this.$refs.jiyan);
-            captchaObj.onSuccess((result) => {
+            captchaObj.onSuccess(() => {
               this.$emit('suc', this.captchaGlobal);
             });
           });
