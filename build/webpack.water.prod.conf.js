@@ -12,7 +12,8 @@ var baseWebpackConfig = require('./webpack.water.base.conf');
 var webpackConfig = merge(baseWebpackConfig, {
   devtool: '#source-map',
   output: {
-    filename: utils.outname() + '.min.js',
+    // filename: utils.outname() + '.min.js',
+    filename: 'index.min.js',
   },
   mode: 'production',
   optimization: {
