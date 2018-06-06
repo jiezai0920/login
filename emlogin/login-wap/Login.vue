@@ -115,6 +115,10 @@ export default {
         return {};
       },
     },
+    domain: { // 是否cookie存储加 domain
+      type: String,
+      default: 'evente.cn',
+    },
     orgid: {
       type: String,
     },

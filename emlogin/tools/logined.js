@@ -35,8 +35,17 @@ const afterLogin = (callbackUrl, inow, self, callback) => {
 
 export default (result, orgId, self, callback) => {
   afterLogin(result.data.call_back_url, result.data.call_back_url.length - 1, self, () => {
-    window.$cookie.set(`Authorization?org_id=${orgId}`, `Bearer ${result.data.token}`, result.data.expires);
-    window.$cookie.set('userInfo', result.data.real_name, result.data.expires);
+    const { expires, token } = result.data;
+    // 获取当前的时间戳
+    const timestamp = new Date().getTime() / 1000;
+    // 用过期时间戳-当前时间戳 = cookie有效期的秒数
+    // (先判断下这个有效期是否>=0, 否则设置一个默认值)
+    const newExpiresStamp = expires - timestamp;
+    const newExpires = newExpiresStamp <= 0 ? CONSTANT.COOKIE_EXPIRE_TIME : newExpiresStamp;
+    let domainStr = self.domain || '';
+
+    window.$cookie.set(`Authorization?org_id=${orgId}`, `Bearer ${token}`, newExpires, '/', domainStr);
+    window.$cookie.set('userInfo', result.data.real_name, newExpires, '/', domainStr);
     callback();
   });
 };
