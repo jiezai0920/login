@@ -58,7 +58,7 @@ let go = true;
 let timer = null;
 
 export default {
-  name: 'WLogin',
+  name: 'WLoginWap',
   data() {
     return {
       index: 0, // 登录方式切换下标
