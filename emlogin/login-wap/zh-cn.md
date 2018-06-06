@@ -66,6 +66,7 @@ export default {
 |org_id|主办id|String|是|-|
 |countrycodeAction|获取countrycode接口地址|String|是|-|
 |sendAction|发送验证码接口地址|String|是|-|
+|domain|设置cookie登录状态的domain|String|否|'evente.cn'|
 |loginAction|用户登录接口地址|String|是|-|
 |close|关闭弹框|Function|是|() => {}|
 |success|登录成功|Function|是|() => {}|

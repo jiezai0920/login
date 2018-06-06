@@ -120,6 +120,10 @@ export default {
         return {};
       },
     },
+    domain: { // 是否cookie存储加 domain
+      type: String,
+      default: 'evente.cn',
+    },
     orgid: String,
     // 登录成功
     success: {
