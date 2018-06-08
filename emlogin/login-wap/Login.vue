@@ -119,9 +119,7 @@ export default {
       type: String,
       default: 'evente.cn',
     },
-    orgid: {
-      type: String,
-    },
+    orgid: [String, Number],
     // 登录成功
     success: {
       type: Function,
