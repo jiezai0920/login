@@ -28,7 +28,7 @@ const afterLogin = (callbackUrl, inow, self, callback) => {
     error: () => {
       self.$EmfeMessage.error({
         content: '登录失败',
-      });c
+      });
     },
   });
 };
