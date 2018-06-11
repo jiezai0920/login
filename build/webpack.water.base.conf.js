@@ -17,11 +17,13 @@ function resolve (dir) {
 
 module.exports = {
   cache: true,
-  entry: `./${utils.outname()}/emlogin.js`,
+  entry: `./${utils.outname()}/login.js`,
   mode: 'development',
   output: {
+    path: path.resolve(__dirname, '../dist'),
     publicPath: '/dist/',
-    library: utils.outname(),
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   resolve: {
     extensions: ['.js', '.md', '.vue', '.json'],

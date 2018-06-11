@@ -12,7 +12,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   devtool: '#source-map',
   output: {
     // filename: utils.outname() + '.js',
-    filename: 'index.js',
+    filename: 'emlogin.js',
+    library: 'emlogin',
   },
   plugins: [
     new CopyWebpackPlugin([
