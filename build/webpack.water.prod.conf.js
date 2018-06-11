@@ -13,7 +13,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   devtool: '#source-map',
   output: {
     // filename: utils.outname() + '.min.js',
-    filename: 'index.min.js',
+    filename: 'emlogin.min.js',
+    library: 'emlogin',
   },
   mode: 'production',
   optimization: {
