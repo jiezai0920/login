@@ -22,10 +22,8 @@
     "deploy-gh": "yarn build:site && bash scripts/deploy-gh.sh",
     "prepublishOnly": "npm run build"
   },
-  "dependencies": {
-    "vue": "^2.5.16"
-  },
   "devDependencies": {
+    "vue": "^2.5.16",
     "babel-helpers": "^6.24.1",
     "babel-jest": "^22.4.3",
     "babel-plugin-dynamic-import-node": "^1.2.0",
