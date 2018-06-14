@@ -3,7 +3,7 @@
     <div class="login-wap-popup">
       <div class="login-wap-switch">
         <p class="login-wap-switch-box login-wap-switch-one">
-          <span id="0" :class="[{'login-wap-switch-box-text-on': index === 0}, 'login-wap-switch-box-text']">短信登录</span>
+          <span id="0" :class="[{'login-wap-switch-box-text-on': index === 0}, 'login-wap-switch-box-text']">登录</span>
         </p>
       </div>
       <!-- <div class="login-wap-switch" @click="switchLoginWay">
