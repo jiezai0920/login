@@ -1,6 +1,6 @@
 /* eslint-disable */
 import jsonp from 'em-jsonp';
-// import CONSTANT from '../../../contant';
+import CONSTANT from '../contant';
 
 const afterLogin = (callbackUrl, inow, self, callback) => {
   let theIndex = inow;
@@ -13,7 +13,7 @@ const afterLogin = (callbackUrl, inow, self, callback) => {
     url: newUrl,
     data,
     success: (res) => {
-      if (res.code === 10000) { // CONSTANT.AJAX_SUCCESS
+      if (res.code === CONSTANT.AJAX_SUCCESS) {
         if (theIndex === 0) {
           callback();
         } else {
@@ -44,8 +44,8 @@ export default (result, orgId, self, callback) => {
     const newExpires = newExpiresStamp <= 0 ? CONSTANT.COOKIE_EXPIRE_TIME : newExpiresStamp;
     let domainStr = self.domain || '';
 
-    window.$cookie.set(`Authorization?org_id=${orgId}`, `Bearer ${token}`, newExpires, '/', domainStr);
-    window.$cookie.set('userInfo', result.data.real_name, newExpires, '/', domainStr);
+    window.$cookie.set(`${CONSTANT.EVENT_TOKE}?org_id=${orgId}`, `${CONSTANT.COOKIE_PERFIX_TOKEN}${token}`, newExpires, '/', domainStr);
+    window.$cookie.set(CONSTANT.EVENT_USER_INFO, result.data.real_name, newExpires, '/', domainStr);
     callback();
   });
 };
