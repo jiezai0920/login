@@ -1,5 +1,3 @@
-import 'em-cookie';
-
 function getError(action, option, xhr) {
   const msg = `fail to post ${action} ${xhr.status}'`;
   const err = new Error(msg);
@@ -55,8 +53,8 @@ export default function upload(option) {
   const guidS4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   const getGuid = () => (guidS4() + guidS4() + guidS4() +
   guidS4() + guidS4() + guidS4() + guidS4() + guidS4());
-  const guid = window.$cookie.get('X-Session-Id') || getGuid();
-  window.$cookie.set('X-Session-Id', guid);
+  const guid = localStorage['X-Session-Id'] || getGuid();
+  localStorage['X-Session-Id'] = guid;
 
   xhr.setRequestHeader('X-Session-Id', guid);
 
