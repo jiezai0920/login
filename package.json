@@ -131,13 +131,13 @@
     "not ie <= 8"
   ],
   "lint-staged": {
-    "component/**/*.vue": [
+    "emlogin/**/*.vue": [
       "npm run eslint"
     ],
-    "component/**/*.js": [
+    "emlogin/**/*.js": [
       "npm run eslint"
     ],
-    "style/**/*.scss": [
+    "emlogin/**/*.scss": [
       "npm run stylelint"
     ]
   },
