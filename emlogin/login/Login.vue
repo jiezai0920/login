@@ -90,7 +90,7 @@ export default {
         origin: 'c-login',
       },
       loginData: {
-        org_id: '',
+        org_id: this.orgid,
         code: '',
         phone: '',
         moudle_name: 'c-login',
@@ -143,7 +143,6 @@ export default {
   created() {
     //do something after creating vue instance
     // 获取countrycode
-    this.loginData.org_id = this.orgid;
     ajax({
       headers: this.headers,
       type: 'GET',
@@ -349,6 +348,9 @@ export default {
       if (val !== oldVal) {
         this.nowData = val;
       }
+    },
+    orgid(val) {
+      this.loginData.org_id = val;
     },
   },
 };
