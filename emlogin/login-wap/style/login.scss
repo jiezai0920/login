@@ -12,6 +12,10 @@
   justify-content: center;
   align-items: center;
 
+  & * {
+    box-sizing: content-box;
+  }
+
   &-popup {
     @include px2rem('width', 670px);
     @include px2rem('padding', 0 32px 86px);
