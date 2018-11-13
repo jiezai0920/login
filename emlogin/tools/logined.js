@@ -33,6 +33,18 @@ const afterLogin = (callbackUrl, inow, self, callback) => {
   });
 };
 
+const removeAllTokenCookie = (domain) => {
+  const cookies = document.cookie.split('; ');
+  // 过滤所有 token
+  const oldToken = cookies.filter(cookieItem => cookieItem.indexOf(CONSTANT.EVENT_TOKE) > -1);
+  oldToken.forEach((oToken) => {
+    const oTokenList = oToken.split('=');
+    if (oTokenList.length > 0) {
+      window.$cookie.remove(decodeURIComponent(oTokenList[0]), '/', domain);
+    }
+  });
+};
+
 export default (result, orgId, self, callback) => {
   afterLogin(result.data.call_back_url, result.data.call_back_url.length - 1, self, () => {
     const { expires, token } = result.data;
@@ -44,8 +56,11 @@ export default (result, orgId, self, callback) => {
     const newExpires = newExpiresStamp <= 0 ? CONSTANT.COOKIE_EXPIRE_TIME : newExpiresStamp;
     let domainStr = self.domain || '';
 
-    window.$cookie.set(`${CONSTANT.EVENT_TOKE}?org_id=${orgId}`, `${CONSTANT.COOKIE_PERFIX_TOKEN}${token}`, newExpires, '/', domainStr);
-    window.$cookie.set(CONSTANT.EVENT_USER_INFO, result.data.real_name, newExpires, '/', domainStr);
-    callback();
+    removeAllTokenCookie(domainStr);
+    setTimeout(() => {
+      window.$cookie.set(`${CONSTANT.EVENT_TOKE}?org_id=${orgId}`, `${CONSTANT.COOKIE_PERFIX_TOKEN}${token}`, newExpires, '/', domainStr);
+      window.$cookie.set(CONSTANT.EVENT_USER_INFO, result.data.real_name, newExpires, '/', domainStr);
+      callback();
+    }, 100);
   });
 };

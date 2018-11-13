@@ -19,7 +19,7 @@ describe('Login.vue', () => {
     });
   });
 
-  it("检测快照是否一样。", (done) => {
+  it('检测快照是否一样。', (done) => {
     wrapper.vm.$nextTick(() => {
       try {
         expect(wrapper.text()).toMatchSnapshot();
