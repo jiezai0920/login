@@ -96,7 +96,6 @@
     box-sizing: border-box;
 
     @include height(88px, 88px);
-    @include width(606px);
     @include font(32px);
     @include radius(44px);
     @include px2rem('margin', 48px 0 24px);
