@@ -24,7 +24,7 @@
       </div>
       <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg}]" @click="login">{{loginText}}</button>
       <div class="login-wap-error" v-show="errorShow">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAFM0aXcAAAABGdBTUEAALGPC/xhBQAAAdlJREFUKBWlUc1LG1EQn3m7GzVmU7GQe6GK+NF6qReTsAnVXuqlxoNeREVB/4T+H714EUrpqXrQi1jqLk2aS0W8CKVY9B+waLJKkv14vnn4NptAT32Hmfl9zL6ZtwDi1Iq5dVYv5ja10fFtIuTBmpXlVCEFAsa7Enh7X9qEVBFLlKFeyG7IQgTZi08GgN/eQNqpYPQxcjAGq0yEJWVPHVd25C1uMbsYhvBZCZRRXGDa5V0UF2xxDh+UqOct8L87EmrI1qI5JZNMgjY6BsHJTwlpCFmoQOPS4gpTjhzu6/xEGPC3CPq+advnkSi67sQMyXYXummnbLJ6IVdRgpj2UecpwX9jnPNp1cGDQJUg+CKLkCj43+s4BCaW/6GY8OJClfQox3Lafw5EVtOu9DMNXwr7e0RjnCYlPtqTQOON9dxr+jviX2cJx48w2nqvvtp36FwpXjY3ZvJDnh+eqZWlaJrQs7wCfrUKwemJ8lOuG736C/oIc2esyZYX/u5oJEuzCYn5BcBMhlD8mF7Dv6zNWiOM+8FcXInqVgu46wK/7nw+pTMvmGOoaweK6M7NTx8hvPzTTUscGtoBS311zhIGG0aE+7gLB5+KsUugvZqK01TTzs/SR86v/3rtB4r5vIPMy4DjAAAAAElFTkSuQmCC" class="login-wap-error-img">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAApFJREFUSA29Vr1rVEEQn913p+bO2NhErQQxks5CSOElHPmoBS1E/xTFSvEPEawULAyCH4TkLA5SpI2VKCSpIph4OZPDN87svVl3N/f2bYLkwbEzO7+Z383s1yhI+HrzMzfzP3gHEFuo1BVAuGzcFGwpxE1QqqMz9ab5cXW9KpyKAfbmWvcwx6dEMBnDWZuCL0qrx+OfOq/sXCCMJOwvzlwdHOYvCTsd4FPVbv2MfjD2fvVr6HCEcK/dmkWA11S+iyH4WLpSOxT87vhyZ8X18wiZjIg+EGHdBZ1UpuADWt8Fl1RLMC4jZ1ZFVpttAwUwv+YLrnr5x7E4JscWlCU0a5ZQRuzviy9gv2/lUoFiFvvBQAwh70bS0jbIvkPoyKWEQ8N0wQGG0Gz9Cg8xe1mlZFg4CofmQ518zsjZK2l6huQIk8ylzQ0ifz9ldEi8bBN8mUvzdZWAtRCPxNlAFhATiEubuzEGCm0HB4B5bmbRyTaEjdKZizIsLuJRiLI52SwyluHCeeKy5zC0xXTJTMYY1rchaqAnxp9M0IrMvPVMcKNrblub9ywF7GDs0TjmGjJXjR9P2qltJ16l+Pv5M4BGA/Lv3yqxHoAfan6pvckERU1MQDY1BersuQT0Pwhz0QsCsNu+vZF629TmF2Ds0RMTJd/egt7D+3SL0JtQ9VE3cGH58w2zS7ktqMKLPbt2XUTQl6i1aTStHhOEwxAWPUg35iC2wbslyH/sGPVw6S1A75eYYmNX+hxTUkaaPmaAa1Se6tYiy0A1zwPu/oyRDG3UatTr6pb0N5aQrafaYjCh6T2oB6GjMqwZT5704xhBP8OhjlxtTMolIFvSmpb8ny7HcJsnwXkllUkZT60RFkIZ/2er/xe07Byfrt4yVQAAAABJRU5ErkJggg==" class="login-wap-error-img">
         <span class="login-wap-error-text">{{errorText}}</span>
       </div>
     </div>
@@ -172,7 +172,8 @@ export default {
     // 手机号文本框失去焦点事件
     telBlur() {
       const code = this.nowData.prefix;
-      const reg = new RegExp(this.countryCode[code].pattern);
+      const hasOwn = Object.prototype.hasOwnProperty;
+      const reg = new RegExp(hasOwn.call(this.countryCode, code) && hasOwn.call(this.countryCode[code], 'pattern') ? this.countryCode[code].pattern : '^(86){0,1}1[345789][0-9]{9}$');
       if (this.nowData.tel === '') {
         this.telFlg = false;
         this.errorShow = true;
