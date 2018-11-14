@@ -93,6 +93,7 @@
     box-shadow: 0 8px 20px -10px #1996f9;
     font-family: 'PingFangSC-Medium';
     letter-spacing: 0;
+    box-sizing: border-box;
 
     @include height(88px, 88px);
     @include width(606px);
@@ -189,8 +190,10 @@
   }
 
   &-input {
-    @include height(88px, 88px);
+    @include height(28px, 28px);
     @include font(28px);
+    @include paddingBottom(32px);
+    @include paddingTop(32px);
 
     border: none;
     width: 100%;
@@ -225,7 +228,7 @@
     color: #1996f9;
     right: 0;
     top: 50%;
-    transform: translateY(-50%) scale(0.8);
+    transform: translateY(-50%);
 
     &-disabled {
       @include border(2px, #ccc);
