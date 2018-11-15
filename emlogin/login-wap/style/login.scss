@@ -202,6 +202,7 @@
 
   &-smscode {
     @include font(28px);
+    @include width(140px);
     @include radius(30px);
     @include height(26px, 26px);
     @include px2rem('left', 32px);
@@ -218,7 +219,7 @@
     }
 
     &-wraper {
-      @include px2rem('width', 248px);
+      @include width(244px);
 
       position: relative;
 
