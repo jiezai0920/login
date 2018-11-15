@@ -8,24 +8,22 @@
       </div>
       <div class="login-wap-box">
         <div class="login-wap-prefix-wraper">
-          <select class="login-wap-prefix" v-model="nowData.prefix">
+          <select class="login-wap-prefix" v-model="nowData.prefix" @change="telBlur">
             <option :value="data.prefix" v-for="data in abroadDatas">+{{ data.prefix }}</option>
           </select>
         </div>
-        <div class="login-wap-line">
-          <input class="login-wap-input" type="number" placeholder="请输入手机号" v-model="nowData.tel" @blur="telBlur" @input="telInput">
-        </div>
+        <input class="login-wap-input" type="number" placeholder="输入手机号" v-model="nowData.tel" @blur="telBlur" @input="telInput">
       </div>
       <div class="login-wap-box">
-        <input class="login-wap-input" type="tel" maxlength="6" placeholder="请输入验证码" v-model="smscode" @blur="codeBlur">
+        <input class="login-wap-input" type="tel" maxlength="6" placeholder="输入验证码" v-model="smscode" @blur="codeBlur">
         <div class="login-wap-smscode-wraper" @click="sendSmsCode">
           <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : countStart}]">{{sendText}}</span>
         </div>
       </div>
       <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg}]" @click="login">{{loginText}}</button>
-      <div class="login-wap-error" v-show="errorShow">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAApFJREFUSA29Vr1rVEEQn913p+bO2NhErQQxks5CSOElHPmoBS1E/xTFSvEPEawULAyCH4TkLA5SpI2VKCSpIph4OZPDN87svVl3N/f2bYLkwbEzO7+Z383s1yhI+HrzMzfzP3gHEFuo1BVAuGzcFGwpxE1QqqMz9ab5cXW9KpyKAfbmWvcwx6dEMBnDWZuCL0qrx+OfOq/sXCCMJOwvzlwdHOYvCTsd4FPVbv2MfjD2fvVr6HCEcK/dmkWA11S+iyH4WLpSOxT87vhyZ8X18wiZjIg+EGHdBZ1UpuADWt8Fl1RLMC4jZ1ZFVpttAwUwv+YLrnr5x7E4JscWlCU0a5ZQRuzviy9gv2/lUoFiFvvBQAwh70bS0jbIvkPoyKWEQ8N0wQGG0Gz9Cg8xe1mlZFg4CofmQ518zsjZK2l6huQIk8ylzQ0ifz9ldEi8bBN8mUvzdZWAtRCPxNlAFhATiEubuzEGCm0HB4B5bmbRyTaEjdKZizIsLuJRiLI52SwyluHCeeKy5zC0xXTJTMYY1rchaqAnxp9M0IrMvPVMcKNrblub9ywF7GDs0TjmGjJXjR9P2qltJ16l+Pv5M4BGA/Lv3yqxHoAfan6pvckERU1MQDY1BersuQT0Pwhz0QsCsNu+vZF629TmF2Ds0RMTJd/egt7D+3SL0JtQ9VE3cGH58w2zS7ktqMKLPbt2XUTQl6i1aTStHhOEwxAWPUg35iC2wbslyH/sGPVw6S1A75eYYmNX+hxTUkaaPmaAa1Se6tYiy0A1zwPu/oyRDG3UatTr6pb0N5aQrafaYjCh6T2oB6GjMqwZT5704xhBP8OhjlxtTMolIFvSmpb8ny7HcJsnwXkllUkZT60RFkIZ/2er/xe07Byfrt4yVQAAAABJRU5ErkJggg==" class="login-wap-error-img">
-        <span class="login-wap-error-text">{{errorText}}</span>
+      <div class="login-wap-error">
+        <img v-show="errorShow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAApFJREFUSA29Vr1rVEEQn913p+bO2NhErQQxks5CSOElHPmoBS1E/xTFSvEPEawULAyCH4TkLA5SpI2VKCSpIph4OZPDN87svVl3N/f2bYLkwbEzO7+Z383s1yhI+HrzMzfzP3gHEFuo1BVAuGzcFGwpxE1QqqMz9ab5cXW9KpyKAfbmWvcwx6dEMBnDWZuCL0qrx+OfOq/sXCCMJOwvzlwdHOYvCTsd4FPVbv2MfjD2fvVr6HCEcK/dmkWA11S+iyH4WLpSOxT87vhyZ8X18wiZjIg+EGHdBZ1UpuADWt8Fl1RLMC4jZ1ZFVpttAwUwv+YLrnr5x7E4JscWlCU0a5ZQRuzviy9gv2/lUoFiFvvBQAwh70bS0jbIvkPoyKWEQ8N0wQGG0Gz9Cg8xe1mlZFg4CofmQ518zsjZK2l6huQIk8ylzQ0ifz9ldEi8bBN8mUvzdZWAtRCPxNlAFhATiEubuzEGCm0HB4B5bmbRyTaEjdKZizIsLuJRiLI52SwyluHCeeKy5zC0xXTJTMYY1rchaqAnxp9M0IrMvPVMcKNrblub9ywF7GDs0TjmGjJXjR9P2qltJ16l+Pv5M4BGA/Lv3yqxHoAfan6pvckERU1MQDY1BersuQT0Pwhz0QsCsNu+vZF629TmF2Ds0RMTJd/egt7D+3SL0JtQ9VE3cGH58w2zS7ktqMKLPbt2XUTQl6i1aTStHhOEwxAWPUg35iC2wbslyH/sGPVw6S1A75eYYmNX+hxTUkaaPmaAa1Se6tYiy0A1zwPu/oyRDG3UatTr6pb0N5aQrafaYjCh6T2oB6GjMqwZT5704xhBP8OhjlxtTMolIFvSmpb8ny7HcJsnwXkllUkZT60RFkIZ/2er/xe07Byfrt4yVQAAAABJRU5ErkJggg==" class="login-wap-error-img">
+        <span v-show="errorShow" class="login-wap-error-text">{{errorText}}</span>
       </div>
     </div>
   </div>
@@ -51,7 +49,8 @@ export default {
       countNums: 0,
       errorShow: false,
       errorText: '验证码错误',
-      loginText: '提交信息',
+      loginDefault: '确定',
+      loginText: '',
       loginOnFlg: false,
       nowData: {
         name: '中国',
@@ -114,7 +113,12 @@ export default {
     },
   },
   mounted() {
+    const {
+      resultTel,
+    } = this.testTel();
     this.countNums = this.AllTimes;
+    this.loginText = this.loginDefault;
+    this.loginOnFlg = !resultTel || !this.testSms();
   },
   created() {
     ajax({
@@ -169,41 +173,58 @@ export default {
     telInput(e) {
       this.nowData.tel = e.target.value;
     },
-    // 手机号文本框失去焦点事件
-    telBlur() {
+    testTel() {
+      const { tel } = this.nowData;
       const code = this.nowData.prefix;
       const hasOwn = Object.prototype.hasOwnProperty;
       const reg = new RegExp(hasOwn.call(this.countryCode, code) && hasOwn.call(this.countryCode[code], 'pattern') ? this.countryCode[code].pattern : '^(86){0,1}1[345789][0-9]{9}$');
-      if (this.nowData.tel === '') {
-        this.telFlg = false;
-        this.errorShow = true;
-        this.countStart = true;
-        this.errorText = '请输入手机号';
-      } else if (reg.test(code + this.nowData.tel)) {
-        this.telFlg = true;
-        this.errorShow = false;
-        this.countStart = false;
-        this.errorText = '';
-      } else {
-        this.telFlg = false;
-        this.errorShow = true;
-        this.countStart = true;
-        this.errorText = '手机号格式有误';
+      const telEmpty = tel === '';
+      const telError = !reg.test(code + tel);
+      const resultTel = !telEmpty && !telError;
+      let text = '';
+
+      if (telError) {
+        text = '手机号格式有误';
       }
+
+      if (telEmpty) {
+        text = '输入手机号';
+      }
+
+      if (resultTel) {
+        text = '';
+      }
+
+      return {
+        resultTel,
+        text,
+      };
+    },
+    // 手机号文本框失去焦点事件
+    telBlur() {
+      const {
+        resultTel,
+        text,
+      } = this.testTel();
+      this.errorShow = !resultTel;
+      this.errorText = text;
+      this.countStart = !resultTel;
+      this.telFlg = resultTel;
+      this.loginOnFlg = !resultTel || !this.testSms();
+    },
+    testSms() {
+      return this.telFlg ? this.smscode !== '' : true;
     },
     // 验证码文本框失去焦点事件
     codeBlur() {
-      if (this.telFlg) {
-        if (this.smscode === '') {
-          this.codeFlg = false;
-          this.errorShow = true;
-          this.errorText = '请输入验证码';
-        } else {
-          this.codeFlg = true;
-          this.errorShow = false;
-          this.errorText = '';
-        }
-      }
+      const {
+        resultTel,
+      } = this.testTel();
+      const smsResult = this.testSms();
+      this.errorText = smsResult ? '' : '输入验证码';
+      this.loginOnFlg = !resultTel || !smsResult;
+      this.codeFlg = smsResult;
+      this.errorShow = !smsResult;
     },
     // 发送验证码
     sendSmsCode() {
@@ -266,7 +287,7 @@ export default {
     login() {
       if (this.codeFlg && this.telFlg && this.canLogin) {
         this.canLogin = false;
-        this.loginText = '提交信息中';
+        this.loginText = `${this.loginDefault}中`;
         this.loginOnFlg = true;
         this.loginData.code = this.nowData.prefix;
         this.loginData.phone = this.nowData.tel;
@@ -284,13 +305,13 @@ export default {
               logined(res, res.data.org_id, this, () => {
                 this.success(res);
                 this.canLogin = true;
-                this.loginText = '提交信息';
+                this.loginText = this.loginDefault;
                 this.loginOnFlg = false;
                 this.close(false);
               });
             } else {
               this.canLogin = true;
-              this.loginText = '提交信息';
+              this.loginText = this.loginDefault;
               this.loginOnFlg = false;
               this.errorShow = true;
               this.errorText = res.message;
@@ -298,7 +319,7 @@ export default {
           },
           onError: (err, response) => {
             this.canLogin = true;
-            this.loginText = '提交信息';
+            this.loginText = this.loginDefault;
             this.loginOnFlg = false;
             this.errorShow = true;
             this.errorText = response.message;
