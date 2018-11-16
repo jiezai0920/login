@@ -2,7 +2,7 @@
   <div class="login-wap" v-if="show" @click="closeFlag">
     <div class="login-wap-popup">
       <h3 class="login-wap-title">请完善手机信息</h3>
-      <p class="login-wap-desc">成功短信将发送至该手机</p>
+      <p class="login-wap-desc">成功短信将发送至该手机{{smsStatus}}</p>
       <div class="login-wap-close" @click="popupClose">
         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAAGHNqTJAAAABGdBTUEAALGPC/xhBQAAAZRJREFUOBF9U7tOw0AQtC2EZKeCUNDxAxQ8OldIdv6AP6DkX/gDekqklLGRKDAVj4I0VKQgpoBQWYjGZmbjvZwPw0n2PXZmdnbt85qmCTyMPM/POHuTyaSRRf8ry7KFDRMyRDZ46Pv+p9CAupIFXlA+8LmB8kMQBCdhGL4IjZu6rs/jOF4IrCiKTUUKhdkgPhuNRvsMcFAPrLvBYDAU0PLY81rwK/a7DIosNpKLIDJpFTaPaLWqqpznHGvT6XR9Pp9/wx2Zqix+2qKvWcKtmlzyVm/EnlFRcArZDzCGq9DSG/aVyGoF8LCVpinBpkrNa8qkUbsFppokSe7bICtKNZ0BqCw8HULhXY1LCg1qZ9WTdBXBEow3Daq0gnw2qyzLGUDbCD4yPytRYN/cdj8Dh34vO5XiUAJ/idlkYmAz4fc1IprRBdIZnh07gZKV80tEA44Yj01mxehs2q4HnB2BJzjhBdnjn6efw8Z3nDjkTpPdmF2SiPwHsDNy3Yf10bAA/8ENLH9FUXSst8klu3uK4XpegDf+Ac1BU3TI5L2aAAAAAElFTkSuQmCC" width="100%">
       </div>
@@ -17,7 +17,7 @@
       <div class="login-wap-box">
         <input class="login-wap-input" type="tel" maxlength="6" placeholder="输入验证码" v-model="smscode" @blur="codeBlur">
         <div class="login-wap-smscode-wraper" @click="sendSmsCode">
-          <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : countStart}]">{{sendText}}</span>
+          <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus}]">{{sendText}}</span>
         </div>
       </div>
       <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg}]" @click="login">{{loginText}}</button>
@@ -51,7 +51,6 @@ export default {
       errorText: '验证码错误',
       loginDefault: '确定',
       loginText: '',
-      loginOnFlg: false,
       nowData: {
         name: '中国',
         tel: '',
@@ -112,13 +111,23 @@ export default {
       type: String,
     },
   },
+  computed: {
+    loginOnFlg() {
+      const {
+        resultTel,
+      } = this.testTel();
+      return !resultTel || !this.testSms();
+    },
+    smsStatus() {
+      const {
+        resultTel,
+      } = this.testTel();
+      return !resultTel;
+    },
+  },
   mounted() {
-    const {
-      resultTel,
-    } = this.testTel();
     this.countNums = this.AllTimes;
     this.loginText = this.loginDefault;
-    this.loginOnFlg = !resultTel || !this.testSms();
   },
   created() {
     ajax({
@@ -210,19 +219,14 @@ export default {
       this.errorText = text;
       this.countStart = !resultTel;
       this.telFlg = resultTel;
-      this.loginOnFlg = !resultTel || !this.testSms();
     },
     testSms() {
-      return this.telFlg ? this.smscode !== '' : true;
+      return this.telFlg ? this.smscode !== '' : false;
     },
     // 验证码文本框失去焦点事件
     codeBlur() {
-      const {
-        resultTel,
-      } = this.testTel();
       const smsResult = this.testSms();
       this.errorText = smsResult ? '' : '输入验证码';
-      this.loginOnFlg = !resultTel || !smsResult;
       this.codeFlg = smsResult;
       this.errorShow = !smsResult;
     },
@@ -288,7 +292,6 @@ export default {
       if (this.codeFlg && this.telFlg && this.canLogin) {
         this.canLogin = false;
         this.loginText = `${this.loginDefault}中`;
-        this.loginOnFlg = true;
         this.loginData.code = this.nowData.prefix;
         this.loginData.phone = this.nowData.tel;
         this.loginData.sms_code = this.smscode;
@@ -306,13 +309,11 @@ export default {
                 this.success(res);
                 this.canLogin = true;
                 this.loginText = this.loginDefault;
-                this.loginOnFlg = false;
                 this.close(false);
               });
             } else {
               this.canLogin = true;
               this.loginText = this.loginDefault;
-              this.loginOnFlg = false;
               this.errorShow = true;
               this.errorText = res.message;
             }
@@ -320,7 +321,6 @@ export default {
           onError: (err, response) => {
             this.canLogin = true;
             this.loginText = this.loginDefault;
-            this.loginOnFlg = false;
             this.errorShow = true;
             this.errorText = response.message;
           },
