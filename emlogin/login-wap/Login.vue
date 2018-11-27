@@ -206,6 +206,8 @@ export default {
       this.errorText = text;
       this.countStart = !resultTel;
       this.telFlg = resultTel;
+      // 将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。
+      document.activeElement.scrollIntoViewIfNeeded();
     },
     testSms() {
       return this.telFlg ? this.smscode !== '' : false;
@@ -216,6 +218,8 @@ export default {
       this.errorText = smsResult ? '' : '输入验证码';
       this.codeFlg = smsResult;
       this.errorShow = !smsResult;
+      // 将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。
+      document.activeElement.scrollIntoViewIfNeeded();
     },
     // 发送验证码
     sendSmsCode() {
