@@ -1,9 +1,9 @@
 <template>
-  <div class="login-wap" v-if="show" @click="closeFlag">
+  <div class="login-wap" v-if="show">
     <div class="login-wap-popup">
       <h3 class="login-wap-title">请完善手机信息</h3>
       <p class="login-wap-desc">成功短信将发送至该手机</p>
-      <div class="login-wap-close" @click="popupClose">
+      <div class="login-wap-close" @touchend="popupClose">
         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAAGHNqTJAAAABGdBTUEAALGPC/xhBQAAAZRJREFUOBF9U7tOw0AQtC2EZKeCUNDxAxQ8OldIdv6AP6DkX/gDekqklLGRKDAVj4I0VKQgpoBQWYjGZmbjvZwPw0n2PXZmdnbt85qmCTyMPM/POHuTyaSRRf8ry7KFDRMyRDZ46Pv+p9CAupIFXlA+8LmB8kMQBCdhGL4IjZu6rs/jOF4IrCiKTUUKhdkgPhuNRvsMcFAPrLvBYDAU0PLY81rwK/a7DIosNpKLIDJpFTaPaLWqqpznHGvT6XR9Pp9/wx2Zqix+2qKvWcKtmlzyVm/EnlFRcArZDzCGq9DSG/aVyGoF8LCVpinBpkrNa8qkUbsFppokSe7bICtKNZ0BqCw8HULhXY1LCg1qZ9WTdBXBEow3Daq0gnw2qyzLGUDbCD4yPytRYN/cdj8Dh34vO5XiUAJ/idlkYmAz4fc1IprRBdIZnh07gZKV80tEA44Yj01mxehs2q4HnB2BJzjhBdnjn6efw8Z3nDjkTpPdmF2SiPwHsDNy3Yf10bAA/8ENLH9FUXSst8klu3uK4XpegDf+Ac1BU3TI5L2aAAAAAElFTkSuQmCC" width="100%">
       </div>
       <div class="login-wap-box">
@@ -16,11 +16,11 @@
       </div>
       <div class="login-wap-box">
         <input class="login-wap-input" type="tel" maxlength="6" placeholder="输入验证码" v-model="smscode" @blur="codeBlur">
-        <div class="login-wap-smscode-wraper" @click="sendSmsCode">
+        <div class="login-wap-smscode-wraper" @touchend="sendSmsCode">
           <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus}]">{{sendText}}</span>
         </div>
       </div>
-      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg}]" @click="login">{{loginText}}</button>
+      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg}]" @touchend="login">{{loginText}}</button>
       <div class="login-wap-error">
         <img v-show="errorShow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAApFJREFUSA29Vr1rVEEQn913p+bO2NhErQQxks5CSOElHPmoBS1E/xTFSvEPEawULAyCH4TkLA5SpI2VKCSpIph4OZPDN87svVl3N/f2bYLkwbEzO7+Z383s1yhI+HrzMzfzP3gHEFuo1BVAuGzcFGwpxE1QqqMz9ab5cXW9KpyKAfbmWvcwx6dEMBnDWZuCL0qrx+OfOq/sXCCMJOwvzlwdHOYvCTsd4FPVbv2MfjD2fvVr6HCEcK/dmkWA11S+iyH4WLpSOxT87vhyZ8X18wiZjIg+EGHdBZ1UpuADWt8Fl1RLMC4jZ1ZFVpttAwUwv+YLrnr5x7E4JscWlCU0a5ZQRuzviy9gv2/lUoFiFvvBQAwh70bS0jbIvkPoyKWEQ8N0wQGG0Gz9Cg8xe1mlZFg4CofmQ518zsjZK2l6huQIk8ylzQ0ifz9ldEi8bBN8mUvzdZWAtRCPxNlAFhATiEubuzEGCm0HB4B5bmbRyTaEjdKZizIsLuJRiLI52SwyluHCeeKy5zC0xXTJTMYY1rchaqAnxp9M0IrMvPVMcKNrblub9ywF7GDs0TjmGjJXjR9P2qltJ16l+Pv5M4BGA/Lv3yqxHoAfan6pvckERU1MQDY1BersuQT0Pwhz0QsCsNu+vZF629TmF2Ds0RMTJd/egt7D+3SL0JtQ9VE3cGH58w2zS7ktqMKLPbt2XUTQl6i1aTStHhOEwxAWPUg35iC2wbslyH/sGPVw6S1A75eYYmNX+hxTUkaaPmaAa1Se6tYiy0A1zwPu/oyRDG3UatTr6pb0N5aQrafaYjCh6T2oB6GjMqwZT5704xhBP8OhjlxtTMolIFvSmpb8ny7HcJsnwXkllUkZT60RFkIZ/2er/xe07Byfrt4yVQAAAABJRU5ErkJggg==" class="login-wap-error-img">
         <span v-show="errorShow" class="login-wap-error-text">{{errorText}}</span>
@@ -40,7 +40,6 @@ export default {
       timer: null,
       telFlg: false,
       codeFlg: false,
-      flagStatus: false,
       smscode: '',
       sendText: '获取验证码',
       countEnd: '获取验证码',
@@ -165,18 +164,6 @@ export default {
     // 关闭登录弹框
     popupClose() {
       this.close(false);
-    },
-    // 切换country
-    toggle() {
-      this.flagStatus = !this.flagStatus;
-    },
-    // 选择country
-    choice(item) {
-      this.nowData = item;
-      this.flagStatus = false;
-    },
-    closeFlag() {
-      this.flagStatus = false;
     },
     // 手机号文本框input事件
     telInput(e) {
