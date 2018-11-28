@@ -17,7 +17,7 @@
       <div class="login-wap-box">
         <input class="login-wap-input" type="tel" maxlength="6" placeholder="输入验证码" v-model="smscode" @blur="codeBlur">
         <div class="login-wap-smscode-wraper" @touchend="sendSmsCode">
-          <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus}]">{{sendText}}</span>
+          <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
         </div>
       </div>
       <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg}]" @touchend="login">{{loginText}}</button>

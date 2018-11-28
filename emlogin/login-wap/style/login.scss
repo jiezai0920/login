@@ -226,10 +226,10 @@
       &::before {
         @include height(26px);
         @include width(4px);
+        @include left(4px);
 
         content: '';
         position: absolute;
-        left: 0;
         top: 50%;
         background: #f0f0f0;
         transform: translateY(-50%);
