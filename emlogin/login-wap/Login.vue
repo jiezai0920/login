@@ -211,7 +211,7 @@ export default {
       document.activeElement.scrollIntoViewIfNeeded();
     },
     testSms() {
-      return this.telFlg ? (this.smscode + '').length === this.smscodeLength : false;
+      return this.telFlg ? (`${this.smscode}`).length === this.smscodeLength : false;
     },
     // 验证码文本框失去焦点事件
     codeBlur() {
