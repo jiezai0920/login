@@ -20,7 +20,7 @@
           <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
         </div>
       </div>
-      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg}]" @touchend="login">{{loginText}}</button>
+      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg || loginDefault !== loginText}]" @touchend="login">{{loginText}}</button>
       <div class="login-wap-error">
         <img v-show="errorShow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAApFJREFUSA29Vr1rVEEQn913p+bO2NhErQQxks5CSOElHPmoBS1E/xTFSvEPEawULAyCH4TkLA5SpI2VKCSpIph4OZPDN87svVl3N/f2bYLkwbEzO7+Z383s1yhI+HrzMzfzP3gHEFuo1BVAuGzcFGwpxE1QqqMz9ab5cXW9KpyKAfbmWvcwx6dEMBnDWZuCL0qrx+OfOq/sXCCMJOwvzlwdHOYvCTsd4FPVbv2MfjD2fvVr6HCEcK/dmkWA11S+iyH4WLpSOxT87vhyZ8X18wiZjIg+EGHdBZ1UpuADWt8Fl1RLMC4jZ1ZFVpttAwUwv+YLrnr5x7E4JscWlCU0a5ZQRuzviy9gv2/lUoFiFvvBQAwh70bS0jbIvkPoyKWEQ8N0wQGG0Gz9Cg8xe1mlZFg4CofmQ518zsjZK2l6huQIk8ylzQ0ifz9ldEi8bBN8mUvzdZWAtRCPxNlAFhATiEubuzEGCm0HB4B5bmbRyTaEjdKZizIsLuJRiLI52SwyluHCeeKy5zC0xXTJTMYY1rchaqAnxp9M0IrMvPVMcKNrblub9ywF7GDs0TjmGjJXjR9P2qltJ16l+Pv5M4BGA/Lv3yqxHoAfan6pvckERU1MQDY1BersuQT0Pwhz0QsCsNu+vZF629TmF2Ds0RMTJd/egt7D+3SL0JtQ9VE3cGH58w2zS7ktqMKLPbt2XUTQl6i1aTStHhOEwxAWPUg35iC2wbslyH/sGPVw6S1A75eYYmNX+hxTUkaaPmaAa1Se6tYiy0A1zwPu/oyRDG3UatTr6pb0N5aQrafaYjCh6T2oB6GjMqwZT5704xhBP8OhjlxtTMolIFvSmpb8ny7HcJsnwXkllUkZT60RFkIZ/2er/xe07Byfrt4yVQAAAABJRU5ErkJggg==" class="login-wap-error-img">
         <span v-show="errorShow" class="login-wap-error-text">{{errorText}}</span>
@@ -282,7 +282,7 @@ export default {
     login() {
       if (this.codeFlg && this.telFlg && this.canLogin) {
         this.canLogin = false;
-        this.loginText = `${this.loginDefault}中`;
+        this.loginText = '正在提交...';
         this.loginData.code = this.nowData.prefix;
         this.loginData.phone = this.nowData.tel;
         this.loginData.sms_code = this.smscode;
