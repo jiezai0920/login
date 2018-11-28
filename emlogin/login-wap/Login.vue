@@ -15,7 +15,7 @@
         <input class="login-wap-input" type="number" placeholder="输入手机号" v-model="nowData.tel" @blur="telBlur" @input="telInput">
       </div>
       <div class="login-wap-box">
-        <input class="login-wap-input" type="tel" maxlength="6" placeholder="输入验证码" v-model="smscode" @blur="codeBlur">
+        <input class="login-wap-input" type="tel" :maxlength="smscodeLength" placeholder="输入验证码" v-model="smscode" @blur="codeBlur">
         <div class="login-wap-smscode-wraper" @touchend="sendSmsCode">
           <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
         </div>
@@ -41,6 +41,7 @@ export default {
       telFlg: false,
       codeFlg: false,
       smscode: '',
+      smscodeLength: 6,
       sendText: '获取验证码',
       countEnd: '获取验证码',
       countStart: true,
@@ -210,7 +211,7 @@ export default {
       document.activeElement.scrollIntoViewIfNeeded();
     },
     testSms() {
-      return this.telFlg ? this.smscode !== '' : false;
+      return this.telFlg ? (this.smscode + '').length === this.smscodeLength : false;
     },
     // 验证码文本框失去焦点事件
     codeBlur() {
