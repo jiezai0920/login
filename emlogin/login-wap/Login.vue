@@ -12,10 +12,10 @@
             <option :value="data.prefix" v-for="data in abroadDatas">+{{ data.prefix }}</option>
           </select>
         </div>
-        <input class="login-wap-input" type="number" placeholder="输入手机号" v-model="nowData.tel" @blur="telBlur" @input="telInput">
+        <input class="login-wap-input" type="number" placeholder="输入手机号" v-model="nowData.tel" @blur="telBlur" @input="telInput" ref="telElem">
       </div>
       <div class="login-wap-box">
-        <input class="login-wap-input" type="tel" :maxlength="smscodeLength" placeholder="输入验证码" v-model="smscode" @blur="codeBlur">
+        <input class="login-wap-input" type="tel" :maxlength="smscodeLength" placeholder="输入验证码" v-model="smscode" @blur="codeBlur" ref="codeElem">
         <div class="login-wap-smscode-wraper" @touchend="sendSmsCode">
           <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
         </div>
@@ -116,12 +116,21 @@ export default {
       const {
         resultTel,
       } = this.testTel();
-      return !resultTel || !this.testSms();
+      const { codeElem } = this.$refs;
+      const smsTrue = this.testSms();
+      if (smsTrue && codeElem) {
+        codeElem.blur();
+      }
+      return !resultTel || !smsTrue;
     },
     smsStatus() {
       const {
         resultTel,
       } = this.testTel();
+      const { telElem } = this.$refs;
+      if (resultTel && telElem) {
+        telElem.blur();
+      }
       return !resultTel;
     },
   },
