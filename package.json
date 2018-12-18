@@ -1,6 +1,6 @@
 {
   "name": "emlogin",
-  "version": "0.1.17",
+  "version": "0.2.0",
   "description": "em 登录弹框业务组件",
   "author": "李梦龙 <649076408@qq.com>",
   "main": "dist/emlogin.js",
