@@ -4,4 +4,5 @@ export default {
   COOKIE_PERFIX_TOKEN: 'Bearer ',
   EVENT_USER_INFO: 'userInfo',
   EVENT_USER: 'EVENT_USER',
+  EVENT_MEMBER_LEVEL: 'eventMemberLevel',
 };

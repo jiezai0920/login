@@ -61,6 +61,8 @@ export default (result, orgId, self, callback) => {
       window.$cookie.set(`${CONSTANT.EVENT_TOKE}?org_id=${orgId}`, `${CONSTANT.COOKIE_PERFIX_TOKEN}${token}`, newExpires, '/', domainStr);
       window.$cookie.set(CONSTANT.EVENT_USER_INFO, result.data.real_name, newExpires, '/', domainStr);
       callback();
+      window.$cookie.set(`${CONSTANT.EVENT_MEMBER_LEVEL}?org_id=${orgId}`, result.data.level, newExpires, '/', domainStr);
+      callback();
     }, 100);
   });
 };
