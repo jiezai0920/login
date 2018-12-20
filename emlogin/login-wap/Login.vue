@@ -8,7 +8,7 @@
       </div>
       <div class="login-wap-box">
         <div class="login-wap-prefix-wraper">
-          <select class="login-wap-prefix" v-model="nowData.prefix" @change="telBlur">
+          <select class="login-wap-prefix" v-model="nowData.prefix" @change="nowData.tel = ''">
             <option :value="data.prefix" v-for="data in abroadDatas">+{{ data.prefix }}</option>
           </select>
         </div>
