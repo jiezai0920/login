@@ -100,7 +100,8 @@ export default {
         email: '',
       },
       sendEnglishData: {
-        email: '',
+        type: 'email',
+        key: '',
         origin: 'c-login',
       },
       sendEnglishText: 'Get Code',
@@ -433,7 +434,7 @@ export default {
       if (this.emailEnglishFlg && this.goEnglishStatus) {
         this.goEnglishStatus = false;
         this.sendEnglishText = 'Waiting...';
-        this.sendEnglishData.email = this.nowEnglishData.email;
+        this.sendEnglishData.key = this.nowEnglishData.email;
         //发送验证码
         ajax({
           headers: this.headers,

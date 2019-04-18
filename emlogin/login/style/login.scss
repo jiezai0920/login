@@ -18,19 +18,12 @@
     width: 335px;
     padding: 0 24px 18px;
     border-radius: 8px;
-    // @include px2rem('width', 670px);
-    // @include px2rem('padding', 0 32px 38px);
-    // @include radius(4px);
-
     box-sizing: border-box;
     background: #fff;
     position: relative;
   }
 
   &-title {
-    // @include font(44px);
-    // @include height(60px, 60px);
-    // @include px2rem('padding-top', 96px);
     font-family: 'PingFangSC-Medium';
     font-size: 20px;
     line-height: 20px;
@@ -42,9 +35,6 @@
   }
 
   &-desc {
-    // @include font(24px);
-    // @include height(34px, 34px);
-    // @include px2rem('padding-bottom', 30px);
     padding-bottom: 8px;
     font-size: 12px;
     line-height: 12px;
@@ -55,9 +45,6 @@
   }
 
   &-close {
-    // @include px2rem('width', 32px);
-    // @include px2rem('height', 32px);
-    // @include px2rem('padding', 32px);
     width: 16px;
     height: 16px;
     padding: 16px;
@@ -74,7 +61,6 @@
     justify-content: center;
     align-items: center;
     height: 14px;
-    // @include px2rem('height', 44px);
 
     &-text {
       display: block;
@@ -86,9 +72,6 @@
       letter-spacing: 0;
       line-height: 12px;
       padding-left: 4px;
-      // @include font(24px);
-      // @include height(40px, 40px);
-      // @include paddingLeft(8px);
     }
 
     &-img {
@@ -116,13 +99,6 @@
     cursor: pointer;
     padding: 0;
 
-    // @include height(88px, 1);
-    // @include font(32px);
-    // @include radius(44px);
-    // @include px2rem('margin-top', 58px);
-    // @include px2rem('margin-bottom', 24px);
-    // @include px2rem('width', 552px);
-
     &:focus {
       outline: none;
     }
@@ -139,20 +115,15 @@
   }
 
   &-box {
-    // @include px2rem('width', 574px);
     width: 287px;
     display: flex;
     margin: 0 auto;
     position: relative;
     justify-content: left;
     border-bottom: 1px solid #f0f0f8;
-    // @include border(1px, #ebebeb, bottom);
-    // @include paddingBottom(1px);
   }
 
   &-prefix {
-    // @include height(92px);
-    // @include font(28px);
     height: 54px;
     font-size: 14px;
     appearance: none;
@@ -168,7 +139,6 @@
     }
 
     &-wraper {
-      // @include px2rem('margin-right', 32px);
       margin-right: 14px;
       position: relative;
 
@@ -195,10 +165,6 @@
   }
 
   &-input {
-    // @include height(28px, 28px);
-    // @include font(28px);
-    // @include paddingBottom(32px);
-    // @include paddingTop(32px);
     height: 14px;
     font-size: 14px;
     font-family: 'PingFangSC-Regular';
@@ -215,11 +181,6 @@
   }
 
   &-smscode {
-    // @include font(28px);
-    // @include width(140px);
-    // @include radius(30px);
-    // @include height(26px, 26px);
-    // @include px2rem('left', 32px);
     font-size: 14px;
     height: 14px;
     line-height: 14px;
@@ -232,22 +193,18 @@
     color: #1996f9;
     top: 50%;
     transform: translateY(-50%);
+    cursor: pointer;
 
     &-disabled {
       color: #999;
+      cursor: not-allowed;
     }
 
     &-wraper {
-      // @include width(244px);
-
       position: relative;
       width: 116px;
 
       &::before {
-        // @include height(26px);
-        // @include width(4px);
-        // @include left(4px);
-
         height: 14px;
         width: 1px;
         left: 0;
