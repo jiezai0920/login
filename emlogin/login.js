@@ -3,6 +3,9 @@ import WLogin from './login/index';
 import WLoginWap from './login-wap/index';
 import WJiyan from './jiyan/index';
 
+import PcTem from './login/Login';
+import WapTem from './login-wap/Login';
+
 const waterCpt = {
   WLogin,
   WLoginWap,
@@ -25,4 +28,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   version: '1.0.0',
   install,
+  PcTem,
+  WapTem,
 };
