@@ -3,7 +3,7 @@
     <div class="login-wap-popup">
       <h3 class="login-wap-title">请完善手机信息</h3>
       <p class="login-wap-desc">成功短信将发送至该手机</p>
-      <div class="login-wap-close" @touchend="popupClose">
+      <div class="login-wap-close" @click="popupClose">
         <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
       </div>
       <div class="login-wap-box">
@@ -16,11 +16,11 @@
       </div>
       <div class="login-wap-box">
         <input class="login-wap-input" type="tel" :maxlength="smscodeLength" placeholder="输入验证码" v-model="smscode" @blur="codeBlur" ref="codeElem">
-        <div class="login-wap-smscode-wraper" @touchend="sendSmsCode">
+        <div class="login-wap-smscode-wraper" @click="sendSmsCode">
           <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
         </div>
       </div>
-      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg || loginDefault !== loginText}]" @touchend="login">{{loginText}}</button>
+      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg || loginDefault !== loginText}]" @click="login">{{loginText}}</button>
       <div class="login-wap-error">
         <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wap-error-img">
         <span v-show="errorShow" class="login-wap-error-text">{{errorText}}</span>
