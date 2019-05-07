@@ -33,12 +33,12 @@
       </div>
       <h3 class="login-english-title">Ticket Buyer</h3>
       <div class="login-box">
-        <input class="login-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
+        <input class="login-english-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
       </div>
       <div class="login-box">
-        <input class="login-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
+        <input class="login-english-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
         <div class="login-english-wraper" @click="sendEnglishSmsCode">
-          <span :class="['login-smscode', {'login-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
+          <span :class="['login-english-smscode', {'login-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
         </div>
       </div>
       <button :class="['login-english-button', {'login-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
