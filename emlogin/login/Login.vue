@@ -435,6 +435,7 @@ export default {
         this.goEnglishStatus = false;
         this.sendEnglishText = 'Waiting...';
         this.sendEnglishData.key = this.nowEnglishData.email;
+        this.sendEnglishData.org_id = this.orgid;
         //发送验证码
         ajax({
           headers: this.headers,
