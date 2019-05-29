@@ -61,6 +61,10 @@ export default (result, orgId, self, callback) => {
       window.$cookie.set(`${CONSTANT.EVENT_TOKE}?org_id=${orgId}`, `${CONSTANT.COOKIE_PERFIX_TOKEN}${token}`, newExpires, '/', domainStr);
       window.$cookie.set(CONSTANT.EVENT_USER_INFO, result.data.real_name, newExpires, '/', domainStr);
       window.$cookie.set(`${CONSTANT.EVENT_MEMBER_LEVEL}?org_id=${orgId}`, result.data.level, newExpires, '/', domainStr);
+      window.$cookie.set(`${CONSTANT.EVENT_USER_UID}?org_id=${orgId}`, result.data.uid, newExpires, '/', domainStr);
+      window.$cookie.set(`${CONSTANT.EVENT_USER_ORGID}`, result.data.org_id, newExpires, '/', domainStr);
+      window.$cookie.set(`${CONSTANT.EVENT_USER_PHONE}?org_id=${orgId}`, result.data.phone, newExpires, '/', domainStr);
+      window.$cookie.set(`${CONSTANT.EVENT_USER_LOGO}`, result.data.org_logo, newExpires, '/', domainStr);
       callback();
     }, 100);
   });
