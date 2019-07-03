@@ -1,7 +1,7 @@
 <template>
   <div class="login-wap" v-if="show">
     <div class="login-wap-popup">
-      <h3 class="login-wap-title">请完善手机信息</h3>
+      <h3 class="login-wap-title">{{title}}</h3>
       <p class="login-wap-desc">成功短信将发送至该手机</p>
       <div class="login-wap-close" @click="popupClose">
         <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
@@ -9,7 +9,11 @@
       <div class="login-wap-box">
         <div class="login-wap-prefix-wraper">
           <select class="login-wap-prefix" v-model="nowData.prefix" @change="nowData.tel = ''">
-            <option :value="data.prefix" v-for="data in abroadDatas">+{{ data.prefix }}</option>
+            <option
+              :value="data.prefix"
+              :key="dataIndex"
+              v-for="(data, dataIndex) in abroadDatas"
+            >+{{ data.prefix }}</option>
           </select>
         </div>
         <input class="login-wap-input" type="number" placeholder="输入手机号" v-model="nowData.tel" @blur="telBlur" @input="telInput" ref="telElem">
@@ -109,6 +113,10 @@ export default {
     },
     loginAction: {
       type: String,
+    },
+    title: {
+      type: String,
+      default: '请完善手机信息',
     },
   },
   computed: {
