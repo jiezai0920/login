@@ -62,6 +62,7 @@ export default {
 
 |参数|说明|类型|是否必填|默认值|
 |---|----|---|-------|-----|
+|title|自定义标题 `0.4.0` 新增。|String|是|请完善手机信息|
 |show|控制弹框显示|Boolean|是|false|
 |org_id|主办id|String|是|-|
 |countrycodeAction|获取countrycode接口地址|String|是|-|
