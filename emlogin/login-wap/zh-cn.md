@@ -5,7 +5,7 @@
 
 <div class="demo-box">
   <button type="button" name="button" @click="click">登录</button>
-  <w-login-wap :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wap>
+  <w-login-wap :value="value1" :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wap>
 </div>
 
 ``` vue
@@ -21,6 +21,7 @@ import WLoginWap from './index';
 export default {
   data() {
     return {
+      value1: {},
       show: false,
       countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
       sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
@@ -32,6 +33,16 @@ export default {
   },
   mounted() {
     document.getElementsByTagName('html')[0].className = 'html';
+
+    setTimeout(() => {
+      console.log('数据录入');
+      this.value1 = {
+        name: '中国',
+        tel: '13800138000',
+        prefix: '86',
+        url: 'https://static.evente.cn/evente/img/flag/v1/zg.jpg',
+      }
+    }, 2000);
   },
   beforeDestroy() {
     document.getElementsByTagName('html')[0].className = '';
@@ -63,6 +74,7 @@ export default {
 |参数|说明|类型|是否必填|默认值|
 |---|----|---|-------|-----|
 |title|自定义标题 `0.4.0` 新增。|String|是|请完善手机信息|
+|value|定义数据 `0.5.0` 新增。|String|是|无|
 |show|控制弹框显示|Boolean|是|false|
 |org_id|主办id|String|是|-|
 |countrycodeAction|获取countrycode接口地址|String|是|-|
@@ -78,6 +90,7 @@ import WLoginWap from './index';
 export default {
   data() {
     return {
+      value1: {},
       show: false,
       countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
       sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
@@ -89,6 +102,16 @@ export default {
   },
   mounted() {
     document.getElementsByTagName('html')[0].className = 'html';
+
+    setTimeout(() => {
+      console.log('数据录入');
+      this.value1 = {
+        name: '中国',
+        tel: '13800138000',
+        prefix: '86',
+        url: 'https://static.evente.cn/evente/img/flag/v1/zg.jpg',
+      }
+    }, 2000);
   },
   beforeDestroy() {
     document.getElementsByTagName('html')[0].className = '';

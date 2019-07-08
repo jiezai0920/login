@@ -12,7 +12,7 @@
 
 <div class="demo-box">
   <button type="button" name="button" @click="chinaStatus = true">登录</button>
-  <w-login :show="chinaStatus" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login>
+  <w-login :show="chinaStatus" :value="value1" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login>
 </div>
 
 ## 如何使用
@@ -25,6 +25,7 @@
 |参数|说明|类型|是否必填|默认值|
 |---|----|---|-------|-----|
 |title|自定义标题 `0.4.0` 新增。|String|是|请完善手机信息|
+|value|定义数据 `0.5.0` 新增。|String|是|无|
 |show|控制弹框显示|Boolean|是|false|
 |org_id|主办id|String|是|-|
 |lang|语言|String|否|zh_CN|
@@ -43,6 +44,7 @@ import WLogin from './index';
 export default {
   data() {
     return {
+      value1: {},
       chinaStatus: false,
       englishStatus: false,
       countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
@@ -54,6 +56,17 @@ export default {
   },
   components: {
     WLogin,
+  },
+  mounted() {
+    setTimeout(() => {
+      console.log('数据录入');
+      this.value1 = {
+        name: '中国',
+        tel: '13800138000',
+        prefix: '86',
+        url: 'https://static.evente.cn/evente/img/flag/v1/zg.jpg',
+      }
+    }, 2000);
   },
   methods: {
     chinaClose(val) {
