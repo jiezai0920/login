@@ -125,6 +125,7 @@ export default {
     };
   },
   props: {
+    value: Object,
     // 控制登录弹框 显示 / 不显示
     show: {
       type: Boolean,
@@ -536,6 +537,9 @@ export default {
     value(val, oldVal) {
       if (val !== oldVal) {
         this.nowData = val;
+        if (this.isChina) {
+          this.telBlur();
+        }
       }
     },
     orgid(val) {
