@@ -83,6 +83,15 @@ export default {
 |loginAction|用户登录接口地址|String|是|-|
 |close|关闭弹框|Function|是|() => {}|
 |success|登录成功|Function|是|() => {}|
+|desc|自定义描述 `0.6.0` 新增|String|是|成功短信将发送至该手机|
+|telPlaceholder|手机号 placeholder `0.6.0` 新增|String|是|输入手机号|
+|smsPlaceholder|验证码 placeholder `0.6.0` 新增|String|是|输入验证码|
+|smsBtnText|验证码按钮默认 `0.6.0` 新增|String|是|获取验证码|
+|telFormatErrorText|手机号格式有误 文案 `0.6.0` 新增|String|是|手机号格式有误|
+|telEmptyText|手机号为空 文案 `0.6.0` 新增|String|是|输入手机号|
+|sendingText|验证码获取中 文案 `0.6.0` 新增|String|是|获取中|
+|subingText|点击确定提交中 文案 `0.6.0` 新增|String|是|正在提交...|
+|btnText|提交按钮默认 文案 `0.6.0` 新增|String|是|确定|
 
 <script>
 import WLoginWap from './index';
@@ -103,15 +112,15 @@ export default {
   mounted() {
     document.getElementsByTagName('html')[0].className = 'html';
 
-    setTimeout(() => {
-      console.log('数据录入');
-      this.value1 = {
-        name: '中国',
-        tel: '13800138000',
-        prefix: '86',
-        url: 'https://static.evente.cn/evente/img/flag/v1/zg.jpg',
-      }
-    }, 2000);
+    // setTimeout(() => {
+    //   console.log('数据录入');
+    //   this.value1 = {
+    //     name: '中国',
+    //     tel: '13800138000',
+    //     prefix: '86',
+    //     url: 'https://static.evente.cn/evente/img/flag/v1/zg.jpg',
+    //   }
+    // }, 2000);
   },
   beforeDestroy() {
     document.getElementsByTagName('html')[0].className = '';

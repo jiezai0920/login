@@ -2,7 +2,7 @@
   <div class="login-wap" v-if="show">
     <div class="login-wap-popup">
       <h3 class="login-wap-title">{{title}}</h3>
-      <p class="login-wap-desc">成功短信将发送至该手机</p>
+      <p class="login-wap-desc">{{desc}}</p>
       <div class="login-wap-close" @click="popupClose">
         <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
       </div>
@@ -16,15 +16,15 @@
             >+{{ data.prefix }}</option>
           </select>
         </div>
-        <input class="login-wap-input" type="number" placeholder="输入手机号" v-model="nowData.tel" @blur="telBlur" @input="telInput" ref="telElem">
+        <input class="login-wap-input" type="number" :placeholder="telPlaceholder" v-model="nowData.tel" @blur="telBlur" @input="telInput" ref="telElem">
       </div>
       <div class="login-wap-box">
-        <input class="login-wap-input" type="tel" :maxlength="smscodeLength" placeholder="输入验证码" v-model="smscode" @blur="codeBlur" ref="codeElem">
+        <input class="login-wap-input" type="tel" :maxlength="smscodeLength" :placeholder="smsPlaceholder" v-model="smscode" @blur="codeBlur" ref="codeElem">
         <div class="login-wap-smscode-wraper" @click="sendSmsCode">
           <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
         </div>
       </div>
-      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg || loginDefault !== loginText}]" @click="login">{{loginText}}</button>
+      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
       <div class="login-wap-error">
         <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wap-error-img">
         <span v-show="errorShow" class="login-wap-error-text">{{errorText}}</span>
@@ -46,14 +46,13 @@ export default {
       codeFlg: false,
       smscode: '',
       smscodeLength: 6,
-      sendText: '获取验证码',
-      countEnd: '获取验证码',
+      sendText: '',
+      countEnd: '',
       countStart: true,
       AllTimes: 60,
       countNums: 0,
       errorShow: false,
-      errorText: '验证码错误',
-      loginDefault: '确定',
+      errorText: '',
       loginText: '',
       nowData: {
         name: '中国',
@@ -119,6 +118,42 @@ export default {
       type: String,
       default: '请完善手机信息',
     },
+    desc: {
+      type: String,
+      default: '成功短信将发送至该手机',
+    },
+    telPlaceholder: {
+      type: String,
+      default: '输入手机号',
+    },
+    smsPlaceholder: {
+      type: String,
+      default: '输入验证码',
+    },
+    smsBtnText: {
+      type: String,
+      default: '获取验证码',
+    },
+    telFormatErrorText: {
+      type: String,
+      default: '手机号格式有误',
+    },
+    telEmptyText: {
+      type: String,
+      default: '输入手机号',
+    },
+    sendingText: {
+      type: String,
+      default: '获取中',
+    },
+    subingText: {
+      type: String,
+      default: '正在提交...',
+    },
+    btnText: {
+      type: String,
+      default: '确定',
+    },
   },
   computed: {
     loginOnFlg() {
@@ -145,9 +180,11 @@ export default {
   },
   mounted() {
     this.countNums = this.AllTimes;
-    this.loginText = this.loginDefault;
+    this.loginText = this.btnText;
   },
   created() {
+    this.sendText = this.smsBtnText;
+    this.countEnd = this.smsBtnText;
     ajax({
       headers: this.headers,
       type: 'GET',
@@ -199,11 +236,11 @@ export default {
       let text = '';
 
       if (telError) {
-        text = '手机号格式有误';
+        text = this.telFormatErrorText;
       }
 
       if (telEmpty) {
-        text = '输入手机号';
+        text = this.telEmptyText;
       }
 
       if (resultTel) {
@@ -234,7 +271,7 @@ export default {
     // 验证码文本框失去焦点事件
     codeBlur() {
       const smsResult = this.testSms();
-      this.errorText = smsResult ? '' : '输入验证码';
+      this.errorText = smsResult ? '' : this.smsPlaceholder;
       this.codeFlg = smsResult;
       this.errorShow = !smsResult;
       // 将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。
@@ -244,7 +281,7 @@ export default {
     sendSmsCode() {
       if (this.telFlg && this.goStatus) {
         this.goStatus = false;
-        this.sendText = '获取中';
+        this.sendText = this.sendingText;
         this.sendData.country_code = this.nowData.prefix;
         this.sendData.mobile = this.nowData.tel;
         //发送验证码
@@ -301,7 +338,7 @@ export default {
     login() {
       if (this.codeFlg && this.telFlg && this.canLogin) {
         this.canLogin = false;
-        this.loginText = '正在提交...';
+        this.loginText = this.subingText;
         this.loginData.code = this.nowData.prefix;
         this.loginData.phone = this.nowData.tel;
         this.loginData.sms_code = this.smscode;
@@ -318,19 +355,19 @@ export default {
               logined(res, res.data.org_id, this, () => {
                 this.success(res);
                 this.canLogin = true;
-                this.loginText = this.loginDefault;
+                this.loginText = this.btnText;
                 this.close(false);
               });
             } else {
               this.canLogin = true;
-              this.loginText = this.loginDefault;
+              this.loginText = this.btnText;
               this.errorShow = true;
               this.errorText = res.message;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
-            this.loginText = this.loginDefault;
+            this.loginText = this.btnText;
             this.errorShow = true;
             this.errorText = response.message;
           },
