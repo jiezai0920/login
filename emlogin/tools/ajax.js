@@ -32,6 +32,8 @@ export default function upload(option) {
   const xhr = new XMLHttpRequest();
   const { action } = option;
 
+  xhr.withCredentials = true;
+
   xhr.onerror = function error(e) {
     option.onError(e);
   };
