@@ -19,7 +19,7 @@
   &-popup {
     @include px2rem('width', 670px);
     @include px2rem('padding', 0 32px 38px);
-    @include radius(4px);
+    @include radius(16px);
 
     box-sizing: border-box;
     background: #fff;
