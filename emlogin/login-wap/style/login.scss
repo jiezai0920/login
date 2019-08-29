@@ -1,3 +1,6 @@
+$family_zh: 'PingFangSC-Regular', 'Microsoft YaHei', 'PingFangSC', 'Helvetica', sans-serif, 'Arial' !important;
+$family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', sans-serif, 'Arial' !important;
+
 @import "./mixin.scss";
 
 .login-wap {
@@ -31,7 +34,7 @@
     @include height(60px, 60px);
     @include px2rem('padding-top', 96px);
 
-    font-family: 'PingFangSC-Regular';
+    font-family: 'PingFangSC-Medium';
     color: #333;
     letter-spacing: 0;
     margin: 0;
@@ -235,6 +238,48 @@
       }
     }
   }
+
+  // english start
+  &-english {
+    &-title {
+      @include px2rem('width', 574px);
+      @include font(40px);
+      @include paddingTop(96px);
+      @include paddingBottom(32px);
+
+      font-family: $family_us;
+      color: #333;
+      letter-spacing: 0;
+      line-height: 20px;
+      font-weight: normal;
+      margin: 0 auto;
+    }
+
+    &-input {
+      @extend .login-wap-input;
+
+      font-family: $family_us;
+    }
+
+    &-smscode {
+      @extend .login-wap-smscode;
+
+      font-family: $family_us;
+    }
+
+    &-button {
+      @extend .login-wap-button;
+
+      font-family: $family_us;
+    }
+
+    &-wraper {
+      @extend .login-wap-smscode-wraper;
+
+      width: 103px;
+    }
+  }
+  // english end
 
   & input::-webkit-outer-spin-button,
   & input::-webkit-inner-spin-button {

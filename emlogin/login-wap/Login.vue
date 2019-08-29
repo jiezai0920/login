@@ -1,6 +1,6 @@
 <template>
   <div class="login-wap" v-if="show">
-    <div class="login-wap-popup">
+    <div class="login-wap-popup" v-if="isChina">
       <h3 class="login-wap-title">{{title}}</h3>
       <p class="login-wap-desc">{{desc}}</p>
       <div class="login-wap-close" @click="popupClose">
@@ -30,6 +30,28 @@
         <span v-show="errorShow" class="login-wap-error-text">{{errorText}}</span>
       </div>
     </div>
+    <!-- 英文版 start -->
+    <div class="login-wap-popup" v-else>
+      <div class="login-wap-close" @click="popupClose">
+        <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
+      </div>
+      <h3 class="login-wap-english-title">Ticket Buyer</h3>
+      <div class="login-wap-box">
+        <input class="login-wap-english-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
+      </div>
+      <div class="login-wap-box">
+        <input class="login-wap-english-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
+        <div class="login-wap-english-wraper" @click="sendEnglishSmsCode">
+          <span :class="['login-wap-english-smscode', {'login-wap-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
+        </div>
+      </div>
+      <button :class="['login-wap-english-button', {'login-wap-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+      <div class="login-wap-error">
+        <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wap-error-img">
+        <span v-show="errorShow" class="login-wap-error-text">{{errorEnglishText}}</span>
+      </div>
+    </div>
+    <!-- 英文版 end -->
   </div>
 </template>
 <script>
@@ -75,6 +97,30 @@ export default {
       },
       countryCode: {},
       canLogin: true,
+      // 英文版 start
+      goEnglishStatus: true,
+      nowEnglishData: {
+        email: '',
+      },
+      sendEnglishData: {
+        type: 'email',
+        key: '',
+        origin: 'c-login',
+      },
+      sendEnglishText: 'Get Code',
+      countEnglishEnd: 'Get Code',
+      errorEnglishText: '',
+      loginEnglishDefault: 'Submit',
+      loginEnglishText: '',
+      emailEnglishFlg: false,
+      countEnglishStart: true,
+      loginEnglishData: {
+        org_id: this.orgid,
+        email: '',
+        moudle_name: 'c-login',
+        sms_code: '',
+      },
+      // 英文版 end
     };
   },
   props: {
@@ -154,6 +200,17 @@ export default {
       type: String,
       default: '确定',
     },
+    //多语言添加
+    lang: {
+      type: String,
+      default: 'zh_CN',
+    },
+    sendEnglishAction: {
+      type: String,
+    },
+    loginEnglishAction: {
+      type: String,
+    },
   },
   computed: {
     loginOnFlg() {
@@ -177,10 +234,26 @@ export default {
       }
       return !resultTel;
     },
+    isChina() {
+      console.log(this.lang);
+      return this.lang === 'zh_CN';
+    },
+    // english start
+    smsEnglishStatus() {
+      const {
+        resultEmail,
+      } = this.testEmail();
+      return !resultEmail;
+    },
+    loginEnglishOnFlg() {
+      return this.smsEnglishStatus;
+    },
+    // english end
   },
   mounted() {
     this.countNums = this.AllTimes;
     this.loginText = this.btnText;
+    this.loginEnglishText = this.loginEnglishDefault;
   },
   created() {
     this.sendText = this.smsBtnText;
@@ -377,6 +450,121 @@ export default {
         this.codeBlur();
       }
     },
+    // 英文版 start
+    testEmail() {
+      /* eslint-disable */
+      //Email
+      const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      /* eslint-disable */
+      return {
+        resultEmail: emailPattern.test(this.nowEnglishData.email),
+        text: 'Check your email',
+      };
+    },
+    emailBlur() {
+      const {
+        resultEmail,
+        text,
+      } = this.testEmail();
+      this.errorShow = !resultEmail;
+      this.errorEnglishText = text;
+      this.countEnglishStart = !resultEmail;
+      this.emailEnglishFlg = resultEmail;
+    },
+    // 发送验证码
+    sendEnglishSmsCode() {
+      if (this.emailEnglishFlg && this.goEnglishStatus) {
+        this.goEnglishStatus = false;
+        this.sendEnglishText = 'Waiting...';
+        this.sendEnglishData.key = this.nowEnglishData.email;
+        this.sendEnglishData.org_id = this.orgid;
+        //发送验证码
+        ajax({
+          headers: this.headers,
+          type: 'POST',
+          data: JSON.stringify(this.sendEnglishData),
+          action: this.sendEnglishAction,
+          onSuccess: (res) => {
+            if (res.code === 10000) {
+              this.errorShow = false;
+              this.errorEnglishText = '';
+              this.countEnglishStart = true;
+              this.autoEnglish();
+            } else {
+              this.errorShow = true;
+              this.errorEnglishText = res.message;
+              this.resetEnglishAuto();
+            }
+          },
+          onError: (err, response) => {
+            this.resetEnglishAuto();
+            this.errorShow = true;
+            this.errorEnglishText = response.message;
+          },
+        });
+      }
+    },
+    autoEnglish() {
+      setTimeout(() => {
+        if (this.countEnglishStart) {
+          if (this.countNums > 1) {
+            this.countNums--;
+            this.sendEnglishText = `${this.countNums} s`;
+            this.timer = setTimeout(this.autoEnglish.bind(this), 1000);
+          } else {
+            clearTimeout(this.timer);
+            this.resetEnglishAuto();
+          }
+        }
+      }, 500);
+    },
+    resetEnglishAuto() {
+      this.sendEnglishText = this.countEnglishEnd;
+      this.countNums = this.AllTimes;
+      this.countEnglishStart = false;
+      this.goEnglishStatus = true;
+    },
+    loginEnglish() {
+      if (this.emailEnglishFlg && this.canLogin) {
+        this.canLogin = false;
+        this.loginEnglishText = 'Waiting...';
+        this.loginEnglishData.email = this.nowEnglishData.email;
+        this.loginEnglishData.sms_code = this.smscode;
+        //发送验证码
+        ajax({
+          headers: this.headers,
+          type: 'POST',
+          data: JSON.stringify(this.loginEnglishData),
+          action: this.loginEnglishAction,
+          onSuccess: (res) => {
+            if (res.code === 10000) {
+              this.errorShow = false;
+              this.errorChinaText = '';
+              logined(res, res.data.org_id, this, () => {
+                this.success(res);
+                this.canLogin = true;
+                this.loginEnglishText = this.loginEnglishDefault;
+                this.close(false);
+              });
+            } else {
+              this.canLogin = true;
+              this.loginEnglishText = this.loginEnglishDefault;
+              this.errorShow = true;
+              this.errorEnglishText = res.message;
+            }
+          },
+          onError: (err, response) => {
+            this.canLogin = true;
+            this.loginEnglishText = this.loginEnglishDefault;
+            this.errorShow = true;
+            this.errorEnglishText = response.message;
+          },
+        });
+      } else {
+        this.emailBlur();
+      }
+    },
+    // 英文版 end
   },
   watch: {
     value(val, oldVal) {
