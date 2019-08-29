@@ -21,7 +21,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
   &-popup {
     @include px2rem('width', 670px);
-    @include px2rem('padding', 0 32px 38px);
+    @include px2rem('padding', 0 32px 14px);
     @include radius(16px);
 
     box-sizing: border-box;
@@ -70,6 +70,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     align-items: center;
 
     @include px2rem('height', 44px);
+    @include marginTop(24px);
 
     &-text {
       display: block;
@@ -129,7 +130,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     position: relative;
     justify-content: left;
 
-    @include border(1px, #f0f0f8, bottom);
+    @include border(2px, #f0f0f8, bottom);
     @include paddingBottom(1px);
   }
 
@@ -142,7 +143,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     background: none;
     position: relative;
     color: #333;
-    padding-right: 12px;
+    padding-right: 16px;
 
     &:focus {
       outline: none;
