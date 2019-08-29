@@ -5,7 +5,7 @@
 
 <div class="demo-box">
   <button type="button" name="button" @click="englishStatus = true">登录</button>
-  <w-login-wap :value="value1" :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction"  lang="zzz"></w-login-wap>
+  <w-login-wap :domain="domain" :value="value1" :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction"  lang="zzz"></w-login-wap>
 </div>
 
 
@@ -128,6 +128,7 @@ export default {
       show: false,
       chinaStatus: false,
       englishStatus: false,
+      domain: '',
       countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
       sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
       loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
