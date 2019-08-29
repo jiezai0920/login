@@ -1,17 +1,32 @@
 # 登录弹框(wap)
 > 基于Vue.js 的 前端业务组件。
 
-## 案例演示
+## 英文版案例演示
 
 <div class="demo-box">
-  <button type="button" name="button" @click="click">登录</button>
-  <w-login-wap :value="value1" :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wap>
+  <button type="button" name="button" @click="englishStatus = true">登录</button>
+  <w-login-wap :value="value1" :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction"  lang="zzz"></w-login-wap>
+</div>
+
+
+``` vue
+<div class="demo-box">
+  <button type="button" name="button" @click="englishStatus = true">登录</button>
+  <w-login-wap :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"  :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction"  lang="zzz"></w-login-wap>
+</div>
+```
+
+## 中文版案例演示
+
+<div class="demo-box">
+  <button type="button" name="button" @click="chinaStatus = true">登录</button>
+  <w-login-wap :value="value1" :show="chinaStatus" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wap>
 </div>
 
 ``` vue
 <div class="demo-box">
-  <button type="button" name="button" @click="click">登录</button>
-  <w-login-wap :show="show" :close="close" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wap>
+  <button type="button" name="button" @click="chinaStatus = true">登录</button>
+  <w-login-wap :show="chinaStatus" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wap>
 </div>
 ```
 
@@ -23,9 +38,13 @@ export default {
     return {
       value1: {},
       show: false,
+      chinaStatus: false,
+      englishStatus: false,
       countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
       sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
       loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
+      sendEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
+      loginEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
     }
   },
   components: {
@@ -53,6 +72,12 @@ export default {
     },
     close(val) {
       this.show = val;
+    },
+    chinaClose(val) {
+      this.chinaStatus = val;
+    },
+    englishClose(val) {
+      this.englishStatus = val;
     },
     success(res) {
       console.log(res, '登录');
@@ -101,9 +126,13 @@ export default {
     return {
       value1: {},
       show: false,
+      chinaStatus: false,
+      englishStatus: false,
       countrycodeAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/countrycode',
       sendAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
       loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
+      sendEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
+      loginEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
     }
   },
   components: {
@@ -131,6 +160,12 @@ export default {
     },
     close(val) {
       this.show = val;
+    },
+    chinaClose(val) {
+      this.chinaStatus = val;
+    },
+    englishClose(val) {
+      this.englishStatus = val;
     },
     success(res) {
       console.log(res, '登录');
