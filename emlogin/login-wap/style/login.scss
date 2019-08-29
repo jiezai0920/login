@@ -74,7 +74,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     &-text {
       display: block;
       position: relative;
-      color: #f2403c;
+      color: #f04;
       box-sizing: border-box;
 
       @include font(24px);
@@ -100,11 +100,10 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     margin: 0 auto;
     display: block;
 
-    @include height(88px, 1);
+    @include height(80px, 1);
     @include font(32px);
     @include radius(44px);
-    @include px2rem('margin-top', 58px);
-    @include px2rem('margin-bottom', 24px);
+    @include px2rem('margin-top', 56px);
     @include px2rem('width', 552px);
 
     &:focus {
@@ -130,12 +129,12 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     position: relative;
     justify-content: left;
 
-    @include border(1px, #ebebeb, bottom);
+    @include border(1px, #f0f0f8, bottom);
     @include paddingBottom(1px);
   }
 
   &-prefix {
-    @include height(92px);
+    @include height(108px);
     @include font(28px);
 
     appearance: none;
@@ -179,8 +178,8 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   &-input {
     @include height(28px, 28px);
     @include font(28px);
-    @include paddingBottom(32px);
-    @include paddingTop(32px);
+    @include paddingBottom(40px);
+    @include paddingTop(40px);
 
     border: none;
     width: 100%;
@@ -233,7 +232,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
         content: '';
         position: absolute;
         top: 50%;
-        background: #f0f0f0;
+        background: #f0f0f8;
         transform: translateY(-50%);
       }
     }
