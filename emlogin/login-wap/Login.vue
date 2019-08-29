@@ -261,6 +261,7 @@ export default {
     ajax({
       headers: this.headers,
       type: 'GET',
+      withCredentials: this.domain === 'evente.cn',
       action: this.countrycodeAction,
       onSuccess: (res) => {
         if (res.code === 10000) {
