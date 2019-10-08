@@ -338,6 +338,7 @@ export default {
       this.telFlg = resultTel;
       // 将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。
       document.activeElement.scrollIntoViewIfNeeded();
+      window.scroll(0, 0);
     },
     testSms() {
       return this.telFlg ? (`${this.smscode}`).length === this.smscodeLength : false;
@@ -350,6 +351,7 @@ export default {
       this.errorShow = !smsResult;
       // 将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。
       document.activeElement.scrollIntoViewIfNeeded();
+      window.scroll(0, 0);
     },
     // 发送验证码
     sendSmsCode() {
