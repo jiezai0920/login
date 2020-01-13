@@ -1,0 +1,328 @@
+$family_zh: 'PingFangSC-Regular', 'Microsoft YaHei', 'PingFangSC', 'Helvetica', sans-serif, 'Arial' !important;
+$family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', sans-serif, 'Arial' !important;
+
+@import "./mixin.scss";
+
+.login-wechat-wap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 21;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & * {
+    box-sizing: content-box;
+  }
+
+  &-popup {
+    @include px2rem('width', 640px);
+    @include px2rem('padding', 0 56px);
+    @include radius(16px);
+
+    box-sizing: border-box;
+    background: #fff;
+    position: relative;
+  }
+
+  &-login {
+    box-shadow: 0 0 12px 0 rgba(56, 56, 56, 0.08);
+    background: #fff;
+    top: 50%;
+    left: 50%;
+    border-radius: 4px;
+    box-sizing: content-box;
+    width: 17.67vw;
+    height: 17.67vw;
+    padding: 3.3vw;
+
+    &-img {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  &-title {
+    @include font(40px);
+    @include height(60px, 60px);
+    @include px2rem('padding-top', 88px);
+
+    font-family: 'PingFangSC-Regular';
+    color: #333;
+    letter-spacing: 0;
+    margin: 0;
+    font-weight: normal;
+  }
+
+  &-desc {
+    @include font(24px);
+    @include height(34px, 34px);
+    @include px2rem('padding-bottom', 30px);
+
+    font-family: 'PingFangSC-Regular';
+    color: #999;
+    letter-spacing: 0;
+    margin: 0;
+  }
+
+  &-close {
+    @include px2rem('width', 28px);
+    @include px2rem('height', 28px);
+    @include px2rem('padding', 32px 44px);
+
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  &-error {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include height(48px);
+
+    &-text {
+      display: block;
+      position: relative;
+      color: #f04;
+      box-sizing: border-box;
+
+      @include font(24px);
+      @include paddingLeft(8px);
+    }
+
+    &-img {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &-button {
+    color: #fff;
+    text-align: center;
+    border: none;
+    background: #1996f9;
+    box-shadow: 0 22px 17px -18px rgba(25, 150, 249, 0.9);
+    font-family: 'PingFangSC-Medium';
+    letter-spacing: 0;
+    box-sizing: border-box;
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+
+    @include height(80px, 1);
+    @include font(32px);
+    @include radius(44px);
+
+    &:focus {
+      outline: none;
+    }
+
+    &:active {
+      outline: none;
+    }
+
+    &-disabled {
+      background: #aaa;
+      pointer-events: none;
+      box-shadow: 0 22px 16px -18px rgba(0, 0, 0, 0.32);
+    }
+  }
+
+  &-box {
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    position: relative;
+    justify-content: left;
+
+    @include border(2px, #f0f0f8, bottom);
+    @include paddingBottom(1px);
+  }
+
+  &-prefix {
+    @include height(84px);
+    @include font(28px);
+
+    appearance: none;
+    border: none;
+    background: none;
+    position: relative;
+    color: #333;
+    padding-right: 16px;
+
+    &:focus {
+      outline: none;
+    }
+
+    &-wraper {
+      @include px2rem('margin-right', 32px);
+
+      position: relative;
+
+      &::before,
+      &::after {
+        width: 8px;
+        content: '';
+        height: 1px;
+        position: absolute;
+        top: 50%;
+        background: #dbdbdb;
+      }
+
+      &::before {
+        right: 5px;
+        transform: rotate(45deg);
+      }
+
+      &::after {
+        right: 0;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+  &-input {
+    @include height(28px, 28px);
+    @include font(28px);
+    @include paddingBottom(28px);
+    @include paddingTop(28px);
+
+    border: none;
+    width: 100%;
+    position: relative;
+
+    &::before {
+      @include height(36px);
+
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 1px;
+      background: #000;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-smscode {
+    @include font(28px);
+    @include width(140px);
+    @include radius(30px);
+    @include height(26px, 26px);
+    @include px2rem('left', 32px);
+
+    font-family: 'PingFangSC-Regular';
+    letter-spacing: 0;
+    position: absolute;
+    color: #1996f9;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &-disabled {
+      color: #999;
+    }
+
+    &-wraper {
+      @include width(244px);
+
+      position: relative;
+
+      &::before {
+        @include height(26px);
+        @include width(4px);
+        @include left(4px);
+
+        content: '';
+        position: absolute;
+        top: 50%;
+        background: #f0f0f8;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  // english start
+  &-english {
+    &-title {
+      @include px2rem('width', 574px);
+      @include font(40px);
+      @include paddingTop(96px);
+      @include paddingBottom(32px);
+
+      font-family: $family_us;
+      color: #333;
+      letter-spacing: 0;
+      line-height: 20px;
+      font-weight: normal;
+      margin: 0 auto;
+    }
+
+    &-input {
+      @extend .login-wechat-wap-input;
+
+      font-family: $family_us;
+    }
+
+    &-smscode {
+      @extend .login-wechat-wap-smscode;
+
+      font-family: $family_us;
+    }
+
+    &-button {
+      @extend .login-wechat-wap-button;
+
+      font-family: $family_us;
+
+      @include marginBottom(64px);
+    }
+
+    &-wraper {
+      @extend .login-wechat-wap-smscode-wraper;
+
+      width: 103px;
+    }
+  }
+  // english end
+
+  & input::-webkit-outer-spin-button,
+  & input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+  }
+
+  & input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  & input::-webkit-input-placeholder {
+    color: #999;
+    line-height: normal;
+
+    @include font(28px);
+  }
+
+  &-wechatbox {
+    @include marginTop(48px);
+    @include marginBottom(32px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-img {
+      @include width(80px);
+      @include height(80px);
+    }
+  }
+}

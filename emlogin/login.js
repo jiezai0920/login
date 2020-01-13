@@ -1,14 +1,17 @@
 // 组件
 import WLogin from './login/index';
 import WLoginWap from './login-wap/index';
+import WLoginWechat from './login-wechat/index';
 import WJiyan from './jiyan/index';
 
 import PcTem from './login/Login';
 import WapTem from './login-wap/Login';
+import WapWechat from './login-wechat/Login';
 
 const waterCpt = {
   WLogin,
   WLoginWap,
+  WLoginWechat,
   WJiyan,
 };
 
@@ -30,4 +33,5 @@ export default {
   install,
   PcTem,
   WapTem,
+  WapWechat,
 };

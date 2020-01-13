@@ -18,6 +18,7 @@ module.exports = {
       '/',
       '/login/zh-cn',
       '/login-wap/zh-cn',
+      '/login-wechat/zh-cn',
     ]
   }
 }
