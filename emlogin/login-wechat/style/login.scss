@@ -72,7 +72,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   &-close {
     @include px2rem('width', 28px);
     @include px2rem('height', 28px);
-    @include px2rem('padding', 32px 44px);
+    @include px2rem('padding', 32px);
 
     position: absolute;
     top: 0;
