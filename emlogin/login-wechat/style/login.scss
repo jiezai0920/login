@@ -20,8 +20,8 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-popup {
-    @include px2rem('width', 640px);
-    @include px2rem('padding', 0 56px);
+    @include px2rem('width', 592px);
+    @include px2rem('padding', 0 48px);
     @include radius(16px);
 
     box-sizing: border-box;
@@ -198,6 +198,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     border: none;
     width: 100%;
     position: relative;
+    flex: 1;
 
     &::before {
       @include height(36px);
@@ -217,10 +218,10 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
   &-smscode {
     @include font(28px);
-    @include width(140px);
+    @include width(160px);
     @include radius(30px);
     @include height(26px, 26px);
-    @include px2rem('left', 32px);
+    @include px2rem('left', 24px);
 
     font-family: 'PingFangSC-Regular';
     letter-spacing: 0;
@@ -234,7 +235,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     }
 
     &-wraper {
-      @include width(244px);
+      @include width(184px);
 
       position: relative;
 
