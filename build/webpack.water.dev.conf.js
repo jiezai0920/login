@@ -12,13 +12,13 @@ var webpackConfig = merge(baseWebpackConfig, {
   devtool: '#source-map',
   output: {
     // filename: utils.outname() + '.js',
-    filename: 'emlogin.js',
-    library: 'emlogin',
+    filename: utils.outname() + '.js',
+    library: utils.outname(),
   },
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../emlogin'),
+        from: path.resolve(__dirname, '../'+utils.outname()),
         to: '',
         ignore: ['.*', '*.md', '.vuepress/**/*', '*.test.*']
       }
