@@ -22,11 +22,20 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   &-popup {
     @include px2rem('width', 592px);
     @include px2rem('padding', 0 48px);
+    @include px2rem('min-height', 530px);
     @include radius(16px);
 
     box-sizing: border-box;
     background: #fff;
     position: relative;
+
+    &.popup2 {
+      @include px2rem('min-height', 618px);
+    }
+
+    &.popup3 {
+      @include px2rem('min-height', 707px);
+    }
   }
 
   &-login {
@@ -80,13 +89,16 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-error {
+    @include border(2px, #ffc7d6, all);
+    @include height(52px);
+    @include radius(4px);
+    @include paddingLeft(16px);
+
     width: 100%;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    @include height(48px);
+    background: #ffeff4;
 
     &-text {
       display: block;
@@ -102,6 +114,17 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
       width: 12px;
       height: 12px;
     }
+  }
+
+  &-forget {
+    @include font(24px);
+    @include marginTop(28px);
+    @include height(24px);
+
+    font-family: 'Helvetica';
+    color: #0297fe;
+    text-align: center;
+    line-height: 1;
   }
 
   &-button {
@@ -120,6 +143,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     @include height(80px, 1);
     @include font(32px);
     @include radius(44px);
+    @include marginTop(56px);
 
     &:focus {
       outline: none;
@@ -145,6 +169,16 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
     @include border(2px, #f0f0f8, bottom);
     @include paddingBottom(1px);
+
+    &-forget {
+      @include font(24px);
+
+      font-family: 'Helvetica';
+      color: #0297fe;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
   }
 
   &-prefix {
@@ -286,7 +320,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
       font-family: $family_us;
 
-      @include marginBottom(64px);
+      @include marginTop(56px);
     }
 
     &-wraper {

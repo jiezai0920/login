@@ -21,7 +21,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
   &-popup {
     @include px2rem('width', 670px);
-    @include px2rem('padding', 0 32px 14px);
+    @include px2rem('padding', 0 32px 32px);
     @include radius(16px);
 
     box-sizing: border-box;
@@ -70,7 +70,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     align-items: center;
 
     @include px2rem('height', 44px);
-    @include marginTop(24px);
+    @include marginTop(12px);
 
     &-text {
       display: block;
@@ -89,6 +89,16 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     }
   }
 
+  &-forget {
+    @include font(24px);
+    @include marginTop(24px);
+
+    font-family: 'Helvetica';
+    color: #0297fe;
+    text-align: right;
+    line-height: 1;
+  }
+
   &-button {
     color: #fff;
     text-align: center;
@@ -104,7 +114,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     @include height(80px, 1);
     @include font(32px);
     @include radius(44px);
-    @include px2rem('margin-top', 56px);
+    @include px2rem('margin-top', 32px);
     @include px2rem('width', 552px);
 
     &:focus {

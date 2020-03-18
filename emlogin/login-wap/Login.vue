@@ -39,14 +39,35 @@
       <div class="login-wap-box">
         <input class="login-wap-english-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
       </div>
-      <div class="login-wap-box">
+
+      <div v-if="showPasswordFalg">
+        <div v-if="!setPassword" class="login-wap-box">
+          <input class="login-wap-english-input" type="text" placeholder="Password" v-model="nowEnglishData.password" @blur="passwordBlur">
+        </div>
+        <div v-if="setPassword">
+          <div class="login-wap-box">
+            <input class="login-wap-english-input" type="text" placeholder="Create Password" v-model="nowEnglishData.createPassword" @blur="createpasswordBlur">
+          </div>
+          <div class="login-wap-box">
+            <input class="login-wap-english-input" type="text" placeholder="Confirm Password" v-model="nowEnglishData.confirmPassword" @blur="confirmpasswordBlur">
+          </div>
+        </div>
+      </div>
+      <div v-if="forgetPassword" class="login-wap-box">
         <input class="login-wap-english-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
         <div class="login-wap-english-wraper" @click="sendEnglishSmsCode">
           <span :class="['login-wap-english-smscode', {'login-wap-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
         </div>
       </div>
+      <div class="login-wap-forget">
+        <span v-if="!forgetPassword && !setPassword" @click="forgetPasswordClick">Forgot your password?</span>
+        <span v-if="forgetPassword && !setPassword" @click="returnPasswordClick">return</span>
+      </div>
+      <button v-if="!showPasswordFalg" :class="['login-wap-english-button', {'login-wap-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">Continue</button>
+      <button v-if="showPasswordFalg && !setPassword" :class="['login-wap-english-button', {'login-wap-button-disabled' : !submitEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+      <button v-if="showPasswordFalg && setPassword" :class="['login-wap-english-button', {'login-wap-button-disabled' : !confirmpasswordFlg}]" @click="loginEnglish">Create Account</button>
       <button :class="['login-wap-english-button', {'login-wap-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
-      <div class="login-wap-error">
+      <div v-if="errorShow" class="login-wap-error">
         <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wap-error-img">
         <span v-show="errorShow" class="login-wap-error-text">{{errorEnglishText}}</span>
       </div>
@@ -101,6 +122,9 @@ export default {
       goEnglishStatus: true,
       nowEnglishData: {
         email: '',
+        password: '',
+        createPassword: '',
+        confirmPassword: '',
       },
       sendEnglishData: {
         type: 'email',
@@ -121,6 +145,11 @@ export default {
         sms_code: '',
       },
       // 英文版 end
+      // new英文版
+      continueFalg: false,
+      setPassword: false, //是否设置密码
+      showPasswordFalg: false, //是否展示设置密码
+      forgetPassword: false, //忘记密码
     };
   },
   props: {
@@ -249,6 +278,13 @@ export default {
       return this.smsEnglishStatus;
     },
     // english end
+    submitEnglishOnFlg() {
+      return this.nowEnglishData.password;
+    },
+    confirmpasswordFlg() {
+      return !!this.nowEnglishData.createPassword &&
+        this.nowEnglishData.createPassword === this.nowEnglishData.confirmPassword;
+    },
   },
   mounted() {
     this.countNums = this.AllTimes;
@@ -568,6 +604,50 @@ export default {
       }
     },
     // 英文版 end
+    // new 英文版
+    continueFun() {
+      if (!this.loginEnglishOnFlg) {
+        this.showPasswordFalg = true;
+        this.setPassword = false;
+      }
+    },
+    testPassword() {
+      return {
+        resultPassword: this.nowEnglishData.password,
+        text: 'Please enter the password correctly',
+      };
+    },
+    passwordBlur() {
+      const {
+        resultPassword,
+        text,
+      } = this.testPassword();
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+      this.countEnglishStart = !resultPassword;
+    },
+    createpasswordBlur() {
+      const obj = {
+        resultPassword: this.nowEnglishData.createPassword,
+        text: 'Please enter the password',
+      }
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+    },
+    confirmpasswordBlur() {
+      const obj = {
+        resultPassword: this.nowEnglishData.confirmPassword,
+        text: 'The password is different twice',
+      }
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+    },
+    forgetPasswordClick() {
+      this.forgetPassword = true;
+    },
+    returnPasswordClick() {
+      this.forgetPassword = false;
+    },
   },
   watch: {
     value(val, oldVal) {

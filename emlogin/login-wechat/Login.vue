@@ -3,10 +3,14 @@
     <div class="login-wechat-wap-login" v-if="oauthType == 'login' && isLoginFail">
       <img class="login-wechat-wap-login-img" src="https://static2.evente.cn/static/img/loading201904171.gif" alt="">
     </div>
-    <div v-else class="login-wechat-wap-popup">
-      <div v-if="isChina">
+    <div v-else>
+      <div v-if="isChina" class="login-wechat-wap-popup popup2">
         <h3 class="login-wechat-wap-title">{{title}}</h3>
         <p class="login-wechat-wap-desc">{{desc}}</p>
+        <div v-show="errorShow" class="login-wechat-wap-error">
+          <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
+          <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorText}}</span>
+        </div>
         <div class="login-wechat-wap-close" @click="popupClose">
           <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
         </div>
@@ -28,35 +32,58 @@
             <span :class="['login-wechat-wap-smscode', {'login-wechat-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
           </div>
         </div>
-        <div class="login-wechat-wap-error">
-          <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
-          <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorText}}</span>
-        </div>
         <button :class="['login-wechat-wap-button', {'login-wechat-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
         <div class="login-wechat-wap-wechatbox">
           <img v-if="isWechat && !oauthType" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/9b/2a/d5/e9e0f3cdf63848a708b7285f92.jpg">
         </div>
       </div>
       <!-- 英文版 start -->
-      <div v-else>
+      <div v-else class="login-wechat-wap-popup" :class="{'popup2':showPasswordFalg || forgetPassword,'popup3':showPasswordFalg && setPassword}">
         <div class="login-wechat-wap-close" @click="popupClose">
           <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
         </div>
         <h3 class="login-wechat-wap-english-title">Ticket Buyer</h3>
+        <div v-show="errorShow" class="login-wechat-wap-error">
+          <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
+          <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorEnglishText}}</span>
+        </div>
         <div class="login-wechat-wap-box">
           <input class="login-wechat-wap-english-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
         </div>
-        <div class="login-wechat-wap-box">
+        <div v-if="showPasswordFalg">
+          <div v-if="!setPassword" class="login-wechat-wap-box">
+            <input class="login-wechat-wap-english-input" type="password" placeholder="Password" v-model="nowEnglishData.password" @blur="passwordBlur">
+            <div v-if="!forgetPassword && !setPassword && showPasswordFalg" class="login-wechat-wap-box-forget">
+              <span @click="forgetPasswordClick">Forgot Password</span>
+            </div>
+          </div>
+          <div v-if="setPassword">
+            <div class="login-wechat-wap-box">
+              <input class="login-wechat-wap-english-input" type="password" placeholder="Create Password" v-model="nowEnglishData.createPassword" @blur="createpasswordBlur">
+            </div>
+            <div class="login-wechat-wap-box">
+              <input class="login-wechat-wap-english-input" type="password" placeholder="Confirm Password" v-model="nowEnglishData.confirmPassword" @blur="confirmpasswordBlur">
+            </div>
+          </div>
+        </div>
+        <div v-if="forgetPassword" class="login-wechat-wap-box">
           <input class="login-wechat-wap-english-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
           <div class="login-wechat-wap-english-wraper" @click="sendEnglishSmsCode">
             <span :class="['login-wechat-wap-english-smscode', {'login-wechat-wap-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
           </div>
         </div>
-        <div class="login-wechat-wap-error">
-          <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
-          <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorEnglishText}}</span>
+        <div v-if="!showPasswordFalg">
+          <button v-if="!forgetPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">Continue</button>
+          <button v-if="forgetPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
         </div>
-        <button :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+        <div v-else>
+          <button v-if="!setPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !submitEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+          <button v-if="setPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !confirmpasswordFlg}]" @click="emailAccount">Create Account</button>
+        </div>
+
+        <div class="login-wechat-wap-forget">
+          <span v-if="forgetPassword && !setPassword && !showPasswordFalg" @click="returnPasswordClick">Return Password</span>
+        </div>
       </div>
       <!-- 英文版 end -->
     </div>
@@ -111,6 +138,9 @@ export default {
       goEnglishStatus: true,
       nowEnglishData: {
         email: '',
+        password: '',
+        createPassword: '',
+        confirmPassword: '',
       },
       sendEnglishData: {
         org_id: this.orgid,
@@ -135,6 +165,11 @@ export default {
       // 英文版 end
       isWechat: false,
       isLoginFail: true, // 是否登录成功
+      // new英文版
+      continueFalg: false,
+      setPassword: false, //是否设置密码
+      showPasswordFalg: false, //是否展示设置密码
+      forgetPassword: false, //忘记密码
     };
   },
   props: {
@@ -229,6 +264,13 @@ export default {
     oauthType: {//微信绑定类型 值
       type: String,
     },
+    //新版英文登录
+    loginConfirmAction: {
+      type: String,
+    },
+    loginRegisterAction: {
+      type: String,
+    },
   },
   computed: {
     loginOnFlg() {
@@ -266,6 +308,14 @@ export default {
       return this.smsEnglishStatus;
     },
     // english end
+    // new 英文登录
+    submitEnglishOnFlg() {
+      return this.nowEnglishData.password;
+    },
+    confirmpasswordFlg() {
+      return !!this.nowEnglishData.createPassword &&
+        this.nowEnglishData.createPassword === this.nowEnglishData.confirmPassword;
+    },
   },
   mounted() {
     this.countNums = this.AllTimes;
@@ -595,7 +645,19 @@ export default {
         this.loginEnglishText = 'Waiting...';
         this.loginEnglishData.key = this.nowEnglishData.email;
         this.loginEnglishData.oauth_key = this.oauthkey;
-        this.loginEnglishData.sms_code = this.smscode;
+        if (this.smscode) {
+          delete this.loginEnglishData.password;
+          this.loginEnglishData.sms_code = this.smscode;
+          this.loginEnglishData.validate_type = 'code';
+          this.loginEnglishData.type = 'email';
+        }
+        if (this.nowEnglishData.password) {
+          delete this.loginEnglishData.sms_code;
+          this.loginEnglishData.password = this.nowEnglishData.password;
+          this.loginEnglishData.type = 'email';
+          this.loginEnglishData.validate_type = 'password';
+        }
+
         //发送验证码
         ajax({
           headers: this.headers,
@@ -634,6 +696,119 @@ export default {
     //微信绑定
     wechatBind() {
       window.location.href = this.wechatUrl;
+    },
+    // new 英文版
+    continueFun() {
+      if (this.nowEnglishData.email) {
+        const userObj = {
+        	"org_id": this.orgid,
+        	"type": "email",
+        	"key": this.nowEnglishData.email,
+        }
+        ajax({
+          headers: this.headers,
+          type: 'GET',
+          action: `${this.loginConfirmAction}?org_id=${this.orgid}&type=email&key=${userObj.key}`,
+          onSuccess: (res) => {
+            if (res.code === 10000) {
+              console.log(res.data);
+              if (res.data.state === 'login') {
+                this.showPasswordFalg = true;
+                this.setPassword = false;
+              } else {
+                this.showPasswordFalg = true;
+                this.setPassword = true;
+              }
+            } else {
+              this.errorShow = true;
+              this.errorEnglishText = response.message;
+            }
+          },
+          onError: (err, response) => {
+            this.errorShow = true;
+            this.errorEnglishText = response.message;
+          },
+        });
+      }
+    },
+    //注册
+    emailAccount() {
+      if (this.confirmpasswordFlg) {
+        const userObj = {
+          "org_id": this.orgid,
+          "type": "email",
+          "key": this.nowEnglishData.email,
+          "password": this.nowEnglishData.createPassword,
+          "confirm_password": this.nowEnglishData.confirmPassword,
+        }
+        ajax({
+          headers: this.headers,
+          type: 'POST',
+          data: JSON.stringify(userObj),
+          action: this.loginRegisterAction,
+          onSuccess: (res) => {
+            if (res.code === 10000) {
+              this.errorShow = false;
+              this.errorChinaText = '';
+              logined(res, res.data.org_id, this, () => {
+                this.success(res);
+                this.loginEnglishText = this.loginEnglishDefault;
+                this.close(false);
+              });
+            } else {
+              this.canLogin = true;
+              this.loginEnglishText = this.loginEnglishDefault;
+              this.errorShow = true;
+              this.errorEnglishText = res.message;
+            }
+          },
+          onError: (err, response) => {
+            this.errorShow = true;
+            this.errorEnglishText = response.message;
+          },
+        });
+      }
+    },
+    testPassword() {
+      return {
+        resultPassword: this.nowEnglishData.password,
+        text: 'Please enter the password correctly',
+      };
+    },
+    passwordBlur() {
+      const {
+        resultPassword,
+        text,
+      } = this.testPassword();
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+      this.countEnglishStart = !resultPassword;
+    },
+    createpasswordBlur() {
+      const obj = {
+        resultPassword: this.nowEnglishData.createPassword,
+        text: 'Please enter the password',
+      }
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+    },
+    confirmpasswordBlur() {
+      const obj = {
+        resultPassword: this.nowEnglishData.confirmPassword,
+        text: 'The password is different twice',
+      }
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+    },
+    forgetPasswordClick() {
+      this.forgetPassword = true;
+      this.showPasswordFalg = false;
+      this.nowEnglishData.password = '';
+    },
+    returnPasswordClick() {
+      this.forgetPassword = false;
+      this.showPasswordFalg = true;
+      this.smscode = '';
     },
   },
   watch: {

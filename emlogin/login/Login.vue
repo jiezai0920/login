@@ -1,8 +1,12 @@
 <template>
   <div class="login" v-if="show">
-    <div class="login-popup" v-if="isChina">
+    <div class="login-popup popup2" v-if="isChina">
       <h3 class="login-title">{{title}}</h3>
       <p class="login-desc">成功短信将发送至该手机</p>
+      <div v-show="errorShow" class="login-error">
+        <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-error-img">
+        <span v-show="errorShow" class="login-error-text">{{errorChinaText}}</span>
+      </div>
       <div class="login-close" @click="popupClose">
         <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
       </div>
@@ -24,31 +28,53 @@
           <span :class="['login-smscode', {'login-smscode-disabled' : smsChinaStatus || sendChinaText !== countChinaEnd}]">{{sendChinaText}}</span>
         </div>
       </div>
-      <button :class="['login-button', {'login-button-disabled' : loginChinaOnFlg || loginChinaDefault !== loginChinaText}]" @click="loginChina">{{loginChinaText}}</button>
-      <div class="login-error">
-        <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-error-img">
-        <span v-show="errorShow" class="login-error-text">{{errorChinaText}}</span>
-      </div>
+      <button :class="['login-button', 'login-button-china', {'login-button-disabled' : loginChinaOnFlg || loginChinaDefault !== loginChinaText}]" @click="loginChina">{{loginChinaText}}</button>
     </div>
     <!-- 英文版 start -->
-    <div class="login-popup" v-else>
+    <div class="login-popup" v-else :class="{'popup2':showPasswordFalg || forgetPassword,'popup3':showPasswordFalg && setPassword}">
       <div class="login-close" @click="popupClose">
         <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
       </div>
       <h3 class="login-english-title">Ticket Buyer</h3>
+      <div v-if="errorShow" class="login-error">
+        <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-error-img">
+        <span v-show="errorShow" class="login-error-text">{{errorEnglishText}}</span>
+      </div>
       <div class="login-box">
         <input class="login-english-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
       </div>
-      <div class="login-box">
+      <div v-if="showPasswordFalg">
+        <div v-if="!setPassword" class="login-box">
+          <input class="login-english-input" type="password" placeholder="Password" v-model="nowEnglishData.password" @blur="passwordBlur">
+          <div v-if="!forgetPassword && !setPassword && showPasswordFalg" class="login-box-forget">
+            <span  @click="forgetPasswordClick">Forgot Password</span>
+          </div>
+        </div>
+        <div v-if="setPassword">
+          <div class="login-box">
+            <input class="login-english-input" type="password" placeholder="Create Password" v-model="nowEnglishData.createPassword" @blur="createpasswordBlur">
+          </div>
+          <div class="login-box">
+            <input class="login-english-input" type="password" placeholder="Confirm Password" v-model="nowEnglishData.confirmPassword" @blur="confirmpasswordBlur">
+          </div>
+        </div>
+      </div>
+      <div v-if="forgetPassword" class="login-box">
         <input class="login-english-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
         <div class="login-english-wraper" @click="sendEnglishSmsCode">
           <span :class="['login-english-smscode', {'login-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
         </div>
       </div>
-      <button :class="['login-english-button', {'login-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
-      <div class="login-error">
-        <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-error-img">
-        <span v-show="errorShow" class="login-error-text">{{errorEnglishText}}</span>
+      <div v-if="!showPasswordFalg">
+        <button v-if="!forgetPassword" :class="['login-english-button', {'login-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">Continue</button>
+        <button v-if="forgetPassword" :class="['login-english-button', {'login-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+      </div>
+      <div v-else>
+        <button v-if="!setPassword" :class="['login-english-button', {'login-button-disabled' : !submitEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+        <button v-if="setPassword" :class="['login-english-button', {'login-button-disabled' : !confirmpasswordFlg}]" @click="emailAccount">Create Account</button>
+      </div>
+      <div v-if="forgetPassword && !setPassword && !showPasswordFalg" class="login-forget">
+        <span  @click="returnPasswordClick">Return Password</span>
       </div>
     </div>
     <!-- 英文版 end -->
@@ -56,7 +82,7 @@
 </template>
 <script>
 import ajax from '../tools/ajax';
-import logined from '../tools/logined';
+import logined from '../tools/loginedwechat';
 
 export default {
   name: 'WLogin',
@@ -85,15 +111,13 @@ export default {
       },
       abroadDatas: [],
       sendChinaData: {
-        country_code: '',
-        mobile: '',
+        org_id: this.orgid,
+        type: '',
+        key: '',
         origin: 'c-login',
       },
       loginChinaData: {
         org_id: this.orgid,
-        code: '',
-        phone: '',
-        moudle_name: 'c-login',
         sms_code: '',
       },
       countryCode: {},
@@ -102,6 +126,9 @@ export default {
       goEnglishStatus: true,
       nowEnglishData: {
         email: '',
+        password: '',
+        createPassword: '',
+        confirmPassword: '',
       },
       sendEnglishData: {
         type: 'email',
@@ -117,11 +144,13 @@ export default {
       countEnglishStart: true,
       loginEnglishData: {
         org_id: this.orgid,
-        email: '',
-        moudle_name: 'c-login',
-        sms_code: '',
       },
       // 英文版 end
+      // new英文版
+      continueFalg: false,
+      setPassword: false, //是否设置密码
+      showPasswordFalg: false, //是否展示设置密码
+      forgetPassword: false, //忘记密码
     };
   },
   props: {
@@ -171,6 +200,12 @@ export default {
     loginEnglishAction: {
       type: String,
     },
+    loginConfirmAction: {
+      type: String,
+    },
+    loginRegisterAction: {
+      type: String,
+    },
     title: {
       type: String,
       default: '请完善手机信息',
@@ -212,6 +247,13 @@ export default {
       return this.smsEnglishStatus;
     },
     // english end
+    submitEnglishOnFlg() {
+      return this.nowEnglishData.password;
+    },
+    confirmpasswordFlg() {
+      return !!this.nowEnglishData.createPassword &&
+        this.nowEnglishData.createPassword === this.nowEnglishData.confirmPassword;
+    },
   },
   mounted() {
     this.countNums = this.AllTimes;
@@ -323,8 +365,8 @@ export default {
       if (this.telFlg && this.goChinaStatus) {
         this.goChinaStatus = false;
         this.sendChinaText = '获取中';
-        this.sendChinaData.country_code = this.nowData.prefix;
-        this.sendChinaData.mobile = this.nowData.tel;
+        this.sendChinaData.type = 'sms';
+        this.sendChinaData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
         //发送验证码
         ajax({
           headers: this.headers,
@@ -380,9 +422,10 @@ export default {
       if (this.telFlg && this.canLogin) {
         this.canLogin = false;
         this.loginChinaText = '正在提交...';
-        this.loginChinaData.code = this.nowData.prefix;
-        this.loginChinaData.phone = this.nowData.tel;
         this.loginChinaData.sms_code = this.smscode;
+        this.loginChinaData.validate_type = 'code';
+        this.loginChinaData.type = 'phone';
+        this.loginChinaData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
         //发送验证码
         ajax({
           headers: this.headers,
@@ -496,8 +539,19 @@ export default {
       if (this.emailEnglishFlg && this.canLogin) {
         this.canLogin = false;
         this.loginEnglishText = 'Waiting...';
-        this.loginEnglishData.email = this.nowEnglishData.email;
-        this.loginEnglishData.sms_code = this.smscode;
+        this.loginEnglishData.key = this.nowEnglishData.email;
+        if (this.smscode) {
+          delete this.loginEnglishData.password;
+          this.loginEnglishData.sms_code = this.smscode;
+          this.loginEnglishData.validate_type = 'code';
+          this.loginEnglishData.type = 'email';
+        }
+        if (this.nowEnglishData.password) {
+          delete this.loginEnglishData.sms_code;
+          this.loginEnglishData.password = this.nowEnglishData.password;
+          this.loginEnglishData.type = 'email';
+          this.loginEnglishData.validate_type = 'password';
+        }
         //发送验证码
         ajax({
           headers: this.headers,
@@ -533,6 +587,126 @@ export default {
       }
     },
     // 英文版 end
+    // new 英文版
+    continueFun() {
+      this.showPasswordFalg = true;
+      this.setPassword = true;
+      if (this.nowEnglishData.email) {
+        const userObj = {
+        	"org_id": this.orgid,
+        	"type": "email",
+        	"key": this.nowEnglishData.email,
+        }
+        ajax({
+          headers: this.headers,
+          type: 'GET',
+          action: `${this.loginConfirmAction}?org_id=${this.orgid}&type=email&key=${userObj.key}`,
+          onSuccess: (res) => {
+            if (res.code === 10000) {
+              if (res.data.state === 'login') {
+                this.showPasswordFalg = true;
+                this.setPassword = false;
+              } else {
+                this.showPasswordFalg = true;
+                this.setPassword = true;
+              }
+            } else {
+              this.errorShow = true;
+              this.errorEnglishText = response.message;
+            }
+          },
+          onError: (err, response) => {
+            this.errorShow = true;
+            this.errorEnglishText = response.message;
+          },
+        });
+      }
+    },
+    //注册
+    emailAccount() {
+      if (this.confirmpasswordFlg) {
+        const userObj = {
+          "org_id": this.orgid,
+          "type": "email",
+          "key": this.nowEnglishData.email,
+          "password": this.nowEnglishData.createPassword,
+          "confirm_password": this.nowEnglishData.confirmPassword,
+        }
+        ajax({
+          headers: this.headers,
+          type: 'POST',
+          data: JSON.stringify(userObj),
+          action: this.loginRegisterAction,
+          onSuccess: (res) => {
+            if (res.code === 10000) {
+              this.errorShow = false;
+              this.errorChinaText = '';
+              logined(res, res.data.org_id, this, () => {
+                this.success(res);
+                this.loginEnglishText = this.loginEnglishDefault;
+                this.close(false);
+              });
+            } else {
+              this.canLogin = true;
+              this.loginEnglishText = this.loginEnglishDefault;
+              this.errorShow = true;
+              this.errorEnglishText = res.message;
+            }
+          },
+          onError: (err, response) => {
+            this.errorShow = true;
+            this.errorEnglishText = response.message;
+          },
+        });
+      }
+    },
+    testPassword() {
+      return {
+        resultPassword: this.nowEnglishData.password,
+        text: 'Please enter the password correctly',
+      };
+    },
+    passwordBlur() {
+      const {
+        resultPassword,
+        text,
+      } = this.testPassword();
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+      this.countEnglishStart = !resultPassword;
+    },
+    createpasswordBlur() {
+      const {
+        resultPassword,
+        text,
+      } = {
+        resultPassword: this.nowEnglishData.createPassword,
+        text: 'Please enter the password',
+      }
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+    },
+    confirmpasswordBlur() {
+      const {
+        resultPassword,
+        text,
+      } = {
+        resultPassword: this.nowEnglishData.confirmPassword,
+        text: 'The password is different twice',
+      }
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+    },
+    forgetPasswordClick() {
+      this.forgetPassword = true;
+      this.showPasswordFalg = false;
+      this.nowEnglishData.password = '';
+    },
+    returnPasswordClick() {
+      this.forgetPassword = false;
+      this.showPasswordFalg = true;
+      this.smscode = '';
+    },
   },
   watch: {
     value(val, oldVal) {
