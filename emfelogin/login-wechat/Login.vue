@@ -42,47 +42,47 @@
         <div class="login-wechat-wap-close" @click="popupClose">
           <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
         </div>
-        <h3 class="login-wechat-wap-english-title">Ticket Buyer</h3>
+        <h3 class="login-wechat-wap-english-title">{{resultJson['login.popup.title']}}</h3>
         <div v-show="errorShow" class="login-wechat-wap-error">
           <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
           <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorEnglishText}}</span>
         </div>
         <div class="login-wechat-wap-box">
-          <input class="login-wechat-wap-english-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
+          <input class="login-wechat-wap-english-input" type="email" :placeholder="resultJson['login.popup.input.email']" v-model="nowEnglishData.email" @blur="emailBlur">
         </div>
         <div v-if="showPasswordFalg">
           <div v-if="!setPassword" class="login-wechat-wap-box">
-            <input class="login-wechat-wap-english-input" type="password" placeholder="Password" v-model="nowEnglishData.password" @blur="passwordBlur">
+            <input class="login-wechat-wap-english-input" type="password" :placeholder="resultJson['login.popup.input.password']" v-model="nowEnglishData.password" @blur="passwordBlur">
             <div v-if="!forgetPassword && !setPassword && showPasswordFalg" class="login-wechat-wap-box-forget">
-              <span @click="forgetPasswordClick">Forgot Password</span>
+              <span @click="forgetPasswordClick">{{resultJson['login.popup.btn.forget_pwd']}}</span>
             </div>
           </div>
           <div v-if="setPassword">
             <div class="login-wechat-wap-box">
-              <input class="login-wechat-wap-english-input" type="password" placeholder="Create Password" v-model="nowEnglishData.createPassword" @blur="createpasswordBlur">
+              <input class="login-wechat-wap-english-input" type="password" :placeholder="resultJson['login.popup.input.create_password']" v-model="nowEnglishData.createPassword" @blur="createpasswordBlur">
             </div>
             <div class="login-wechat-wap-box">
-              <input class="login-wechat-wap-english-input" type="password" placeholder="Confirm Password" v-model="nowEnglishData.confirmPassword" @blur="confirmpasswordBlur">
+              <input class="login-wechat-wap-english-input" type="password" :placeholder="resultJson['login.popup.input.confirm_password']" v-model="nowEnglishData.confirmPassword" @blur="confirmpasswordBlur">
             </div>
           </div>
         </div>
         <div v-if="forgetPassword" class="login-wechat-wap-box">
-          <input class="login-wechat-wap-english-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
+          <input class="login-wechat-wap-english-input" type="tel" :maxlength="smscodeLength" :placeholder="resultJson['login.popup.input.code']" v-model="smscode">
           <div class="login-wechat-wap-english-wraper" @click="sendEnglishSmsCode">
             <span :class="['login-wechat-wap-english-smscode', {'login-wechat-wap-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
           </div>
         </div>
         <div v-if="!showPasswordFalg">
-          <button v-if="!forgetPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">Continue</button>
+          <button v-if="!forgetPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">{{resultJson['login.popup.btn.continue']}}</button>
           <button v-if="forgetPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
         </div>
         <div v-else>
           <button v-if="!setPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !submitEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
-          <button v-if="setPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !confirmpasswordFlg}]" @click="emailAccount">Create Account</button>
+          <button v-if="setPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !confirmpasswordFlg}]" @click="emailAccount">{{resultJson['login.popup.btn.create_account']}}</button>
         </div>
 
         <div class="login-wechat-wap-forget">
-          <span v-if="forgetPassword && !setPassword && !showPasswordFalg" @click="returnPasswordClick">Return Password</span>
+          <span v-if="forgetPassword && !setPassword && !showPasswordFalg" @click="returnPasswordClick">{{resultJson['login.popup.btn.return']}}</span>
         </div>
       </div>
       <!-- 英文版 end -->
@@ -271,6 +271,7 @@ export default {
     loginRegisterAction: {
       type: String,
     },
+    resultJson: Object,
   },
   computed: {
     loginOnFlg() {
@@ -570,10 +571,11 @@ export default {
       /* eslint-disable */
       //Email
       const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      const text = this.nowEnglishData.email ? this.resultJson['login.popup.tips.email_invalid'] : this.resultJson['login.popup.input.email'];
       /* eslint-disable */
       return {
         resultEmail: emailPattern.test(this.nowEnglishData.email),
-        text: 'Check your email',
+        text,
       };
     },
     emailBlur() {
@@ -772,7 +774,7 @@ export default {
     testPassword() {
       return {
         resultPassword: this.nowEnglishData.password,
-        text: 'Please enter the password correctly',
+        text: this.resultJson['login.popup.tips.password_invalid'],
       };
     },
     passwordBlur() {
@@ -787,7 +789,7 @@ export default {
     createpasswordBlur() {
       const obj = {
         resultPassword: this.nowEnglishData.createPassword,
-        text: 'Please enter the password',
+        text: this.resultJson['login.popup.tips.password_invalid'],
       }
       this.errorShow = !resultPassword;
       this.errorEnglishText = text;
@@ -795,7 +797,7 @@ export default {
     confirmpasswordBlur() {
       const obj = {
         resultPassword: this.nowEnglishData.confirmPassword,
-        text: 'The password is different twice',
+        text: this.nowEnglishData.createPassword ? this.resultJson['login.popup.tips.password_not_consistent'] : this.resultJson['login.popup.tips.password_invalid'],
       }
       this.errorShow = !resultPassword;
       this.errorEnglishText = text;
