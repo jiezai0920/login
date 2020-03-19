@@ -373,6 +373,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.sendChinaData),
+          withCredentials: this.domain === 'evente.cn',
           action: this.sendAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -432,6 +433,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.loginChinaData),
+          withCredentials: this.domain === 'evente.cn',
           action: this.loginAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -496,6 +498,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.sendEnglishData),
+          withCredentials: this.domain === 'evente.cn',
           action: this.sendEnglishAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -559,6 +562,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.loginEnglishData),
+          withCredentials: this.domain === 'evente.cn',
           action: this.loginEnglishAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -602,6 +606,7 @@ export default {
         ajax({
           headers: this.headers,
           type: 'GET',
+          withCredentials: this.domain === 'evente.cn',
           action: `${this.loginConfirmAction}?org_id=${this.orgid}&type=email&key=${userObj.key}`,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -639,6 +644,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(userObj),
           action: this.loginRegisterAction,
+          withCredentials: this.domain === 'evente.cn',
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;

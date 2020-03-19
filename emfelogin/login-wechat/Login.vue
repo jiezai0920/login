@@ -338,6 +338,7 @@ export default {
         type: 'POST',
         data: JSON.stringify(loginData),
         action: this.loginAction,
+        withCredentials: this.domain === 'evente.cn',
         onSuccess: (res) => {
           if (res.code === 10000) {
             this.errorShow = false;
@@ -476,6 +477,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.sendData),
+          withCredentials: this.domain === 'evente.cn',
           action: this.sendAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -537,6 +539,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(this.loginData),
           action: this.loginAction,
+          withCredentials: this.domain === 'evente.cn',
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
@@ -601,6 +604,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(this.sendEnglishData),
           action: this.sendAction,
+          withCredentials: this.domain === 'evente.cn',
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
@@ -666,6 +670,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(this.loginEnglishData),
           action: this.loginAction,
+          withCredentials: this.domain === 'evente.cn',
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
@@ -710,6 +715,7 @@ export default {
         ajax({
           headers: this.headers,
           type: 'GET',
+          withCredentials: this.domain === 'evente.cn',
           action: `${this.loginConfirmAction}?org_id=${this.orgid}&type=email&key=${userObj.key}`,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -747,6 +753,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(userObj),
+          withCredentials: this.domain === 'evente.cn',
           action: this.loginRegisterAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
