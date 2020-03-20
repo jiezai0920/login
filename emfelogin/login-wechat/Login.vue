@@ -472,7 +472,7 @@ export default {
         this.sendText = this.sendingText;
         this.sendData.type = 'sms';
         this.sendData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
-        this.sendData.or_id = this.orgid;
+        this.sendData.org_id = this.orgid;
 
         //发送验证码
         ajax({
