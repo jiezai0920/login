@@ -158,7 +158,7 @@ export default {
       loginEnglishData: {
         key: '',
         oauth_key: '',
-        org_id: this.orgid,
+        org_id: '',
         type: 'email',
         sms_code: '',
       },
@@ -651,6 +651,7 @@ export default {
         this.loginEnglishText = 'Waiting...';
         this.loginEnglishData.key = this.nowEnglishData.email;
         this.loginEnglishData.oauth_key = this.oauthkey;
+        this.loginEnglishData.org_id = this.orgid;
         if (this.smscode) {
           delete this.loginEnglishData.password;
           this.loginEnglishData.sms_code = this.smscode;
