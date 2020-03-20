@@ -120,13 +120,13 @@ export default {
       },
       abroadDatas: [],
       sendData: {
-        org_id: this.orgid,
+        org_id: '',
         type: '',
         key: '',
         origin: 'c-login',
       },
       loginData: {
-        org_id: this.orgid,
+        org_id: '',
         sms_code: '',
         key: '',
         type: '',
@@ -143,7 +143,7 @@ export default {
         confirmPassword: '',
       },
       sendEnglishData: {
-        org_id: this.orgid,
+        org_id: '',
         type: 'email',
         key: '',
         origin: 'c-login',
@@ -472,6 +472,8 @@ export default {
         this.sendText = this.sendingText;
         this.sendData.type = 'sms';
         this.sendData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
+        this.sendData.or_id = this.orgid;
+
         //发送验证码
         ajax({
           headers: this.headers,
@@ -532,6 +534,7 @@ export default {
         this.loginData.sms_code = this.smscode;
         this.loginData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
         this.loginData.oauth_key = this.oauthkey;
+        this.loginData.org_id = this.orgid;
 
         //发送验证码
         ajax({
@@ -827,9 +830,6 @@ export default {
         this.nowData = val;
         this.telBlur();
       }
-    },
-    orgid(val) {
-      this.loginData.org_id = val;
     },
   },
 };

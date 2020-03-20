@@ -111,13 +111,13 @@ export default {
       },
       abroadDatas: [],
       sendChinaData: {
-        org_id: this.orgid,
+        org_id: '',
         type: '',
         key: '',
         origin: 'c-login',
       },
       loginChinaData: {
-        org_id: this.orgid,
+        org_id: '',
         sms_code: '',
       },
       countryCode: {},
@@ -143,7 +143,7 @@ export default {
       emailEnglishFlg: false,
       countEnglishStart: true,
       loginEnglishData: {
-        org_id: this.orgid,
+        org_id: '',
       },
       // 英文版 end
       // new英文版
@@ -368,6 +368,7 @@ export default {
         this.sendChinaText = '获取中';
         this.sendChinaData.type = 'sms';
         this.sendChinaData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
+        this.sendChinaData.org_id = this.orgid;
         //发送验证码
         ajax({
           headers: this.headers,
@@ -428,6 +429,7 @@ export default {
         this.loginChinaData.validate_type = 'code';
         this.loginChinaData.type = 'phone';
         this.loginChinaData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
+        this.loginChinaData.org_id = this.orgid;
         //发送验证码
         ajax({
           headers: this.headers,
@@ -545,6 +547,7 @@ export default {
         this.canLogin = false;
         this.loginEnglishText = 'Waiting...';
         this.loginEnglishData.key = this.nowEnglishData.email;
+        this.loginEnglishData.org_id = this.orgid;
         if (this.smscode) {
           delete this.loginEnglishData.password;
           this.loginEnglishData.sms_code = this.smscode;
@@ -724,10 +727,6 @@ export default {
           this.telBlur();
         }
       }
-    },
-    orgid(val) {
-      this.loginChinaData.org_id = val;
-      this.loginEnglishData.org_id = val;
     },
   },
 };
