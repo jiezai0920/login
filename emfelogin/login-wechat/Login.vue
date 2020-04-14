@@ -6,7 +6,7 @@
     <div v-else>
       <div v-if="isChina" class="login-wechat-wap-popup popup2">
         <h3 class="login-wechat-wap-title">{{title}}</h3>
-        <p class="login-wechat-wap-desc">{{desc}}</p>
+        <p class="login-wechat-wap-desc" v-html="desc"></p>
         <div v-show="errorShow" class="login-wechat-wap-error">
           <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
           <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorText}}</span>

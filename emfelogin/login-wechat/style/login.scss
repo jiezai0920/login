@@ -69,13 +69,13 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
   &-desc {
     @include font(24px);
-    @include height(34px, 34px);
     @include px2rem('padding-bottom', 30px);
 
     font-family: 'PingFangSC-Regular';
     color: #999;
     letter-spacing: 0;
     margin: 0;
+    line-height: 1.5;
   }
 
   &-close {
