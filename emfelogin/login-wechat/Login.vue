@@ -34,7 +34,7 @@
         </div>
         <button :class="['login-wechat-wap-button', {'login-wechat-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
         <div class="login-wechat-wap-wechatbox">
-          <img  @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/9b/2a/d5/e9e0f3cdf63848a708b7285f92.jpg">
+          <img v-if="isWechat && !oauthType" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/9b/2a/d5/e9e0f3cdf63848a708b7285f92.jpg">
         </div>
       </div>
       <!-- 英文版 start -->
