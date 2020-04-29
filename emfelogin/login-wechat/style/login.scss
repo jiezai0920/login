@@ -22,11 +22,11 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   &-popup {
     @include px2rem('width', 592px);
     @include px2rem('padding', 0 48px);
-    @include px2rem('min-height', 530px);
     @include radius(16px);
 
     box-sizing: border-box;
     background: #fff;
+    overflow: hidden;
     position: relative;
 
     &.popup2 {
