@@ -1,6 +1,6 @@
 {
   "name": "emfelogin",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "em 登录弹框业务组件",
   "author": "李梦龙 <649076408@qq.com>",
   "main": "dist/emfelogin.js",
