@@ -6,14 +6,14 @@
 
 <div class="demo-box">
   <button type="button" name="button" @click="englishStatus = true">登录</button>
-  <w-login-wechat :domain="domain" :value="value1" :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction"  lang="zzz"></w-login-wechat>
+  <w-login-wechat :domain="domain" :value="value1" :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction" :resultJson="resultJson"  lang="zzz"></w-login-wechat>
 </div>
 
 
 ``` vue
 <div class="demo-box">
   <button type="button" name="button" @click="englishStatus = true">登录</button>
-  <w-login-wechat :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"  :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction"  lang="zzz"></w-login-wechat>
+  <w-login-wechat :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"  :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction" :resultJson="resultJson"  lang="zzz"></w-login-wechat>
 </div>
 ```
 
@@ -21,18 +21,19 @@
 
 <div class="demo-box">
   <button type="button" name="button" @click="chinaStatus = true">登录</button>
-  <w-login-wechat :oauthType="oauthType" :value="value1" :show="chinaStatus" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wechat>
+  <w-login-wechat :value="value1" :show="chinaStatus" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :resultJson="resultJson" :sendAction="sendAction" :loginAction="loginAction"></w-login-wechat>
 </div>
 
 ``` vue
 <div class="demo-box">
   <button type="button" name="button" @click="chinaStatus = true">登录</button>
-  <w-login-wechat :oauthType="oauthType" :show="chinaStatus" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login-wechat>
+  <w-login-wechat :show="chinaStatus" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :resultJson="resultJson" :sendAction="sendAction" :loginAction="loginAction"></w-login-wechat>
 </div>
 ```
 
 ``` js
 import WLoginWap from './index';
+import resultJson from '../tools/resultJson';
 
 export default {
   data() {
@@ -46,6 +47,7 @@ export default {
       loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
       sendEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
       loginEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
+      resultJson,
     }
   },
   components: {
@@ -103,6 +105,7 @@ export default {
 
 <script>
 import WLoginWechat from './index';
+import resultJson from '../tools/resultJson';
 
 export default {
   data() {
@@ -118,6 +121,7 @@ export default {
       sendEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
       loginEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
       oauthType: 'login',
+      resultJson,
     }
   },
   components: {

@@ -5,14 +5,14 @@
 
 <div class="demo-box">
   <button type="button" name="button" @click="englishStatus = true">登录</button>
-  <w-login :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :sendEnglishAction="sendEnglishAction" :loginEnglishAction="loginEnglishAction" lang="zzz"></w-login>
+  <w-login :show="englishStatus" :close="englishClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :sendEnglishAction="sendEnglishAction" :resultJson="resultJson" :loginEnglishAction="loginEnglishAction" lang="zzz"></w-login>
 </div>
 
 ## 中文模式
 
 <div class="demo-box">
   <button type="button" name="button" @click="chinaStatus = true">登录</button>
-  <w-login :show="chinaStatus" :value="value1" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction"></w-login>
+  <w-login :show="chinaStatus" :value="value1" :close="chinaClose" :success="success" orgid="100253" :countrycodeAction="countrycodeAction" :sendAction="sendAction" :loginAction="loginAction" :resultJson="resultJson"></w-login>
 </div>
 
 ## 如何使用
@@ -40,6 +40,7 @@
 
 <script>
 import WLogin from './index';
+import resultJson from '../tools/resultJson';
 
 export default {
   data() {
@@ -52,6 +53,7 @@ export default {
       loginAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
       sendEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/smssend',
       loginEnglishAction: 'https://www.easy-mock.com/mock/5ab386ecca15e11ded65b593/chinese/login',
+      resultJson
     }
   },
   components: {

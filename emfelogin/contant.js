@@ -8,4 +8,5 @@ export default {
   EVENT_USER_ORGID: 'userOrgID',
   EVENT_USER_LOGO: 'orgLogo',
   EVENT_USER_UID: 'userUid',
+  EVENT_EMTOKEN: 'EMTOKEN',
 };

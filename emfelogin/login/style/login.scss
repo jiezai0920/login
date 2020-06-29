@@ -161,6 +161,21 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
       align-items: center;
       justify-content: flex-end;
     }
+
+    &-wechatbox {
+      margin: 24px 0 16px;
+      display: flex;
+      justify-content: center;
+
+      &-img {
+        width: 40px;
+        margin-right: 16px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   &-prefix {

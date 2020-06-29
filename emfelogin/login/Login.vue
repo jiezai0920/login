@@ -1,6 +1,6 @@
 <template>
   <div class="login" v-if="show">
-    <div class="login-popup popup2" v-if="isChina">
+    <div class="login-popup popup2" v-if="loginType === 'phone'">
       <h3 class="login-title">{{title}}</h3>
       <p class="login-desc">成功短信将发送至该手机</p>
       <div v-show="errorShow" class="login-error">
@@ -29,9 +29,15 @@
         </div>
       </div>
       <button :class="['login-button', 'login-button-china', {'login-button-disabled' : loginChinaOnFlg || loginChinaDefault !== loginChinaText}]" @click="loginChina">{{loginChinaText}}</button>
+
+      <div class="login-box-wechatbox">
+         <!-- v-if="isWechat && !oauthType" -->
+        <img @click="wechatBind" class="login-box-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
+        <img @click="loginTypeClick('email')" class="login-box-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
+      </div>
     </div>
     <!-- 英文版 start -->
-    <div class="login-popup" v-else :class="{'popup2':showPasswordFalg || forgetPassword,'popup3':showPasswordFalg && setPassword}">
+    <div class="login-popup" v-if="loginType === 'email'" :class="{'popup2':showPasswordFalg || forgetPassword,'popup3':showPasswordFalg && setPassword}">
       <div class="login-close" @click="popupClose">
         <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
       </div>
@@ -65,16 +71,24 @@
           <span :class="['login-english-smscode', {'login-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
         </div>
       </div>
+      <div v-if="forgetPassword" class="login-wechat-wap-box">
+        <input class="login-english-input" type="password" placeholder="设置新密码" v-model="setnewpassword">
+      </div>
       <div v-if="!showPasswordFalg">
         <button v-if="!forgetPassword" :class="['login-english-button', {'login-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">{{resultJson['login.popup.btn.continue']}}</button>
-        <button v-if="forgetPassword" :class="['login-english-button', {'login-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+        <button v-if="forgetPassword" :class="['login-english-button', {'login-button-disabled' : !confirmsetpasswordFlg}]" @click="emailSetAccount">{{loginEnglishText}}</button>
       </div>
       <div v-else>
         <button v-if="!setPassword" :class="['login-english-button', {'login-button-disabled' : !submitEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
         <button v-if="setPassword" :class="['login-english-button', {'login-button-disabled' : !confirmpasswordFlg}]" @click="emailAccount">{{resultJson['login.popup.btn.create_account']}}</button>
       </div>
       <div v-if="forgetPassword && !setPassword && !showPasswordFalg" class="login-forget">
-        <span  @click="returnPasswordClick">{{resultJson['login.popup.btn.return']}}</span>
+        <span @click="returnPasswordClick">{{resultJson['login.popup.btn.return']}}</span>
+      </div>
+      <div class="login-box-wechatbox">
+         <!-- v-if="isWechat && !oauthType" -->
+        <img @click="wechatBind" class="login-box-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
+        <img @click="loginTypeClick('phone')" class="login-box-wechatbox-img" src="https://2img.evente.cn/e0/f4/12/86c89d21cdf38c7f55bdee9acd.jpg">
       </div>
     </div>
     <!-- 英文版 end -->
@@ -83,6 +97,7 @@
 <script>
 import ajax from '../tools/ajax';
 import logined from '../tools/loginedwechat';
+import CONSTANT from '../contant';
 
 export default {
   name: 'WLogin',
@@ -118,7 +133,11 @@ export default {
       },
       loginChinaData: {
         org_id: '',
-        sms_code: '',
+        code: '',
+        verify_code: '',
+        phone: '',
+        mode: '',
+        token: '',
       },
       countryCode: {},
       canLogin: true,
@@ -151,6 +170,9 @@ export default {
       setPassword: false, //是否设置密码
       showPasswordFalg: false, //是否展示设置密码
       forgetPassword: false, //忘记密码
+
+      loginType: 'phone',
+      setnewpassword: '',
     };
   },
   props: {
@@ -211,11 +233,29 @@ export default {
       default: '请完善手机信息',
     },
     resultJson: Object,
+
+
+    autologinAction: {
+      type: String,
+    },
+    //微信绑定
+    wechatUrl: {
+      type: String,
+    },
+    oauthkey: { //微信绑定key 值
+      type: String,
+    },
+    oauthType: {//微信绑定类型 值
+      type: String,
+    },
+    wechatLoginAction: {
+      type: String,
+    },
+    bindWechatAction: {
+      type: String,
+    },
   },
   computed: {
-    isChina() {
-      return this.lang === 'zh_CN';
-    },
     loginChinaOnFlg() {
       const {
         resultTel,
@@ -255,6 +295,9 @@ export default {
       return !!this.nowEnglishData.createPassword &&
         this.nowEnglishData.createPassword === this.nowEnglishData.confirmPassword;
     },
+    confirmsetpasswordFlg() {
+      return !!(this.setnewpassword && this.smscode && this.smscode.length === 6);
+    },
   },
   mounted() {
     this.countNums = this.AllTimes;
@@ -293,6 +336,35 @@ export default {
         this.errorChinaText = response.message;
       },
     });
+    if (this.oauthType === 'login') {
+      const loginData = {
+        token: decodeURIComponent(decodeURIComponent(this.oauthkey)),
+      };
+      ajax({
+        headers: this.headers,
+        type: 'POST',
+        data: JSON.stringify(loginData),
+        action: this.wechatLoginAction,
+        withCredentials: this.domain === 'evente.cn',
+        onSuccess: (res) => {
+          if (res.code === 10000) {
+            const { data } = res;
+            window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
+            this.autologin();
+          } else {
+            this.errorShow = true;
+            this.errorText = res.message;
+          }
+        },
+        onError: (err, response) => {
+          this.isLoginFail = false;
+          this.canLogin = true;
+          this.loginText = this.btnText;
+          this.errorShow = true;
+          this.errorText = response.message;
+        },
+      });
+    }
   },
   methods: {
     reset() {
@@ -420,16 +492,67 @@ export default {
       this.countChinaStart = false;
       this.goChinaStatus = true;
     },
-    // 登录
-    loginChina() {
+    bindWechat() {
       if (this.telFlg && this.canLogin) {
         this.canLogin = false;
         this.loginChinaText = '正在提交...';
-        this.loginChinaData.sms_code = this.smscode;
-        this.loginChinaData.validate_type = 'code';
-        this.loginChinaData.type = 'phone';
-        this.loginChinaData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
+
+        this.loginChinaData.mode = this.loginType;
+        this.loginChinaData.verify_code = this.smscode;
+        this.loginChinaData.phone = this.nowData.tel;
+        this.loginChinaData.code = this.nowData.prefix;
         this.loginChinaData.org_id = this.orgid;
+        this.loginChinaData.token = decodeURIComponent(decodeURIComponent(this.oauthkey));
+
+        //发送验证码
+        ajax({
+          headers: this.headers,
+          type: 'POST',
+          data: JSON.stringify(this.loginChinaData),
+          withCredentials: this.domain === 'evente.cn',
+          action: this.bindWechatAction,
+          onSuccess: (res) => {
+            if (res.code === 10000) {
+              this.errorShow = false;
+              this.errorChinaText = '';
+              const { data } = res;
+              window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
+              this.autologin();
+            } else {
+              this.canLogin = true;
+              this.loginChinaText = this.loginChinaDefault;
+              this.errorShow = true;
+              this.errorChinaText = res.message;
+            }
+          },
+          onError: (err, response) => {
+            this.canLogin = true;
+            this.loginChinaText = this.loginChinaDefault;
+            this.errorShow = true;
+            this.errorChinaText = response.message;
+          },
+        });
+      } else {
+        this.telBlur();
+        this.codeBlur();
+      }
+    },
+    // 登录
+    loginChina() {
+      if (this.oauthType === 'bind') {
+        this.bindWechat();
+        return;
+      }
+      if (this.telFlg && this.canLogin) {
+        this.canLogin = false;
+        this.loginChinaText = '正在提交...';
+
+        this.loginChinaData.mode = this.loginType;
+        this.loginChinaData.verify_code = this.smscode;
+        this.loginChinaData.phone = this.nowData.tel;
+        this.loginChinaData.code = this.nowData.prefix;
+        this.loginChinaData.org_id = this.orgid;
+
         //发送验证码
         ajax({
           headers: this.headers,
@@ -441,12 +564,9 @@ export default {
             if (res.code === 10000) {
               this.errorShow = false;
               this.errorChinaText = '';
-              logined(res, res.data.org_id, this, () => {
-                this.success(res);
-                this.canLogin = true;
-                this.loginChinaText = this.loginChinaDefault;
-                this.close(false);
-              });
+              const { data } = res;
+              window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
+              this.autologin();
             } else {
               this.canLogin = true;
               this.loginChinaText = this.loginChinaDefault;
@@ -548,35 +668,27 @@ export default {
         this.loginEnglishText = 'Waiting...';
         this.loginEnglishData.key = this.nowEnglishData.email;
         this.loginEnglishData.org_id = this.orgid;
-        if (this.smscode) {
-          delete this.loginEnglishData.password;
-          this.loginEnglishData.sms_code = this.smscode;
-          this.loginEnglishData.validate_type = 'code';
-          this.loginEnglishData.type = 'email';
+        const params = {
+          email: this.nowEnglishData.email,
+          mode: this.loginType,
         }
-        if (this.nowEnglishData.password) {
-          delete this.loginEnglishData.sms_code;
-          this.loginEnglishData.password = this.nowEnglishData.password;
-          this.loginEnglishData.type = 'email';
-          this.loginEnglishData.validate_type = 'password';
+        if (this.setnewpassword) {
+          params.password = this.setnewpassword;
         }
         //发送验证码
         ajax({
           headers: this.headers,
           type: 'POST',
-          data: JSON.stringify(this.loginEnglishData),
+          data: JSON.stringify(params),
           withCredentials: this.domain === 'evente.cn',
           action: this.loginEnglishAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
               this.errorChinaText = '';
-              logined(res, res.data.org_id, this, () => {
-                this.success(res);
-                this.canLogin = true;
-                this.loginEnglishText = this.loginEnglishDefault;
-                this.close(false);
-              });
+              const { data } = res;
+              window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
+              this.autologin();
             } else {
               this.canLogin = true;
               this.loginEnglishText = this.loginEnglishDefault;
@@ -602,18 +714,16 @@ export default {
       this.setPassword = true;
       if (this.nowEnglishData.email) {
         const userObj = {
-        	"org_id": this.orgid,
-        	"type": "email",
         	"key": this.nowEnglishData.email,
         }
         ajax({
           headers: this.headers,
           type: 'GET',
           withCredentials: this.domain === 'evente.cn',
-          action: `${this.loginConfirmAction}?org_id=${this.orgid}&type=email&key=${userObj.key}`,
+          action: `${this.loginConfirmAction}?email=${userObj.key}`,
           onSuccess: (res) => {
             if (res.code === 10000) {
-              if (res.data.state === 'login') {
+              if (res.data.exist) {
                 this.showPasswordFalg = true;
                 this.setPassword = false;
               } else {
@@ -636,11 +746,8 @@ export default {
     emailAccount() {
       if (this.confirmpasswordFlg) {
         const userObj = {
-          "org_id": this.orgid,
-          "type": "email",
-          "key": this.nowEnglishData.email,
+          "email": this.nowEnglishData.email,
           "password": this.nowEnglishData.createPassword,
-          "confirm_password": this.nowEnglishData.confirmPassword,
         }
         ajax({
           headers: this.headers,
@@ -652,11 +759,9 @@ export default {
             if (res.code === 10000) {
               this.errorShow = false;
               this.errorChinaText = '';
-              logined(res, res.data.org_id, this, () => {
-                this.success(res);
-                this.loginEnglishText = this.loginEnglishDefault;
-                this.close(false);
-              });
+              const { data } = res;
+              window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
+              this.autologin();
             } else {
               this.canLogin = true;
               this.loginEnglishText = this.loginEnglishDefault;
@@ -718,14 +823,98 @@ export default {
       this.showPasswordFalg = true;
       this.smscode = '';
     },
+
+
+
+
+    loginTypeClick(type) {
+      this.loginType = type;
+    },
+    //微信绑定
+    wechatBind() {
+      window.location.href = this.wechatUrl;
+    },
+    autologin() {
+      const dataObj = {
+        'Authorization': window.$cookie.get(CONSTANT.EVENT_EMTOKEN),
+      }
+      const params = Object.assign(dataObj, this.headers);
+      ajax({
+        headers: params,
+        type: 'GET',
+        withCredentials: this.domain === 'evente.cn',
+        action: `${this.autologinAction}?org_id=${this.orgid}`,
+        onSuccess: (res) => {
+          if (res.code === 10000) {
+            this.errorShow = false;
+            this.errorText = '';
+            logined(res, this.orgid, this, () => {
+              this.success(res);
+              this.canLogin = true;
+              this.loginText = this.btnText;
+              this.close(false);
+            });
+          } else {
+            this.canLogin = true;
+            this.loginText = this.btnText;
+            this.errorShow = true;
+            this.errorText = res.message;
+          }
+        },
+        onError: (err, response) => {
+          this.errorShow = true;
+          this.errorEnglishText = response.message;
+        },
+      });
+    },
+    emailSetAccount() {
+      if (this.confirmsetpasswordFlg) {
+        this.canLogin = false;
+        this.loginEnglishText = 'Waiting...';
+        this.loginEnglishData.key = this.nowEnglishData.email;
+        this.loginEnglishData.org_id = this.orgid;
+        const params = {
+          "email": this.nowEnglishData.email,
+          "password": this.setnewpassword,
+          "verify_code": this.smscode,
+        }
+        //发送验证码
+        ajax({
+          headers: this.headers,
+          type: 'POST',
+          data: JSON.stringify(params),
+          withCredentials: this.domain === 'evente.cn',
+          action: this.loginRegisterAction,
+          onSuccess: (res) => {
+            if (res.code === 10000) {
+              this.errorShow = false;
+              this.errorChinaText = '';
+              const { data } = res;
+              window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
+              this.autologin();
+            } else {
+              this.canLogin = true;
+              this.loginEnglishText = this.loginEnglishDefault;
+              this.errorShow = true;
+              this.errorEnglishText = res.message;
+            }
+          },
+          onError: (err, response) => {
+            this.canLogin = true;
+            this.loginEnglishText = this.loginEnglishDefault;
+            this.errorShow = true;
+            this.errorEnglishText = response.message;
+          },
+        });
+      } else {
+        this.emailBlur();
+      }
+    },
   },
   watch: {
     value(val, oldVal) {
       if (val !== oldVal) {
         this.nowData = val;
-        if (this.isChina) {
-          this.telBlur();
-        }
       }
     },
   },

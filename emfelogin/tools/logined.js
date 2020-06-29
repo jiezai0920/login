@@ -1,39 +1,7 @@
 /* eslint-disable */
-import jsonp from 'em-jsonp';
 import CONSTANT from '../contant';
 
-const afterLogin = (callbackUrl, inow, self, callback) => {
-  let theIndex = inow;
-  const urlSplit = callbackUrl[theIndex].split('?');
-  const newUrl = urlSplit[0];
-  let data = urlSplit[1];
-  data = data.replace(/=/g, '":"').replace(/&/g, '","');
-  data = JSON.parse(`{"${data}"}`);
-  window.$jsonp({
-    url: newUrl,
-    data,
-    success: (res) => {
-      if (res.code === CONSTANT.AJAX_SUCCESS) {
-        if (theIndex === 0) {
-          callback();
-        } else {
-          afterLogin(callbackUrl, --theIndex, self, callback);
-        }
-      } else {
-        self.$EmfeMessage.error({
-          content: '登录失败',
-        });
-      }
-    },
-    error: () => {
-      self.$EmfeMessage.error({
-        content: '登录失败',
-      });
-    },
-  });
-};
-
-const removeAllTokenCookie = (domain) => {
+export const removeAllTokenCookie = (domain) => {
   const cookies = document.cookie.split('; ');
   // 过滤所有 token
   const oldToken = cookies.filter(cookieItem => cookieItem.indexOf(CONSTANT.EVENT_TOKE) > -1);
@@ -46,26 +14,16 @@ const removeAllTokenCookie = (domain) => {
 };
 
 export default (result, orgId, self, callback) => {
-  afterLogin(result.data.call_back_url, result.data.call_back_url.length - 1, self, () => {
-    const { expires, token } = result.data;
-    // 获取当前的时间戳
-    const timestamp = new Date().getTime() / 1000;
-    // 用过期时间戳-当前时间戳 = cookie有效期的秒数
-    // (先判断下这个有效期是否>=0, 否则设置一个默认值)
-    const newExpiresStamp = expires - timestamp;
-    const newExpires = newExpiresStamp <= 0 ? CONSTANT.COOKIE_EXPIRE_TIME : newExpiresStamp;
-    let domainStr = self.domain || '';
-
-    removeAllTokenCookie(domainStr);
-    setTimeout(() => {
-      window.$cookie.set(`${CONSTANT.EVENT_TOKE}?org_id=${orgId}`, `${CONSTANT.COOKIE_PERFIX_TOKEN}${token}`, newExpires, '/', domainStr);
-      window.$cookie.set(CONSTANT.EVENT_USER_INFO, result.data.real_name, newExpires, '/', domainStr);
-      window.$cookie.set(`${CONSTANT.EVENT_MEMBER_LEVEL}?org_id=${orgId}`, result.data.level, newExpires, '/', domainStr);
-      window.$cookie.set(`${CONSTANT.EVENT_USER_UID}?org_id=${orgId}`, result.data.uid, newExpires, '/', domainStr);
-      window.$cookie.set(`${CONSTANT.EVENT_USER_ORGID}`, result.data.org_id, newExpires, '/', domainStr);
-      window.$cookie.set(`${CONSTANT.EVENT_USER_PHONE}?org_id=${orgId}`, result.data.phone, newExpires, '/', domainStr);
-      window.$cookie.set(`${CONSTANT.EVENT_USER_LOGO}`, result.data.org_logo, newExpires, '/', domainStr);
-      callback();
-    }, 100);
-  });
+  const { expires } = result.data;
+  const timestamp = new Date().getTime() / 1000; // 获取当前的时间戳
+  // 用过期时间戳-当前时间戳 = cookie有效期的秒数
+  // (先判断下这个有效期是否>=0, 否则设置一个默认值)
+  const newExpires = (expires - timestamp) <= 0 ? 3600 * 24 : expires - timestamp;
+  let domain = self.domain || '';
+  // removeAllTokenCookie(domain);
+  setTimeout(() => {
+    window.$cookie.set(`${CONSTANT.EVENT_EMTOKEN}_${orgId}`, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${result.data.token}`, newExpires, '/', domain);
+    window.$cookie.set(`${CONSTANT.EVENT_USER_UID}?org_id=${orgId}`, result.data.uid, newExpires, '/', domain);
+    callback();
+  }, 100);
 };

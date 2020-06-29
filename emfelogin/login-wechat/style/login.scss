@@ -20,7 +20,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-popup {
-    @include px2rem('width', 592px);
+    @include px2rem('width', 640px);
     @include px2rem('padding', 0 48px);
     @include radius(16px);
 
@@ -356,8 +356,13 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     align-items: center;
 
     &-img {
+      @include marginRight(64px);
       @include width(80px);
       @include height(80px);
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }
