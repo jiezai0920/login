@@ -35,7 +35,7 @@
         <button :class="['login-wechat-wap-button', {'login-wechat-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
         <div class="login-wechat-wap-wechatbox">
           <img v-if="isWechat && !oauthType" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
-          <img @click="loginTypeClick('email')" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
+          <img v-if="!oauthType" @click="loginTypeClick('email')" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
         </div>
       </div>
       <!-- 英文版 start -->
@@ -70,21 +70,21 @@
         <div v-if="forgetPassword" class="login-wechat-wap-box">
           <input class="login-wechat-wap-english-input" type="tel" :maxlength="smscodeLength" :placeholder="resultJson['login.popup.input.code']" v-model="smscode">
           <div class="login-wechat-wap-english-wraper" @click="sendEnglishSmsCode">
-            <span :class="['login-wechat-wap-english-smscode', {'login-wechat-wap-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
+            <span :class="['login-wechat-wap-english-smscode', {'login-wechat-wap-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnd}]">{{sendEnglishText}}</span>
           </div>
         </div>
         <div v-if="forgetPassword" class="login-wechat-wap-box">
-          <input class="login-wechat-wap-english-input" type="password" placeholder="设置新密码" v-model="setnewpassword">
+          <input class="login-wechat-wap-english-input" type="password" :placeholder="resultJson['login.popup.input.set_password']" v-model="setnewpassword">
         </div>
         <div v-if="!showPasswordFalg">
           <!-- 验证邮箱是否注册 按钮 -->
           <button v-if="!forgetPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">{{resultJson['login.popup.btn.continue']}}</button>
           <!-- 忘记面膜 按钮 -->
-          <button v-if="forgetPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !confirmsetpasswordFlg}]" @click="emailSetAccount">{{loginEnglishText}}</button>
+          <button v-if="forgetPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !confirmsetpasswordFlg || btnText !== loginEnglishText}]" @click="emailSetAccount">{{loginEnglishText}}</button>
         </div>
         <div v-else>
           <!-- 邮箱密码登录 按钮 -->
-          <button v-if="!setPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !submitEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+          <button v-if="!setPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !submitEnglishOnFlg || btnText !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
           <!-- 密码注册 -->
           <button v-if="setPassword" :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : !confirmpasswordFlg}]" @click="emailAccount">{{resultJson['login.popup.btn.create_account']}}</button>
         </div>
@@ -161,10 +161,8 @@ export default {
         key: '',
         origin: 'c-login',
       },
-      sendEnglishText: 'Get Code',
-      countEnglishEnd: 'Get Code',
+      sendEnglishText: '',
       errorEnglishText: '',
-      loginEnglishDefault: 'Submit',
       loginEnglishText: '',
       emailEnglishFlg: false,
       countEnglishStart: true,
@@ -227,7 +225,7 @@ export default {
     },
     title: {
       type: String,
-      default: '请完善手机信息',
+      default: '请完善账户信息',
     },
     desc: {
       type: String,
@@ -346,7 +344,7 @@ export default {
   mounted() {
     this.countNums = this.AllTimes;
     this.loginText = this.btnText;
-    this.loginEnglishText = this.loginEnglishDefault;
+    this.loginEnglishText = this.btnText;
 
     if (/MicroMessenger/i.test(window.navigator.userAgent)) {
       this.isWechat = true;
@@ -384,6 +382,7 @@ export default {
   },
   created() {
     this.sendText = this.smsBtnText;
+    this.sendEnglishText = this.smsBtnText;
     this.countEnd = this.smsBtnText;
     ajax({
       headers: this.headers,
@@ -654,7 +653,7 @@ export default {
     sendEnglishSmsCode() {
       if (this.emailEnglishFlg && this.goEnglishStatus) {
         this.goEnglishStatus = false;
-        this.sendEnglishText = 'Waiting...';
+        this.sendEnglishText = this.subingText;
         this.sendEnglishData.key = this.nowEnglishData.email;
         this.sendEnglishData.org_id = this.orgid;
         //发送验证码
@@ -699,7 +698,7 @@ export default {
       }, 500);
     },
     resetEnglishAuto() {
-      this.sendEnglishText = this.countEnglishEnd;
+      this.sendEnglishText = this.smsBtnText;
       this.countNums = this.AllTimes;
       this.countEnglishStart = false;
       this.goEnglishStatus = true;
@@ -707,7 +706,7 @@ export default {
     loginEnglish() {
       if (this.emailEnglishFlg && this.canLogin) {
         this.canLogin = false;
-        this.loginEnglishText = 'Waiting...';
+        this.loginEnglishText = this.subingText;
         const params = {
           mode: this.loginType,
           email: this.nowEnglishData.email,
@@ -724,20 +723,20 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               const { data } = res;
               window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
               this.autologin();
             } else {
               this.canLogin = true;
-              this.loginEnglishText = this.loginEnglishDefault;
+              this.loginEnglishText = this.btnText;
               this.errorShow = true;
               this.errorEnglishText = res.message;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
-            this.loginEnglishText = this.loginEnglishDefault;
+            this.loginEnglishText = this.btnText;
             this.errorShow = true;
             this.errorEnglishText = response.message;
           },
@@ -799,27 +798,31 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               const { data } = res;
               window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
               this.autologin();
             } else {
               this.canLogin = true;
-              this.loginEnglishText = this.loginEnglishDefault;
+              this.loginEnglishText = this.btnText;
               this.errorShow = true;
               this.errorEnglishText = res.message;
+              this.errorText = res.message;
             }
           },
           onError: (err, response) => {
             this.errorShow = true;
             this.errorEnglishText = response.message;
+            this.errorText = response.message;
           },
         });
       }
     },
     //注册
     emailSetAccount() {
-      if (this.confirmsetpasswordFlg) {
+      if (this.confirmsetpasswordFlg && this.canLogin) {
+        this.canLogin = false;
+        this.loginEnglishText = this.subingText;
         const userObj = {
           "email": this.nowEnglishData.email,
           "password": this.setnewpassword,
@@ -832,22 +835,25 @@ export default {
           withCredentials: this.domain === 'evente.cn',
           action: this.loginRegisterAction,
           onSuccess: (res) => {
+            this.canLogin = true;
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               const { data } = res;
               window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
               this.autologin();
             } else {
-              this.canLogin = true;
-              this.loginEnglishText = this.loginEnglishDefault;
+              this.loginEnglishText = this.btnText;
               this.errorShow = true;
               this.errorEnglishText = res.message;
+              this.errorText = res.message;
             }
           },
           onError: (err, response) => {
+            this.canLogin = true;
             this.errorShow = true;
             this.errorEnglishText = response.message;
+            this.errorText = response.message;
           },
         });
       }
@@ -896,6 +902,7 @@ export default {
 
 
     loginTypeClick(type) {
+      this.errorShow = false;
       this.loginType = type;
     },
 

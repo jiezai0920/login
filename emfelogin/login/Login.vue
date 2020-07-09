@@ -2,7 +2,7 @@
   <div class="login" v-if="show">
     <div class="login-popup popup2" v-if="loginType === 'phone'">
       <h3 class="login-title">{{title}}</h3>
-      <p class="login-desc">成功短信将发送至该手机</p>
+      <p class="login-desc">{{resultJson['login.popup.tips.send_code_success']}}</p>
       <div v-show="errorShow" class="login-error">
         <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-error-img">
         <span v-show="errorShow" class="login-error-text">{{errorChinaText}}</span>
@@ -20,10 +20,10 @@
             >+{{ data.prefix }}</option>
           </select>
         </div>
-        <input class="login-input" type="number" placeholder="输入手机号" v-model="nowData.tel" @blur="telBlur" @input="telInput" ref="telElem">
+        <input class="login-input" type="number" :placeholder="resultJson['login.popup.input.phone']" v-model="nowData.tel" @blur="telBlur" @input="telInput" ref="telElem">
       </div>
       <div class="login-box">
-        <input class="login-input" type="tel" :maxlength="smscodeLength" placeholder="输入验证码" v-model="smscode" @blur="codeBlur" ref="codeElem">
+        <input class="login-input" type="tel" :maxlength="smscodeLength" :placeholder="resultJson['login.popup.input.code']" v-model="smscode" @blur="codeBlur" ref="codeElem">
         <div class="login-smscode-wraper" @click="sendChinaSmsCode">
           <span :class="['login-smscode', {'login-smscode-disabled' : smsChinaStatus || sendChinaText !== countChinaEnd}]">{{sendChinaText}}</span>
         </div>
@@ -72,14 +72,19 @@
         </div>
       </div>
       <div v-if="forgetPassword" class="login-wechat-wap-box">
-        <input class="login-english-input" type="password" placeholder="设置新密码" v-model="setnewpassword">
+
+        <input class="login-english-input" type="password" :placeholder="resultJson['login.popup.input.set_password']" v-model="setnewpassword">
       </div>
       <div v-if="!showPasswordFalg">
+        <!-- 验证邮箱是否注册 按钮 -->
         <button v-if="!forgetPassword" :class="['login-english-button', {'login-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">{{resultJson['login.popup.btn.continue']}}</button>
-        <button v-if="forgetPassword" :class="['login-english-button', {'login-button-disabled' : !confirmsetpasswordFlg}]" @click="emailSetAccount">{{loginEnglishText}}</button>
+        <!-- 忘记面膜 按钮 -->
+        <button v-if="forgetPassword" :class="['login-english-button', {'login-button-disabled' : !confirmsetpasswordFlg || loginEnglishDefault !== loginEnglishText}]" @click="emailSetAccount">{{loginEnglishText}}</button>
       </div>
       <div v-else>
-        <button v-if="!setPassword" :class="['login-english-button', {'login-button-disabled' : !submitEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+        <!-- 邮箱密码登录 按钮 -->
+        <button v-if="!setPassword" :class="['login-english-button', {'login-button-disabled' : !submitEnglishOnFlg || (loginEnglishDefault !== loginEnglishText)}]" @click="loginEnglish">{{loginEnglishText}}</button>
+        <!-- 密码注册 -->
         <button v-if="setPassword" :class="['login-english-button', {'login-button-disabled' : !confirmpasswordFlg}]" @click="emailAccount">{{resultJson['login.popup.btn.create_account']}}</button>
       </div>
       <div v-if="forgetPassword && !setPassword && !showPasswordFalg" class="login-forget">
@@ -109,14 +114,14 @@ export default {
       codeFlg: false,
       smscode: '',
       smscodeLength: 6,
-      sendChinaText: '获取验证码',
-      countChinaEnd: '获取验证码',
+      sendChinaText: '',
+      countChinaEnd: '',
       countChinaStart: true,
       AllTimes: 60,
       countNums: 0,
       errorShow: false,
       errorChinaText: '验证码错误',
-      loginChinaDefault: '确定',
+      loginChinaDefault: '',
       loginChinaText: '',
       nowData: {
         name: '中国',
@@ -154,10 +159,10 @@ export default {
         key: '',
         origin: 'c-login',
       },
-      sendEnglishText: 'Get Code',
-      countEnglishEnd: 'Get Code',
+      sendEnglishText: '',
+      countEnglishEnd: '',
       errorEnglishText: '',
-      loginEnglishDefault: 'Submit',
+      loginEnglishDefault: '',
       loginEnglishText: '',
       emailEnglishFlg: false,
       countEnglishStart: true,
@@ -230,7 +235,7 @@ export default {
     },
     title: {
       type: String,
-      default: '请完善手机信息',
+      default: '请完善账户信息',
     },
     resultJson: Object,
 
@@ -299,12 +304,18 @@ export default {
       return !!(this.setnewpassword && this.smscode && this.smscode.length === 6);
     },
   },
-  mounted() {
+  created() {
+    this.sendEnglishText = this.resultJson['login.popup.btn.send_code'];
+    this.countEnglishEnd = this.resultJson['login.popup.btn.send_code'];
+    this.sendChinaText = this.resultJson['login.popup.btn.send_code'];
+    this.countChinaEnd = this.resultJson['login.popup.btn.send_code'];
+    this.loginEnglishDefault = this.resultJson['common.btn.confirm'];
+    this.loginChinaDefault = this.resultJson['common.btn.confirm'];
+
     this.countNums = this.AllTimes;
     this.loginChinaText = this.loginChinaDefault;
     this.loginEnglishText = this.loginEnglishDefault;
-  },
-  created() {
+
     ajax({
       headers: this.headers,
       type: 'GET',
@@ -392,11 +403,11 @@ export default {
       let text = '';
 
       if (telError) {
-        text = '手机号格式有误';
+        text = this.resultJson['login.popup.tips.phone_invalid'];
       }
 
       if (telEmpty) {
-        text = '输入手机号';
+        text = this.resultJson['login.popup.input.phone'];
       }
 
       if (resultTel) {
@@ -427,7 +438,7 @@ export default {
     // 验证码文本框失去焦点事件
     codeBlur() {
       const smsResult = this.testSms();
-      this.errorChinaText = smsResult ? '' : '输入验证码';
+      this.errorChinaText = smsResult ? '' : this.resultJson['login.popup.input.code'];
       this.codeFlg = smsResult;
       this.errorShow = !smsResult;
       // 将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。
@@ -437,7 +448,7 @@ export default {
     sendChinaSmsCode() {
       if (this.telFlg && this.goChinaStatus) {
         this.goChinaStatus = false;
-        this.sendChinaText = '获取中';
+        this.sendChinaText = this.resultJson['login.popup.btn.sending_code'];
         this.sendChinaData.type = 'sms';
         this.sendChinaData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
         this.sendChinaData.org_id = this.orgid;
@@ -495,7 +506,7 @@ export default {
     bindWechat() {
       if (this.telFlg && this.canLogin) {
         this.canLogin = false;
-        this.loginChinaText = '正在提交...';
+        this.loginChinaText = this.resultJson['login.popup.btn.submiting'];
 
         this.loginChinaData.mode = this.loginType;
         this.loginChinaData.verify_code = this.smscode;
@@ -545,7 +556,7 @@ export default {
       }
       if (this.telFlg && this.canLogin) {
         this.canLogin = false;
-        this.loginChinaText = '正在提交...';
+        this.loginChinaText = this.resultJson['login.popup.btn.submiting'];
 
         this.loginChinaData.mode = this.loginType;
         this.loginChinaData.verify_code = this.smscode;
@@ -612,7 +623,7 @@ export default {
     sendEnglishSmsCode() {
       if (this.emailEnglishFlg && this.goEnglishStatus) {
         this.goEnglishStatus = false;
-        this.sendEnglishText = 'Waiting...';
+        this.sendEnglishText = this.resultJson['login.popup.btn.sending_code'];
         this.sendEnglishData.key = this.nowEnglishData.email;
         this.sendEnglishData.org_id = this.orgid;
         //发送验证码
@@ -665,15 +676,13 @@ export default {
     loginEnglish() {
       if (this.emailEnglishFlg && this.canLogin) {
         this.canLogin = false;
-        this.loginEnglishText = 'Waiting...';
+        this.loginEnglishText = this.resultJson['login.popup.btn.submiting'];
         this.loginEnglishData.key = this.nowEnglishData.email;
         this.loginEnglishData.org_id = this.orgid;
         const params = {
           email: this.nowEnglishData.email,
           mode: this.loginType,
-        }
-        if (this.setnewpassword) {
-          params.password = this.setnewpassword;
+          password: this.nowEnglishData.password,
         }
         //发送验证码
         ajax({
@@ -828,6 +837,7 @@ export default {
 
 
     loginTypeClick(type) {
+      this.errorShow = false;
       this.loginType = type;
     },
     //微信绑定
@@ -870,7 +880,7 @@ export default {
     emailSetAccount() {
       if (this.confirmsetpasswordFlg) {
         this.canLogin = false;
-        this.loginEnglishText = 'Waiting...';
+        this.loginEnglishText = this.resultJson['login.popup.btn.submiting'];
         this.loginEnglishData.key = this.nowEnglishData.email;
         this.loginEnglishData.org_id = this.orgid;
         const params = {
