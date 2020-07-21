@@ -1,11 +1,11 @@
 <template>
-  <div class="login" v-if="show">
+  <div class="login" v-if="showPopLogin">
     <div class="login-popup popup2" v-if="loginType === 'phone'">
       <h3 class="login-title">{{title}}</h3>
       <p class="login-desc">{{resultJson['login.popup.tips.send_code_success']}}</p>
       <div v-show="errorShow" class="login-error">
         <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-error-img">
-        <span v-show="errorShow" class="login-error-text">{{errorChinaText}}</span>
+        <span v-show="errorShow" class="login-error-text">{{errorText}}</span>
       </div>
       <div class="login-close" @click="popupClose">
         <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
@@ -31,9 +31,8 @@
       <button :class="['login-button', 'login-button-china', {'login-button-disabled' : loginChinaOnFlg || loginChinaDefault !== loginChinaText}]" @click="loginChina">{{loginChinaText}}</button>
 
       <div class="login-box-wechatbox">
-         <!-- v-if="isWechat && !oauthType" -->
-        <img @click="wechatBind" class="login-box-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
-        <img @click="loginTypeClick('email')" class="login-box-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
+        <img v-if="!oauthType && isShowWechat" @click="wechatBind" class="login-box-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
+        <img v-if="!oauthType" @click="loginTypeClick('email')" class="login-box-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
       </div>
     </div>
     <!-- 英文版 start -->
@@ -44,7 +43,7 @@
       <h3 class="login-english-title">{{resultJson['login.popup.title']}}</h3>
       <div v-if="errorShow" class="login-error">
         <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-error-img">
-        <span v-show="errorShow" class="login-error-text">{{errorEnglishText}}</span>
+        <span v-show="errorShow" class="login-error-text">{{errorText}}</span>
       </div>
       <div class="login-box">
         <input class="login-english-input" type="email" :placeholder="resultJson['login.popup.input.email']" v-model="nowEnglishData.email" @blur="emailBlur">
@@ -92,8 +91,8 @@
       </div>
       <div class="login-box-wechatbox">
          <!-- v-if="isWechat && !oauthType" -->
-        <img @click="wechatBind" class="login-box-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
-        <img @click="loginTypeClick('phone')" class="login-box-wechatbox-img" src="https://2img.evente.cn/e0/f4/12/86c89d21cdf38c7f55bdee9acd.jpg">
+        <img v-if="!oauthType & isShowWechat" @click="wechatBind" class="login-box-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
+        <img v-if="!oauthType" @click="loginTypeClick('phone')" class="login-box-wechatbox-img" src="https://2img.evente.cn/e0/f4/12/86c89d21cdf38c7f55bdee9acd.jpg">
       </div>
     </div>
     <!-- 英文版 end -->
@@ -120,7 +119,7 @@ export default {
       AllTimes: 60,
       countNums: 0,
       errorShow: false,
-      errorChinaText: '验证码错误',
+      errorText: '',
       loginChinaDefault: '',
       loginChinaText: '',
       nowData: {
@@ -161,7 +160,6 @@ export default {
       },
       sendEnglishText: '',
       countEnglishEnd: '',
-      errorEnglishText: '',
       loginEnglishDefault: '',
       loginEnglishText: '',
       emailEnglishFlg: false,
@@ -178,6 +176,7 @@ export default {
 
       loginType: 'phone',
       setnewpassword: '',
+      showPopLogin: false,
     };
   },
   props: {
@@ -259,6 +258,10 @@ export default {
     bindWechatAction: {
       type: String,
     },
+    isShowWechat: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     loginChinaOnFlg() {
@@ -338,13 +341,13 @@ export default {
             }
           });
         } else {
+          this.errorText = res.message;
           this.errorShow = true;
-          this.errorChinaText = res.message;
         }
       },
       onError: (err, response) => {
+        this.errorText = response.message;
         this.errorShow = true;
-        this.errorChinaText = response.message;
       },
     });
     if (this.oauthType === 'login') {
@@ -363,18 +366,20 @@ export default {
             window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
             this.autologin();
           } else {
-            this.errorShow = true;
             this.errorText = res.message;
+            this.errorShow = true;
           }
         },
         onError: (err, response) => {
           this.isLoginFail = false;
           this.canLogin = true;
           this.loginText = this.btnText;
-          this.errorShow = true;
           this.errorText = response.message;
+          this.errorShow = true;
         },
       });
+    } else {
+      this.showPopLogin = this.show;
     }
   },
   methods: {
@@ -425,10 +430,10 @@ export default {
         resultTel,
         text,
       } = this.testTel();
-      this.errorShow = !resultTel;
-      this.errorChinaText = text;
+      this.errorText = text;
       this.countChinaStart = !resultTel;
       this.telFlg = resultTel;
+      this.errorShow = !resultTel;
       // 将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。
       document.activeElement.scrollIntoViewIfNeeded();
     },
@@ -438,7 +443,7 @@ export default {
     // 验证码文本框失去焦点事件
     codeBlur() {
       const smsResult = this.testSms();
-      this.errorChinaText = smsResult ? '' : this.resultJson['login.popup.input.code'];
+      this.errorText = smsResult ? '' : this.resultJson['login.popup.input.code'];
       this.codeFlg = smsResult;
       this.errorShow = !smsResult;
       // 将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。
@@ -461,20 +466,20 @@ export default {
           action: this.sendAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
-              this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               this.countChinaStart = true;
+              this.errorShow = false;
               this.autoChina();
             } else {
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorChinaText = res.message;
               this.resetChinaAuto();
             }
           },
           onError: (err, response) => {
             this.resetChinaAuto();
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorChinaText = response.message;
           },
         });
       }
@@ -525,22 +530,22 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               const { data } = res;
               window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
               this.autologin();
             } else {
               this.canLogin = true;
               this.loginChinaText = this.loginChinaDefault;
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorChinaText = res.message;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
             this.loginChinaText = this.loginChinaDefault;
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorChinaText = response.message;
           },
         });
       } else {
@@ -574,22 +579,22 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               const { data } = res;
               window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
               this.autologin();
             } else {
               this.canLogin = true;
               this.loginChinaText = this.loginChinaDefault;
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorChinaText = res.message;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
             this.loginChinaText = this.loginChinaDefault;
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorChinaText = response.message;
           },
         });
       } else {
@@ -614,10 +619,10 @@ export default {
         resultEmail,
         text,
       } = this.testEmail();
-      this.errorShow = !resultEmail;
-      this.errorEnglishText = text;
+      this.errorText = text;
       this.countEnglishStart = !resultEmail;
       this.emailEnglishFlg = resultEmail;
+      this.errorShow = !resultEmail;
     },
     // 发送验证码
     sendEnglishSmsCode() {
@@ -636,19 +641,19 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorEnglishText = '';
+              this.errorText = '';
               this.countEnglishStart = true;
               this.autoEnglish();
             } else {
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorEnglishText = res.message;
               this.resetEnglishAuto();
             }
           },
           onError: (err, response) => {
             this.resetEnglishAuto();
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorEnglishText = response.message;
           },
         });
       }
@@ -694,22 +699,22 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               const { data } = res;
               window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
               this.autologin();
             } else {
               this.canLogin = true;
               this.loginEnglishText = this.loginEnglishDefault;
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorEnglishText = res.message;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
             this.loginEnglishText = this.loginEnglishDefault;
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorEnglishText = response.message;
           },
         });
       } else {
@@ -740,13 +745,13 @@ export default {
                 this.setPassword = true;
               }
             } else {
+              this.errorText = response.message;
               this.errorShow = true;
-              this.errorEnglishText = response.message;
             }
           },
           onError: (err, response) => {
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorEnglishText = response.message;
           },
         });
       }
@@ -767,20 +772,20 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               const { data } = res;
               window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
               this.autologin();
             } else {
               this.canLogin = true;
               this.loginEnglishText = this.loginEnglishDefault;
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorEnglishText = res.message;
             }
           },
           onError: (err, response) => {
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorEnglishText = response.message;
           },
         });
       }
@@ -797,7 +802,7 @@ export default {
         text,
       } = this.testPassword();
       this.errorShow = !resultPassword;
-      this.errorEnglishText = text;
+      this.errorText = text;
       this.countEnglishStart = !resultPassword;
     },
     createpasswordBlur() {
@@ -808,8 +813,8 @@ export default {
         resultPassword: this.nowEnglishData.createPassword,
         text: this.resultJson['login.popup.tips.password_invalid'],
       }
+      this.errorText = text;
       this.errorShow = !resultPassword;
-      this.errorEnglishText = text;
     },
     confirmpasswordBlur() {
       const {
@@ -819,8 +824,8 @@ export default {
         resultPassword: this.nowEnglishData.confirmPassword,
         text: this.nowEnglishData.createPassword ? this.resultJson['login.popup.tips.password_not_consistent'] : this.resultJson['login.popup.tips.password_invalid'],
       }
+      this.errorText = text;
       this.errorShow = !resultPassword;
-      this.errorEnglishText = text;
     },
     forgetPasswordClick() {
       this.forgetPassword = true;
@@ -837,8 +842,8 @@ export default {
 
 
     loginTypeClick(type) {
-      this.errorShow = false;
       this.loginType = type;
+      this.errorShow = false;
     },
     //微信绑定
     wechatBind() {
@@ -867,13 +872,14 @@ export default {
           } else {
             this.canLogin = true;
             this.loginText = this.btnText;
-            this.errorShow = true;
             this.errorText = res.message;
+            this.errorShow = true;
           }
         },
         onError: (err, response) => {
+          this.loginText = this.btnText;
+          this.errorText = response.message;
           this.errorShow = true;
-          this.errorEnglishText = response.message;
         },
       });
     },
@@ -898,22 +904,22 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorChinaText = '';
+              this.errorText = '';
               const { data } = res;
               window.$cookie.set(CONSTANT.EVENT_EMTOKEN, `${CONSTANT.COOKIE_PERFIX_TOKEN} ${data.token}`, data.expires, '/', this.domain);
               this.autologin();
             } else {
               this.canLogin = true;
               this.loginEnglishText = this.loginEnglishDefault;
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorEnglishText = res.message;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
             this.loginEnglishText = this.loginEnglishDefault;
             this.errorShow = true;
-            this.errorEnglishText = response.message;
+            this.errorText = response.message;
           },
         });
       } else {

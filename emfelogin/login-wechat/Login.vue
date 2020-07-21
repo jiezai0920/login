@@ -1,5 +1,5 @@
 <template>
-  <div class="login-wechat-wap" v-if="show">
+  <div class="login-wechat-wap" v-if="showPopLogin">
     <div class="login-wechat-wap-login" v-if="oauthType == 'login' && isLoginFail">
       <img class="login-wechat-wap-login-img" src="https://static2.evente.cn/static/img/loading201904171.gif" alt="">
     </div>
@@ -34,7 +34,7 @@
         </div>
         <button :class="['login-wechat-wap-button', {'login-wechat-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
         <div class="login-wechat-wap-wechatbox">
-          <img v-if="isWechat && !oauthType" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
+          <img v-if="isWechat && !oauthType && isShowWechat" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
           <img v-if="!oauthType" @click="loginTypeClick('email')" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
         </div>
       </div>
@@ -46,7 +46,7 @@
         <h3 class="login-wechat-wap-english-title">{{resultJson['login.popup.title']}}</h3>
         <div v-show="errorShow" class="login-wechat-wap-error">
           <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
-          <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorEnglishText}}</span>
+          <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorText}}</span>
         </div>
         <div class="login-wechat-wap-box">
           <input class="login-wechat-wap-english-input" type="email" :placeholder="resultJson['login.popup.input.email']" v-model="nowEnglishData.email" @blur="emailBlur">
@@ -93,7 +93,7 @@
         </div>
 
         <div class="login-wechat-wap-wechatbox">
-          <img v-if="isWechat && !oauthType" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
+          <img v-if="isWechat && !oauthType && isShowWechat" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
           <img @click="loginTypeClick('phone')" class="login-wechat-wap-wechatbox-img" src="https://2img.evente.cn/e0/f4/12/86c89d21cdf38c7f55bdee9acd.jpg">
         </div>
       </div>
@@ -162,7 +162,6 @@ export default {
         origin: 'c-login',
       },
       sendEnglishText: '',
-      errorEnglishText: '',
       loginEnglishText: '',
       emailEnglishFlg: false,
       countEnglishStart: true,
@@ -184,6 +183,7 @@ export default {
       forgetPassword: false, //忘记密码
       loginType: 'phone',
       setnewpassword: '', //设置新密码
+      showPopLogin: false,
     };
   },
   props: {
@@ -295,6 +295,10 @@ export default {
       type: String,
     },
     resultJson: Object,
+    isShowWechat: {
+      type: [Boolean, String],
+      default: true,
+    },
   },
   computed: {
     loginOnFlg() {
@@ -349,6 +353,11 @@ export default {
     if (/MicroMessenger/i.test(window.navigator.userAgent)) {
       this.isWechat = true;
     }
+    if (window.$cookie.get(CONSTANT.EVENT_EMTOKEN)) {
+      this.autologin();
+    } else {
+      this.showPopLogin = this.show;
+    }
 
     if (this.oauthType === 'login') {
       const loginData = {
@@ -378,6 +387,8 @@ export default {
           this.errorText = response.message;
         },
       });
+    } else {
+      this.showPopLogin = this.show;
     }
   },
   created() {
@@ -406,13 +417,13 @@ export default {
             }
           });
         } else {
-          this.errorShow = true;
           this.errorText = res.message;
+          this.errorShow = true;
         }
       },
       onError: (err, response) => {
-        this.errorShow = true;
         this.errorText = response.message;
+        this.errorShow = true;
       },
     });
   },
@@ -502,15 +513,15 @@ export default {
               this.countStart = true;
               this.auto();
             } else {
-              this.errorShow = true;
               this.errorText = res.message;
+              this.errorShow = true;
               this.resetAuto();
             }
           },
           onError: (err, response) => {
             this.resetAuto();
-            this.errorShow = true;
             this.errorText = response.message;
+            this.errorShow = true;
           },
         });
       }
@@ -565,15 +576,15 @@ export default {
             } else {
               this.canLogin = true;
               this.loginText = this.btnText;
-              this.errorShow = true;
               this.errorText = res.message;
+              this.errorShow = true;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
             this.loginText = this.btnText;
-            this.errorShow = true;
             this.errorText = response.message;
+            this.errorShow = true;
           },
         });
       } else {
@@ -611,15 +622,15 @@ export default {
             } else {
               this.canLogin = true;
               this.loginText = this.btnText;
-              this.errorShow = true;
               this.errorText = res.message;
+              this.errorShow = true;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
             this.loginText = this.btnText;
-            this.errorShow = true;
             this.errorText = response.message;
+            this.errorShow = true;
           },
         });
       } else {
@@ -644,8 +655,8 @@ export default {
         resultEmail,
         text,
       } = this.testEmail();
+      this.errorText = text;
       this.errorShow = !resultEmail;
-      this.errorEnglishText = text;
       this.countEnglishStart = !resultEmail;
       this.emailEnglishFlg = resultEmail;
     },
@@ -666,19 +677,19 @@ export default {
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
-              this.errorEnglishText = '';
+              this.errorText = '';
               this.countEnglishStart = true;
               this.autoEnglish();
             } else {
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorEnglishText = res.message;
               this.resetEnglishAuto();
             }
           },
           onError: (err, response) => {
             this.resetEnglishAuto();
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorEnglishText = response.message;
           },
         });
       }
@@ -730,15 +741,15 @@ export default {
             } else {
               this.canLogin = true;
               this.loginEnglishText = this.btnText;
+              this.errorText = res.message;
               this.errorShow = true;
-              this.errorEnglishText = res.message;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
             this.loginEnglishText = this.btnText;
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorEnglishText = response.message;
           },
         });
       } else {
@@ -771,13 +782,13 @@ export default {
                 this.setPassword = true;
               }
             } else {
+              this.errorText = response.message;
               this.errorShow = true;
-              this.errorEnglishText = response.message;
             }
           },
           onError: (err, response) => {
+            this.errorText = response.message;
             this.errorShow = true;
-            this.errorEnglishText = response.message;
           },
         });
       }
@@ -805,15 +816,13 @@ export default {
             } else {
               this.canLogin = true;
               this.loginEnglishText = this.btnText;
-              this.errorShow = true;
-              this.errorEnglishText = res.message;
               this.errorText = res.message;
+              this.errorShow = true;
             }
           },
           onError: (err, response) => {
-            this.errorShow = true;
-            this.errorEnglishText = response.message;
             this.errorText = response.message;
+            this.errorShow = true;
           },
         });
       }
@@ -844,16 +853,14 @@ export default {
               this.autologin();
             } else {
               this.loginEnglishText = this.btnText;
-              this.errorShow = true;
-              this.errorEnglishText = res.message;
               this.errorText = res.message;
+              this.errorShow = true;
             }
           },
           onError: (err, response) => {
             this.canLogin = true;
-            this.errorShow = true;
-            this.errorEnglishText = response.message;
             this.errorText = response.message;
+            this.errorShow = true;
           },
         });
       }
@@ -869,8 +876,8 @@ export default {
         resultPassword,
         text,
       } = this.testPassword();
+      this.errorText = text;
       this.errorShow = !resultPassword;
-      this.errorEnglishText = text;
       this.countEnglishStart = !resultPassword;
     },
     createpasswordBlur() {
@@ -878,16 +885,16 @@ export default {
         resultPassword: this.nowEnglishData.createPassword,
         text: this.resultJson['login.popup.tips.password_invalid'],
       }
+      this.errorText = text.text;
       this.errorShow = !obj.resultPassword;
-      this.errorEnglishText = text.text;
     },
     confirmpasswordBlur() {
       const obj = {
         resultPassword: this.nowEnglishData.confirmPassword,
         text: this.nowEnglishData.createPassword ? this.resultJson['login.popup.tips.password_not_consistent'] : this.resultJson['login.popup.tips.password_invalid'],
       }
+      this.errorText = text.text;
       this.errorShow = !obj.resultPassword;
-      this.errorEnglishText = text.text;
     },
     forgetPasswordClick() {
       this.forgetPassword = true;
@@ -929,13 +936,13 @@ export default {
           } else {
             this.canLogin = true;
             this.loginText = this.btnText;
-            this.errorShow = true;
             this.errorText = res.message;
+            this.errorShow = true;
           }
         },
         onError: (err, response) => {
+          this.errorText = response.message;
           this.errorShow = true;
-          this.errorEnglishText = response.message;
         },
       });
     },
