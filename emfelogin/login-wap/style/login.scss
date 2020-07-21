@@ -1,7 +1,9 @@
 $family_zh: 'PingFangSC-Regular', 'Microsoft YaHei', 'PingFangSC', 'Helvetica', sans-serif, 'Arial' !important;
 $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', sans-serif, 'Arial' !important;
 
-.login {
+@import "./mixin.scss";
+
+.login-wap {
   position: fixed;
   left: 0;
   top: 0;
@@ -18,19 +20,21 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-popup {
-    width: 335px;
-    padding: 0 24px 18px;
-    border-radius: 8px;
+    @include px2rem('width', 670px);
+    @include px2rem('padding', 0 32px 32px);
+    @include radius(16px);
+
     box-sizing: border-box;
     background: #fff;
     position: relative;
   }
 
   &-title {
+    @include font(44px);
+    @include height(60px, 60px);
+    @include px2rem('padding-top', 96px);
+
     font-family: 'PingFangSC-Medium';
-    font-size: 20px;
-    line-height: 20px;
-    padding: 48px 0 8px;
     color: #333;
     letter-spacing: 0;
     margin: 0;
@@ -38,23 +42,24 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-desc {
-    padding-bottom: 8px;
-    font-size: 12px;
-    line-height: 12px;
-    font-family: $family_zh;
+    @include font(24px);
+    @include height(34px, 34px);
+    @include px2rem('padding-bottom', 30px);
+
+    font-family: 'PingFangSC-Regular';
     color: #999;
     letter-spacing: 0;
     margin: 0;
   }
 
   &-close {
-    width: 16px;
-    height: 16px;
-    padding: 16px;
+    @include px2rem('width', 32px);
+    @include px2rem('height', 32px);
+    @include px2rem('padding', 32px);
+
     position: absolute;
     top: 0;
     right: 0;
-    cursor: pointer;
   }
 
   &-error {
@@ -63,18 +68,19 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 14px;
+
+    @include px2rem('height', 44px);
+    @include marginTop(12px);
 
     &-text {
       display: block;
       position: relative;
-      box-sizing: border-box;
-      font-family: $family_zh;
-      font-size: 12px;
       color: #f04;
-      letter-spacing: 0;
-      line-height: 12px;
-      padding-left: 4px;
+      box-sizing: border-box;
+
+      @include font(24px);
+      @include height(40px, 40px);
+      @include paddingLeft(8px);
     }
 
     &-img {
@@ -83,24 +89,33 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     }
   }
 
+  &-forget {
+    @include font(24px);
+    @include marginTop(24px);
+
+    font-family: 'Helvetica';
+    color: #0297fe;
+    text-align: right;
+    line-height: 1;
+  }
+
   &-button {
     color: #fff;
     text-align: center;
     border: none;
     background: #1996f9;
     box-shadow: 0 22px 17px -18px rgba(25, 150, 249, 0.9);
-    font-family: $family_zh;
+    font-family: 'PingFangSC-Medium';
     letter-spacing: 0;
     box-sizing: border-box;
-    margin: 28px auto 12px;
-    font-size: 16px;
+    margin: 0 auto;
     display: block;
-    width: 276px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 20px;
-    cursor: pointer;
-    padding: 0;
+
+    @include height(80px, 1);
+    @include font(32px);
+    @include radius(44px);
+    @include px2rem('margin-top', 32px);
+    @include px2rem('width', 552px);
 
     &:focus {
       outline: none;
@@ -118,31 +133,35 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-box {
-    width: 287px;
+    @include px2rem('width', 574px);
+
     display: flex;
     margin: 0 auto;
     position: relative;
     justify-content: left;
-    border-bottom: 1px solid #f0f0f8;
+
+    @include border(2px, #f0f0f8, bottom);
+    @include paddingBottom(1px);
   }
 
   &-prefix {
-    height: 54px;
-    font-size: 14px;
+    @include height(108px);
+    @include font(28px);
+
     appearance: none;
     border: none;
     background: none;
     position: relative;
     color: #333;
-    padding-right: 12px;
-    font-family: $family_zh;
+    padding-right: 16px;
 
     &:focus {
       outline: none;
     }
 
     &-wraper {
-      margin-right: 14px;
+      @include px2rem('margin-right', 32px);
+
       position: relative;
 
       &::before,
@@ -152,7 +171,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
         height: 1px;
         position: absolute;
         top: 50%;
-        background: #ccc;
+        background: #dbdbdb;
       }
 
       &::before {
@@ -168,15 +187,25 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-input {
-    height: 14px;
-    font-size: 14px;
-    font-family: $family_zh;
-    line-height: 14px;
+    @include height(28px, 28px);
+    @include font(28px);
+    @include paddingBottom(40px);
+    @include paddingTop(40px);
+
     border: none;
     width: 100%;
     position: relative;
-    color: #333;
-    padding: 20px 0;
+
+    &::before {
+      @include height(36px);
+
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 1px;
+      background: #000;
+    }
 
     &:focus {
       outline: none;
@@ -184,33 +213,33 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-smscode {
-    font-size: 14px;
-    height: 14px;
-    line-height: 14px;
-    width: 70px;
-    text-align: right;
-    right: 0;
-    font-family: $family_zh;
+    @include font(28px);
+    @include width(140px);
+    @include radius(30px);
+    @include height(26px, 26px);
+    @include px2rem('left', 32px);
+
+    font-family: 'PingFangSC-Regular';
     letter-spacing: 0;
     position: absolute;
     color: #1996f9;
     top: 50%;
     transform: translateY(-50%);
-    cursor: pointer;
 
     &-disabled {
       color: #999;
-      cursor: not-allowed;
     }
 
     &-wraper {
+      @include width(244px);
+
       position: relative;
-      width: 116px;
 
       &::before {
-        height: 14px;
-        width: 1px;
-        left: 0;
+        @include height(26px);
+        @include width(4px);
+        @include left(4px);
+
         content: '';
         position: absolute;
         top: 50%;
@@ -219,39 +248,43 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
       }
     }
   }
+
   // english start
   &-english {
     &-title {
+      @include px2rem('width', 574px);
+      @include font(40px);
+      @include paddingTop(96px);
+      @include paddingBottom(32px);
+
       font-family: $family_us;
-      font-size: 20px;
       color: #333;
       letter-spacing: 0;
       line-height: 20px;
       font-weight: normal;
-      margin: 0;
-      padding: 48px 0 16px;
+      margin: 0 auto;
     }
 
     &-input {
-      @extend .login-input;
+      @extend .login-wap-input;
 
       font-family: $family_us;
     }
 
     &-smscode {
-      @extend .login-smscode;
+      @extend .login-wap-smscode;
 
       font-family: $family_us;
     }
 
     &-button {
-      @extend .login-button;
+      @extend .login-wap-button;
 
       font-family: $family_us;
     }
 
     &-wraper {
-      @extend .login-smscode-wraper;
+      @extend .login-wap-smscode-wraper;
 
       width: 103px;
     }
@@ -270,6 +303,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   & input::-webkit-input-placeholder {
     color: #999;
     line-height: normal;
-    font-size: 14px;
+
+    @include font(28px);
   }
 }

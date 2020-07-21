@@ -1,20 +1,20 @@
 {
-  "name": "emlogin",
-  "version": "0.8.2",
+  "name": "emfelogin",
+  "version": "1.3.0",
   "description": "em 登录弹框业务组件",
   "author": "李梦龙 <649076408@qq.com>",
-  "main": "dist/emlogin.js",
-  "unpkg": "dist/emlogin.js",
+  "main": "dist/emfelogin.js",
+  "unpkg": "dist/emfelogin.js",
   "files": [
     "dist",
-    "emlogin"
+    "emfelogin"
   ],
   "scripts": {
-    "start": "vuepress dev emlogin",
-    "build:site": "export GH=1 && vuepress build emlogin",
+    "start": "vuepress dev emfelogin",
+    "build:site": "export GH=1 && vuepress build emfelogin",
     "build": "cross-env BABEL_ENV=production && node build/build.water.js && gulp --gulpfile build/gulpfile.js",
-    "eslint": "eslint --ext .js,.vue site emlogin --fix",
-    "stylelint": "stylelint site/**/*.scss emlogin/**/*.scss",
+    "eslint": "eslint --ext .js,.vue site emfelogin --fix",
+    "stylelint": "stylelint site/**/*.scss emfelogin/**/*.scss",
     "lint": "npm run eslint && npm run stylelint",
     "lint-staged": "lint-staged",
     "test": "jest --config jest.conf.js --no-cache --verbose",
@@ -131,13 +131,13 @@
     "not ie <= 8"
   ],
   "lint-staged": {
-    "emlogin/**/*.vue": [
+    "emfelogin/**/*.vue": [
       "npm run eslint"
     ],
-    "emlogin/**/*.js": [
+    "emfelogin/**/*.js": [
       "npm run eslint"
     ],
-    "emlogin/**/*.scss": [
+    "emfelogin/**/*.scss": [
       "npm run stylelint"
     ]
   },

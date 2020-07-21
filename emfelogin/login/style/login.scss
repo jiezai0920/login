@@ -1,9 +1,7 @@
 $family_zh: 'PingFangSC-Regular', 'Microsoft YaHei', 'PingFangSC', 'Helvetica', sans-serif, 'Arial' !important;
 $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', sans-serif, 'Arial' !important;
 
-@import "./mixin.scss";
-
-.login-wechat-wap {
+.login {
   position: fixed;
   left: 0;
   top: 0;
@@ -20,38 +18,28 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-popup {
-    @include px2rem('width', 592px);
-    @include px2rem('padding', 0 48px);
-    @include radius(16px);
-
+    width: 335px;
+    padding: 0 24px;
+    border-radius: 8px;
     box-sizing: border-box;
     background: #fff;
     position: relative;
-  }
+    min-height: 277px;
 
-  &-login {
-    box-shadow: 0 0 12px 0 rgba(56, 56, 56, 0.08);
-    background: #fff;
-    top: 50%;
-    left: 50%;
-    border-radius: 4px;
-    box-sizing: content-box;
-    width: 17.67vw;
-    height: 17.67vw;
-    padding: 3.3vw;
+    &.popup2 {
+      min-height: 332px;
+    }
 
-    &-img {
-      max-width: 100%;
-      width: 100%;
+    &.popup3 {
+      min-height: 387px;
     }
   }
 
   &-title {
-    @include font(40px);
-    @include height(60px, 60px);
-    @include px2rem('padding-top', 88px);
-
-    font-family: 'PingFangSC-Regular';
+    font-family: 'PingFangSC-Medium';
+    font-size: 20px;
+    line-height: 20px;
+    padding: 48px 0 8px;
     color: #333;
     letter-spacing: 0;
     margin: 0;
@@ -59,48 +47,63 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-desc {
-    @include font(24px);
-    @include height(34px, 34px);
-    @include px2rem('padding-bottom', 30px);
-
-    font-family: 'PingFangSC-Regular';
+    padding-bottom: 8px;
+    font-size: 12px;
+    line-height: 12px;
+    font-family: $family_zh;
     color: #999;
     letter-spacing: 0;
     margin: 0;
   }
 
   &-close {
-    @include px2rem('width', 28px);
-    @include px2rem('height', 28px);
-    @include px2rem('padding', 32px);
-
+    width: 16px;
+    height: 16px;
+    padding: 16px;
     position: absolute;
     top: 0;
     right: 0;
+    cursor: pointer;
+  }
+
+  &-forget {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Helvetica';
+    font-size: 12px;
+    color: #0297fe;
+    letter-spacing: 0;
+    text-align: center;
+    margin-top: 14px;
+    cursor: pointer;
   }
 
   &-error {
     width: 100%;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    @include height(48px);
+    height: 26px;
+    background: #ffeff4;
+    border: 1px solid #ffc7d6;
+    border-radius: 2px;
+    padding-left: 8px;
 
     &-text {
       display: block;
       position: relative;
-      color: #f04;
       box-sizing: border-box;
-
-      @include font(24px);
-      @include paddingLeft(8px);
+      font-family: $family_zh;
+      font-size: 12px;
+      color: #f04;
+      letter-spacing: 0;
+      line-height: 12px;
+      padding-left: 4px;
     }
 
     &-img {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
     }
   }
 
@@ -110,16 +113,18 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     border: none;
     background: #1996f9;
     box-shadow: 0 22px 17px -18px rgba(25, 150, 249, 0.9);
-    font-family: 'PingFangSC-Medium';
+    font-family: $family_zh;
     letter-spacing: 0;
     box-sizing: border-box;
-    margin: 0 auto;
+    margin: 28px auto 0;
+    font-size: 16px;
     display: block;
-    width: 100%;
-
-    @include height(80px, 1);
-    @include font(32px);
-    @include radius(44px);
+    width: 276px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 0;
 
     &:focus {
       outline: none;
@@ -137,34 +142,61 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-box {
-    width: 100%;
+    width: 287px;
     display: flex;
     margin: 0 auto;
     position: relative;
     justify-content: left;
+    border-bottom: 1px solid #f0f0f8;
 
-    @include border(2px, #f0f0f8, bottom);
-    @include paddingBottom(1px);
+    &-forget {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: 'Helvetica';
+      font-size: 12px;
+      color: #0297fe;
+      text-align: right;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    &-wechatbox {
+      margin: 24px 0 16px;
+      display: flex;
+      justify-content: center;
+
+      &-img {
+        width: 40px;
+        margin-right: 16px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   &-prefix {
-    @include height(84px);
-    @include font(28px);
-
+    height: 54px;
+    font-size: 14px;
     appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
     border: none;
     background: none;
     position: relative;
     color: #333;
-    padding-right: 16px;
+    padding-right: 12px;
+    font-family: $family_zh;
 
     &:focus {
       outline: none;
     }
 
     &-wraper {
-      @include px2rem('margin-right', 32px);
-
+      margin-right: 14px;
       position: relative;
 
       &::before,
@@ -174,7 +206,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
         height: 1px;
         position: absolute;
         top: 50%;
-        background: #dbdbdb;
+        background: #ccc;
       }
 
       &::before {
@@ -190,26 +222,15 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-input {
-    @include height(28px, 28px);
-    @include font(28px);
-    @include paddingBottom(28px);
-    @include paddingTop(28px);
-
+    height: 14px;
+    font-size: 14px;
+    font-family: $family_zh;
+    line-height: 14px;
     border: none;
     width: 100%;
     position: relative;
-    flex: 1;
-
-    &::before {
-      @include height(36px);
-
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      width: 1px;
-      background: #000;
-    }
+    color: #333;
+    padding: 20px 0;
 
     &:focus {
       outline: none;
@@ -217,33 +238,33 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-smscode {
-    @include font(28px);
-    @include width(160px);
-    @include radius(30px);
-    @include height(26px, 26px);
-    @include px2rem('left', 24px);
-
-    font-family: 'PingFangSC-Regular';
+    font-size: 14px;
+    height: 14px;
+    line-height: 14px;
+    width: 70px;
+    text-align: right;
+    right: 0;
+    font-family: $family_zh;
     letter-spacing: 0;
     position: absolute;
     color: #1996f9;
     top: 50%;
     transform: translateY(-50%);
+    cursor: pointer;
 
     &-disabled {
       color: #999;
+      cursor: not-allowed;
     }
 
     &-wraper {
-      @include width(184px);
-
       position: relative;
+      width: 116px;
 
       &::before {
-        @include height(26px);
-        @include width(4px);
-        @include left(4px);
-
+        height: 14px;
+        width: 1px;
+        left: 0;
         content: '';
         position: absolute;
         top: 50%;
@@ -252,45 +273,39 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
       }
     }
   }
-
   // english start
   &-english {
     &-title {
-      @include px2rem('width', 574px);
-      @include font(40px);
-      @include paddingTop(96px);
-      @include paddingBottom(32px);
-
       font-family: $family_us;
+      font-size: 20px;
       color: #333;
       letter-spacing: 0;
       line-height: 20px;
       font-weight: normal;
-      margin: 0 auto;
+      margin: 0;
+      padding: 48px 0 16px;
     }
 
     &-input {
-      @extend .login-wechat-wap-input;
+      @extend .login-input;
 
       font-family: $family_us;
     }
 
     &-smscode {
-      @extend .login-wechat-wap-smscode;
+      @extend .login-smscode;
 
       font-family: $family_us;
     }
 
     &-button {
-      @extend .login-wechat-wap-button;
+      @extend .login-button;
 
       font-family: $family_us;
-
-      @include marginBottom(64px);
     }
 
     &-wraper {
-      @extend .login-wechat-wap-smscode-wraper;
+      @extend .login-smscode-wraper;
 
       width: 103px;
     }
@@ -309,21 +324,6 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   & input::-webkit-input-placeholder {
     color: #999;
     line-height: normal;
-
-    @include font(28px);
-  }
-
-  &-wechatbox {
-    @include marginTop(48px);
-    @include marginBottom(32px);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &-img {
-      @include width(80px);
-      @include height(80px);
-    }
+    font-size: 14px;
   }
 }

@@ -1,74 +1,86 @@
 <template>
-  <div class="login-wechat-wap" v-if="show">
-    <div class="login-wechat-wap-login" v-if="oauthType == 'login' && isLoginFail">
-      <img class="login-wechat-wap-login-img" src="https://static2.evente.cn/static/img/loading201904171.gif" alt="">
-    </div>
-    <div v-else class="login-wechat-wap-popup">
-      <div v-if="isChina">
-        <h3 class="login-wechat-wap-title">{{title}}</h3>
-        <p class="login-wechat-wap-desc">{{desc}}</p>
-        <div class="login-wechat-wap-close" @click="popupClose">
-          <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
+  <div class="login-wap" v-if="show">
+    <div class="login-wap-popup" v-if="isChina">
+      <h3 class="login-wap-title">{{title}}</h3>
+      <p class="login-wap-desc">{{desc}}</p>
+      <div class="login-wap-close" @click="popupClose">
+        <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
+      </div>
+      <div class="login-wap-box">
+        <div class="login-wap-prefix-wraper">
+          <select class="login-wap-prefix" v-model="nowData.prefix" @change="nowData.tel = ''">
+            <option
+              :value="data.prefix"
+              :key="dataIndex"
+              v-for="(data, dataIndex) in abroadDatas"
+            >+{{ data.prefix }}</option>
+          </select>
         </div>
-        <div class="login-wechat-wap-box">
-          <div class="login-wechat-wap-prefix-wraper">
-            <select class="login-wechat-wap-prefix" v-model="nowData.prefix" @change="nowData.tel = ''">
-              <option
-                :value="data.prefix"
-                :key="dataIndex"
-                v-for="(data, dataIndex) in abroadDatas"
-              >+{{ data.prefix }}</option>
-            </select>
-          </div>
-          <input class="login-wechat-wap-input" type="number" :placeholder="telPlaceholder" v-model="nowData.tel" @blur="telBlur" @input="telInput" ref="telElem">
-        </div>
-        <div class="login-wechat-wap-box">
-          <input class="login-wechat-wap-input" type="tel" :maxlength="smscodeLength" :placeholder="smsPlaceholder" v-model="smscode" @blur="codeBlur" ref="codeElem">
-          <div class="login-wechat-wap-smscode-wraper" @click="sendSmsCode">
-            <span :class="['login-wechat-wap-smscode', {'login-wechat-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
-          </div>
-        </div>
-        <div class="login-wechat-wap-error">
-          <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
-          <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorText}}</span>
-        </div>
-        <button :class="['login-wechat-wap-button', {'login-wechat-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
-        <div class="login-wechat-wap-wechatbox">
-          <img v-if="isWechat && !oauthType" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/9b/2a/d5/e9e0f3cdf63848a708b7285f92.jpg">
+        <input class="login-wap-input" type="number" :placeholder="telPlaceholder" v-model="nowData.tel" @blur="telBlur" @input="telInput" ref="telElem">
+      </div>
+      <div class="login-wap-box">
+        <input class="login-wap-input" type="tel" :maxlength="smscodeLength" :placeholder="smsPlaceholder" v-model="smscode" @blur="codeBlur" ref="codeElem">
+        <div class="login-wap-smscode-wraper" @click="sendSmsCode">
+          <span :class="['login-wap-smscode', {'login-wap-smscode-disabled' : smsStatus || sendText !== countEnd}]">{{sendText}}</span>
         </div>
       </div>
-      <!-- 英文版 start -->
-      <div v-else>
-        <div class="login-wechat-wap-close" @click="popupClose">
-          <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
-        </div>
-        <h3 class="login-wechat-wap-english-title">Ticket Buyer</h3>
-        <div class="login-wechat-wap-box">
-          <input class="login-wechat-wap-english-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
-        </div>
-        <div class="login-wechat-wap-box">
-          <input class="login-wechat-wap-english-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
-          <div class="login-wechat-wap-english-wraper" @click="sendEnglishSmsCode">
-            <span :class="['login-wechat-wap-english-smscode', {'login-wechat-wap-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
-          </div>
-        </div>
-        <div class="login-wechat-wap-error">
-          <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wechat-wap-error-img">
-          <span v-show="errorShow" class="login-wechat-wap-error-text">{{errorEnglishText}}</span>
-        </div>
-        <button :class="['login-wechat-wap-english-button', {'login-wechat-wap-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+      <button :class="['login-wap-button', {'login-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
+      <div class="login-wap-error">
+        <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wap-error-img">
+        <span v-show="errorShow" class="login-wap-error-text">{{errorText}}</span>
       </div>
-      <!-- 英文版 end -->
     </div>
+    <!-- 英文版 start -->
+    <div class="login-wap-popup" v-else>
+      <div class="login-wap-close" @click="popupClose">
+        <img src="https://static2.evente.cn/static/img/login-icon-close2.png" width="100%">
+      </div>
+      <h3 class="login-wap-english-title">Ticket Buyer</h3>
+      <div class="login-wap-box">
+        <input class="login-wap-english-input" type="email" placeholder="Email Address" v-model="nowEnglishData.email" @blur="emailBlur">
+      </div>
 
+      <div v-if="showPasswordFalg">
+        <div v-if="!setPassword" class="login-wap-box">
+          <input class="login-wap-english-input" type="text" placeholder="Password" v-model="nowEnglishData.password" @blur="passwordBlur">
+        </div>
+        <div v-if="setPassword">
+          <div class="login-wap-box">
+            <input class="login-wap-english-input" type="text" placeholder="Create Password" v-model="nowEnglishData.createPassword" @blur="createpasswordBlur">
+          </div>
+          <div class="login-wap-box">
+            <input class="login-wap-english-input" type="text" placeholder="Confirm Password" v-model="nowEnglishData.confirmPassword" @blur="confirmpasswordBlur">
+          </div>
+        </div>
+      </div>
+      <div v-if="forgetPassword" class="login-wap-box">
+        <input class="login-wap-english-input" type="tel" :maxlength="smscodeLength" placeholder="Security Code" v-model="smscode">
+        <div class="login-wap-english-wraper" @click="sendEnglishSmsCode">
+          <span :class="['login-wap-english-smscode', {'login-wap-smscode-disabled' : smsEnglishStatus || sendEnglishText !== countEnglishEnd}]">{{sendEnglishText}}</span>
+        </div>
+      </div>
+      <div class="login-wap-forget">
+        <span v-if="!forgetPassword && !setPassword" @click="forgetPasswordClick">Forgot your password?</span>
+        <span v-if="forgetPassword && !setPassword" @click="returnPasswordClick">return</span>
+      </div>
+      <button v-if="!showPasswordFalg" :class="['login-wap-english-button', {'login-wap-button-disabled' : loginEnglishOnFlg}]" @click="continueFun">Continue</button>
+      <button v-if="showPasswordFalg && !setPassword" :class="['login-wap-english-button', {'login-wap-button-disabled' : !submitEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+      <button v-if="showPasswordFalg && setPassword" :class="['login-wap-english-button', {'login-wap-button-disabled' : !confirmpasswordFlg}]" @click="loginEnglish">Create Account</button>
+      <button :class="['login-wap-english-button', {'login-wap-button-disabled' : loginEnglishOnFlg || loginEnglishDefault !== loginEnglishText}]" @click="loginEnglish">{{loginEnglishText}}</button>
+      <div v-if="errorShow" class="login-wap-error">
+        <img v-show="errorShow" src="https://static2.evente.cn/static/img/login-icon-error1.png" class="login-wap-error-img">
+        <span v-show="errorShow" class="login-wap-error-text">{{errorEnglishText}}</span>
+      </div>
+    </div>
+    <!-- 英文版 end -->
   </div>
 </template>
 <script>
 import ajax from '../tools/ajax';
-import logined from '../tools/loginedwechat';
+import logined from '../tools/logined';
 
 export default {
-  name: 'WLoginWechat',
+  name: 'WLoginWap',
   data() {
     return {
       goStatus: true,
@@ -93,17 +105,16 @@ export default {
       },
       abroadDatas: [],
       sendData: {
-        org_id: this.orgid,
-        type: '',
-        key: '',
+        country_code: '',
+        mobile: '',
         origin: 'c-login',
       },
       loginData: {
         org_id: this.orgid,
+        code: '',
+        phone: '',
+        moudle_name: 'c-login',
         sms_code: '',
-        key: '',
-        type: '',
-        oauth_key: '',
       },
       countryCode: {},
       canLogin: true,
@@ -111,9 +122,11 @@ export default {
       goEnglishStatus: true,
       nowEnglishData: {
         email: '',
+        password: '',
+        createPassword: '',
+        confirmPassword: '',
       },
       sendEnglishData: {
-        org_id: this.orgid,
         type: 'email',
         key: '',
         origin: 'c-login',
@@ -126,15 +139,17 @@ export default {
       emailEnglishFlg: false,
       countEnglishStart: true,
       loginEnglishData: {
-        key: '',
-        oauth_key: '',
         org_id: this.orgid,
-        type: 'email',
+        email: '',
+        moudle_name: 'c-login',
         sms_code: '',
       },
       // 英文版 end
-      isWechat: false,
-      isLoginFail: true, // 是否登录成功
+      // new英文版
+      continueFalg: false,
+      setPassword: false, //是否设置密码
+      showPasswordFalg: false, //是否展示设置密码
+      forgetPassword: false, //忘记密码
     };
   },
   props: {
@@ -219,14 +234,10 @@ export default {
       type: String,
       default: 'zh_CN',
     },
-    //微信绑定
-    wechatUrl: {
+    sendEnglishAction: {
       type: String,
     },
-    oauthkey: { //微信绑定key 值
-      type: String,
-    },
-    oauthType: {//微信绑定类型 值
+    loginEnglishAction: {
       type: String,
     },
   },
@@ -253,6 +264,7 @@ export default {
       return !resultTel;
     },
     isChina() {
+      console.log(this.lang);
       return this.lang === 'zh_CN';
     },
     // english start
@@ -266,54 +278,18 @@ export default {
       return this.smsEnglishStatus;
     },
     // english end
+    submitEnglishOnFlg() {
+      return this.nowEnglishData.password;
+    },
+    confirmpasswordFlg() {
+      return !!this.nowEnglishData.createPassword &&
+        this.nowEnglishData.createPassword === this.nowEnglishData.confirmPassword;
+    },
   },
   mounted() {
     this.countNums = this.AllTimes;
     this.loginText = this.btnText;
     this.loginEnglishText = this.loginEnglishDefault;
-
-    if (/MicroMessenger/i.test(window.navigator.userAgent)) {
-      this.isWechat = true;
-    }
-
-    if (this.oauthType === 'login') {
-      const loginData = {
-        org_id: this.orgid,
-        oauth_key: this.oauthkey,
-      };
-
-      ajax({
-        headers: this.headers,
-        type: 'POST',
-        data: JSON.stringify(loginData),
-        action: this.loginAction,
-        onSuccess: (res) => {
-          if (res.code === 10000) {
-            this.errorShow = false;
-            this.errorText = '';
-            logined(res, res.data.org_id, this, () => {
-              this.success(res);
-              this.canLogin = true;
-              this.loginText = this.btnText;
-              this.close(false);
-            });
-          } else {
-            this.isLoginFail = false;
-            this.canLogin = true;
-            this.loginText = this.btnText;
-            this.errorShow = true;
-            this.errorText = res.message;
-          }
-        },
-        onError: (err, response) => {
-          this.isLoginFail = false;
-          this.canLogin = true;
-          this.loginText = this.btnText;
-          this.errorShow = true;
-          this.errorText = response.message;
-        },
-      });
-    }
   },
   created() {
     this.sendText = this.smsBtnText;
@@ -418,8 +394,8 @@ export default {
       if (this.telFlg && this.goStatus) {
         this.goStatus = false;
         this.sendText = this.sendingText;
-        this.sendData.type = 'sms';
-        this.sendData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
+        this.sendData.country_code = this.nowData.prefix;
+        this.sendData.mobile = this.nowData.tel;
         //发送验证码
         ajax({
           headers: this.headers,
@@ -475,11 +451,9 @@ export default {
       if (this.codeFlg && this.telFlg && this.canLogin) {
         this.canLogin = false;
         this.loginText = this.subingText;
-        this.loginData.type = 'phone';
+        this.loginData.code = this.nowData.prefix;
+        this.loginData.phone = this.nowData.tel;
         this.loginData.sms_code = this.smscode;
-        this.loginData.key = `${this.nowData.prefix}+${this.nowData.tel}`;
-        this.loginData.oauth_key = this.oauthkey;
-
         //发送验证码
         ajax({
           headers: this.headers,
@@ -548,7 +522,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.sendEnglishData),
-          action: this.sendAction,
+          action: this.sendEnglishAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
@@ -593,15 +567,14 @@ export default {
       if (this.emailEnglishFlg && this.canLogin) {
         this.canLogin = false;
         this.loginEnglishText = 'Waiting...';
-        this.loginEnglishData.key = this.nowEnglishData.email;
-        this.loginEnglishData.oauth_key = this.oauthkey;
+        this.loginEnglishData.email = this.nowEnglishData.email;
         this.loginEnglishData.sms_code = this.smscode;
         //发送验证码
         ajax({
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.loginEnglishData),
-          action: this.loginAction,
+          action: this.loginEnglishAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
@@ -631,9 +604,49 @@ export default {
       }
     },
     // 英文版 end
-    //微信绑定
-    wechatBind() {
-      window.location.href = this.wechatUrl;
+    // new 英文版
+    continueFun() {
+      if (!this.loginEnglishOnFlg) {
+        this.showPasswordFalg = true;
+        this.setPassword = false;
+      }
+    },
+    testPassword() {
+      return {
+        resultPassword: this.nowEnglishData.password,
+        text: 'Please enter the password correctly',
+      };
+    },
+    passwordBlur() {
+      const {
+        resultPassword,
+        text,
+      } = this.testPassword();
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+      this.countEnglishStart = !resultPassword;
+    },
+    createpasswordBlur() {
+      const obj = {
+        resultPassword: this.nowEnglishData.createPassword,
+        text: 'Please enter the password',
+      }
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+    },
+    confirmpasswordBlur() {
+      const obj = {
+        resultPassword: this.nowEnglishData.confirmPassword,
+        text: 'The password is different twice',
+      }
+      this.errorShow = !resultPassword;
+      this.errorEnglishText = text;
+    },
+    forgetPasswordClick() {
+      this.forgetPassword = true;
+    },
+    returnPasswordClick() {
+      this.forgetPassword = false;
     },
   },
   watch: {

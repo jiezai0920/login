@@ -3,7 +3,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
 @import "./mixin.scss";
 
-.login-wap {
+.login-wechat-wap {
   position: fixed;
   left: 0;
   top: 0;
@@ -20,21 +20,47 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-popup {
-    @include px2rem('width', 670px);
-    @include px2rem('padding', 0 32px 14px);
+    @include px2rem('width', 640px);
+    @include px2rem('padding', 0 48px);
     @include radius(16px);
 
     box-sizing: border-box;
     background: #fff;
+    overflow: hidden;
     position: relative;
+
+    &.popup2 {
+      @include px2rem('min-height', 618px);
+    }
+
+    &.popup3 {
+      @include px2rem('min-height', 707px);
+    }
+  }
+
+  &-login {
+    box-shadow: 0 0 12px 0 rgba(56, 56, 56, 0.08);
+    background: #fff;
+    top: 50%;
+    left: 50%;
+    border-radius: 4px;
+    box-sizing: content-box;
+    width: 17.67vw;
+    height: 17.67vw;
+    padding: 3.3vw;
+
+    &-img {
+      max-width: 100%;
+      width: 100%;
+    }
   }
 
   &-title {
-    @include font(44px);
+    @include font(40px);
     @include height(60px, 60px);
-    @include px2rem('padding-top', 96px);
+    @include px2rem('padding-top', 88px);
 
-    font-family: 'PingFangSC-Medium';
+    font-family: 'PingFangSC-Regular';
     color: #333;
     letter-spacing: 0;
     margin: 0;
@@ -43,18 +69,18 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
   &-desc {
     @include font(24px);
-    @include height(34px, 34px);
     @include px2rem('padding-bottom', 30px);
 
     font-family: 'PingFangSC-Regular';
     color: #999;
     letter-spacing: 0;
     margin: 0;
+    line-height: 1.5;
   }
 
   &-close {
-    @include px2rem('width', 32px);
-    @include px2rem('height', 32px);
+    @include px2rem('width', 28px);
+    @include px2rem('height', 28px);
     @include px2rem('padding', 32px);
 
     position: absolute;
@@ -63,14 +89,16 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-error {
+    @include border(2px, #ffc7d6, all);
+    @include height(52px);
+    @include radius(4px);
+    @include paddingLeft(16px);
+
     width: 100%;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    @include px2rem('height', 44px);
-    @include marginTop(24px);
+    background: #ffeff4;
 
     &-text {
       display: block;
@@ -79,14 +107,24 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
       box-sizing: border-box;
 
       @include font(24px);
-      @include height(40px, 40px);
       @include paddingLeft(8px);
     }
 
     &-img {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
     }
+  }
+
+  &-forget {
+    @include font(24px);
+    @include marginTop(28px);
+    @include height(24px);
+
+    font-family: 'Helvetica';
+    color: #0297fe;
+    text-align: center;
+    line-height: 1;
   }
 
   &-button {
@@ -100,12 +138,12 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     box-sizing: border-box;
     margin: 0 auto;
     display: block;
+    width: 100%;
 
     @include height(80px, 1);
     @include font(32px);
     @include radius(44px);
-    @include px2rem('margin-top', 56px);
-    @include px2rem('width', 552px);
+    @include marginTop(56px);
 
     &:focus {
       outline: none;
@@ -123,8 +161,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   }
 
   &-box {
-    @include px2rem('width', 574px);
-
+    width: 100%;
     display: flex;
     margin: 0 auto;
     position: relative;
@@ -132,10 +169,20 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
     @include border(2px, #f0f0f8, bottom);
     @include paddingBottom(1px);
+
+    &-forget {
+      @include font(24px);
+
+      font-family: 'Helvetica';
+      color: #0297fe;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
   }
 
   &-prefix {
-    @include height(108px);
+    @include height(84px);
     @include font(28px);
 
     appearance: none;
@@ -179,12 +226,13 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
   &-input {
     @include height(28px, 28px);
     @include font(28px);
-    @include paddingBottom(40px);
-    @include paddingTop(40px);
+    @include paddingBottom(28px);
+    @include paddingTop(28px);
 
     border: none;
     width: 100%;
     position: relative;
+    flex: 1;
 
     &::before {
       @include height(36px);
@@ -204,10 +252,10 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
 
   &-smscode {
     @include font(28px);
-    @include width(140px);
+    @include width(160px);
     @include radius(30px);
     @include height(26px, 26px);
-    @include px2rem('left', 32px);
+    @include px2rem('left', 24px);
 
     font-family: 'PingFangSC-Regular';
     letter-spacing: 0;
@@ -221,7 +269,7 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     }
 
     &-wraper {
-      @include width(244px);
+      @include width(184px);
 
       position: relative;
 
@@ -256,25 +304,27 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     }
 
     &-input {
-      @extend .login-wap-input;
+      @extend .login-wechat-wap-input;
 
       font-family: $family_us;
     }
 
     &-smscode {
-      @extend .login-wap-smscode;
+      @extend .login-wechat-wap-smscode;
 
       font-family: $family_us;
     }
 
     &-button {
-      @extend .login-wap-button;
+      @extend .login-wechat-wap-button;
 
       font-family: $family_us;
+
+      @include marginTop(56px);
     }
 
     &-wraper {
-      @extend .login-wap-smscode-wraper;
+      @extend .login-wechat-wap-smscode-wraper;
 
       width: 103px;
     }
@@ -295,5 +345,24 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     line-height: normal;
 
     @include font(28px);
+  }
+
+  &-wechatbox {
+    @include marginTop(48px);
+    @include marginBottom(32px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-img {
+      @include marginRight(64px);
+      @include width(80px);
+      @include height(80px);
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 }
