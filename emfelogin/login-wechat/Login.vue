@@ -35,7 +35,7 @@
         <button :class="['login-wechat-wap-button', {'login-wechat-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
         <div class="login-wechat-wap-wechatbox">
           <img v-if="isWechat && !oauthType && isShowWechat" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
-          <img v-if="!oauthType" @click="loginTypeClick('email')" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
+          <img v-if="isShowEmail && !oauthType" @click="loginTypeClick('email')" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
         </div>
       </div>
       <!-- 英文版 start -->
@@ -298,6 +298,10 @@ export default {
     isShowWechat: {
       type: [Boolean, String],
       default: true,
+    },
+    isShowEmail: {
+      type: [Boolean, String],
+      default: false,
     },
   },
   computed: {
