@@ -33,6 +33,9 @@
           </div>
         </div>
         <button :class="['login-wechat-wap-button', {'login-wechat-wap-button-disabled' : loginOnFlg || btnText !== loginText}]" @click="login">{{loginText}}</button>
+        <div v-if="switchLogin" class="login-wechat-wap-checkoutbox">
+         <checkout v-model="defaultAgree" title="我已阅读并同意"></checkout><span @click="goToLoginXuzhi" class="login-wechat-wap-checkoutbox-title">《{{protocolsTitle}}》</span>
+        </div>
         <div class="login-wechat-wap-wechatbox">
           <img v-if="isWechat && !oauthType && isShowWechat" @click="wechatBind" class="login-wechat-wap-wechatbox-img" src="https://0img.evente.cn/e6/19/bf/df8258231f301305300dd2b9c9.jpg">
           <img v-if="isShowEmail && !oauthType" @click="loginTypeClick('email')" class="login-wechat-wap-wechatbox-img" src="https://1img.evente.cn/97/e6/dc/e6c517d24ab7f1fd23703d4874.jpg">
@@ -106,6 +109,7 @@
 import ajax from '../tools/ajax';
 import logined from '../tools/loginedwechat';
 import CONSTANT from '../contant';
+import checkout from '../checkout/checkout';
 
 export default {
   name: 'WLoginWechat',
@@ -184,6 +188,9 @@ export default {
       loginType: 'phone',
       setnewpassword: '', //设置新密码
       showPopLogin: false,
+      protocolsTitle: '', // 登录须知标题
+      switchLogin: '', // 登录须知是否开启
+      defaultAgree: false, // 登录须知是否默认同意
     };
   },
   props: {
@@ -303,6 +310,11 @@ export default {
       type: [Boolean, String],
       default: false,
     },
+    env: Object,
+    //新版英文登录
+    protocolsAction: {
+      type: String,
+    },
   },
   computed: {
     loginOnFlg() {
@@ -394,6 +406,7 @@ export default {
     } else {
       this.showPopLogin = this.show;
     }
+    this.getprotocolsAction();
   },
   created() {
     this.sendText = this.smsBtnText;
@@ -598,6 +611,13 @@ export default {
     },
     // 登录
     login() {
+      if (this.switchLogin) {
+        if (!this.defaultAgree) {
+          this.errorText = '请先勾选须知';
+          this.errorShow = true;
+          return;
+        }
+      }
       if (this.oauthType === 'bind') {
         this.bindWechat();
         return;
@@ -950,6 +970,32 @@ export default {
         },
       });
     },
+    getprotocolsAction() {
+      ajax({
+        headers: this.headers,
+        type: 'GET',
+        withCredentials: this.domain === 'evente.cn',
+        action: `${this.protocolsAction}?org_id=${this.orgid}`,
+        onSuccess: (res) => {
+          if (res.code === 10000) {
+            if (res.data.switch === 'on') {
+              this.protocolsTitle = res.data.title;
+              this.switchLogin = res.data.switch === 'on';
+              this.defaultAgree = Number(res.data.default_agree_status) === 1;
+            }
+          } else {
+            this.switchLogin = false;
+          }
+        },
+        onError: () => {
+          this.switchLogin = false;
+        },
+      });
+    },
+    goToLoginXuzhi() {
+      const url = `${this.env.ACCOUNT || this.env.VUE_APP_ACCOUNT}wap/loginInstru?org_id=${this.orgid}`;
+      window.location.href = url;
+    },
   },
   watch: {
     value(val, oldVal) {
@@ -958,6 +1004,9 @@ export default {
         this.telBlur();
       }
     },
+  },
+  components: {
+    checkout,
   },
 };
 </script>

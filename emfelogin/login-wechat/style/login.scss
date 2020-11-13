@@ -181,6 +181,20 @@ $family_us: 'Helvetica', 'PingFangSC-Regular', 'Microsoft YaHei', 'STHeiti', san
     }
   }
 
+  &-checkoutbox {
+    font-family: 'PingFangSC-Regular';
+    display: flex;
+    align-items: center;
+
+    @include marginTop(24px);
+
+    &-title {
+      @include font(28px);
+
+      color: #1996f9;
+    }
+  }
+
   &-prefix {
     @include height(84px);
     @include font(28px);

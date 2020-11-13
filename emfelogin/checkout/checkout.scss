@@ -1,0 +1,129 @@
+.emfelogin-checkout {
+  &-icon {
+    display: block;
+  }
+
+  &-wrap {
+    display: flex;
+  }
+
+  &-box {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    &-forever {
+      cursor: no-drop;
+    }
+  }
+
+  &-popper {
+    width: 208px;
+    white-space: normal;
+  }
+
+  &-inner {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: #fff;
+    float: left;
+    border: 1px solid #dbdbdb;
+
+    &-checked {
+      border: 1px solid #1996f9;
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAArpJREFUWAnFl0toE1EUhs+5mWm6qNakKriw3aqpj27ciSBWEHxsxNdKqAiCKxci2qW4dNcWRJS6sa26UigoulALgvXdLNwWhCqooHFRk5nr+W8ymTjMxEmTTO5mMveee77/nPuYHKZA67++nHNcPu1qvY809xPpnoBJg69cINaLivlRSukbi2fS+VoH7L3kZnTXj+/Fa9qlswJVXn9rn+yyoolM1j6fP8p/4NsIMPBvxVmt9Z7WAsO9MfPTTJ+9HyJMpCbyhOCQhEDBxG/GmhdL/KF9aQcmrLFrW3qbwoZLHg5B2rCV2e1hAhPoA1uVj1oCtDCEHHPZhM2e8zDPcft0T5vOO9GaNNGdAxZ9GrFpZGs0JnokbhAhdhmBzxyyaPdGRau6mC7sTIVYlbtaLgDwaYEPrvVdzy/pSAFW5MgKBrzIczXw91/lbn9civTmywyY4I7evo6pVyKK07LdRHcPWxSEH3tQop/m1g/3EilgfDhFs0dsmjtpGyHh08u9gGPNt/T57t5J5P+DY7Y/I0DYO1AeynYzTR20IkWYyAPwt1/iwesKmFxwq5J600zTImLH+urX24x58M01kQN+/GGJftVJe9Wx/IjMwJWXDt3OO1Xb1SJiSs71UEUE4Pck8lr4mwbhcB4pAIMXnzk0uRAQIZkYHmC6LxtuU03kr5ckctlwcSOHfzTeML4cfUjLNnR1V4pODUZfJoCfkLQXipUJDTzqZsDzc+m5Q7c++pnw+vGcbwKO+bEEwPDyC4duBkS8ahIOvw3dhKMiAmuMj8vcZ03nnpTo9wrSDrDXYu0Bz7gdT1kC+d/escYFhaKhc3wpWFCxdEoA2ArlkiyDf+8mpoZdsBVqNZRLiXErIDDBNvcAajWUS0mJMKWZMMEzAlCjoVZjxWPtXQ4Upzzm1YUQ8O/3VTqSLs//AvWwAxB3ctjpAAAAAElFTkSuQmCC) #1996f9 no-repeat center center;
+      background-size: 100% 100%;
+
+      &-disabled {
+        border: 1px solid #1996f9;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAArpJREFUWAnFl0toE1EUhs+5mWm6qNakKriw3aqpj27ciSBWEHxsxNdKqAiCKxci2qW4dNcWRJS6sa26UigoulALgvXdLNwWhCqooHFRk5nr+W8ymTjMxEmTTO5mMveee77/nPuYHKZA67++nHNcPu1qvY809xPpnoBJg69cINaLivlRSukbi2fS+VoH7L3kZnTXj+/Fa9qlswJVXn9rn+yyoolM1j6fP8p/4NsIMPBvxVmt9Z7WAsO9MfPTTJ+9HyJMpCbyhOCQhEDBxG/GmhdL/KF9aQcmrLFrW3qbwoZLHg5B2rCV2e1hAhPoA1uVj1oCtDCEHHPZhM2e8zDPcft0T5vOO9GaNNGdAxZ9GrFpZGs0JnokbhAhdhmBzxyyaPdGRau6mC7sTIVYlbtaLgDwaYEPrvVdzy/pSAFW5MgKBrzIczXw91/lbn9civTmywyY4I7evo6pVyKK07LdRHcPWxSEH3tQop/m1g/3EilgfDhFs0dsmjtpGyHh08u9gGPNt/T57t5J5P+DY7Y/I0DYO1AeynYzTR20IkWYyAPwt1/iwesKmFxwq5J600zTImLH+urX24x58M01kQN+/GGJftVJe9Wx/IjMwJWXDt3OO1Xb1SJiSs71UEUE4Pck8lr4mwbhcB4pAIMXnzk0uRAQIZkYHmC6LxtuU03kr5ckctlwcSOHfzTeML4cfUjLNnR1V4pODUZfJoCfkLQXipUJDTzqZsDzc+m5Q7c++pnw+vGcbwKO+bEEwPDyC4duBkS8ahIOvw3dhKMiAmuMj8vcZ03nnpTo9wrSDrDXYu0Bz7gdT1kC+d/escYFhaKhc3wpWFCxdEoA2ArlkiyDf+8mpoZdsBVqNZRLiXErIDDBNvcAajWUS0mJMKWZMMEzAlCjoVZjxWPtXQ4Upzzm1YUQ8O/3VTqSLs//AvWwAxB3ctjpAAAAAElFTkSuQmCC) #1996f9 no-repeat center center;
+        background-size: 100% 100%;
+      }
+    }
+
+    &-disable {
+      background: #f4f4f4;
+      border: 1px solid #dbdbdb;
+    }
+
+    &-right {
+      float: right;
+    }
+  }
+
+  &-status {
+    width: 16px;
+    height: 16px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    margin: 0;
+
+    &-right {
+      left: auto;
+      right: 0;
+    }
+  }
+
+  &-text {
+    //safari浏览器中文本样式会跑到下一行
+    //width: calc(100% - 24px);
+    font-size: 14px;
+    color: #333;
+    line-height: 16px;
+    word-wrap: break-word;
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 4px;
+    float: left;
+    margin-left: 8px;
+
+    &-notip {
+      // width: calc(100% - 24px);
+      padding-right: 0;
+    }
+
+    &-right {
+      margin-left: 0;
+      margin-right: 8px;
+    }
+  }
+
+  &-inline {
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  &-slide {
+    width: 100%;
+    margin-left: 8px;
+    position: relative;
+
+    &-wrap {
+      width: 100%;
+      height: auto;
+      margin-top: 12px;
+      padding: 16px;
+      position: relative;
+      background: #f9f9fb;
+      border-left: 1px dashed #dbdbdb;
+
+      &::before {
+        border-left: 1px dashed #dcdcdc;
+        content: '';
+        position: absolute;
+        left: -1px;
+        top: -13px;
+        height: 12px;
+        width: 1px;
+      }
+    }
+  }
+}
