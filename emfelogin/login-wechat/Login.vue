@@ -482,6 +482,9 @@ export default {
     },
     // 手机号文本框失去焦点事件
     telBlur() {
+      if (!this.goStatus) {
+        return;
+      }
       const {
         resultTel,
         text,
