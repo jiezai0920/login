@@ -237,8 +237,7 @@ export default {
       default: '请完善账户信息',
     },
     resultJson: Object,
-
-
+    env: Object,
     autologinAction: {
       type: String,
     },
@@ -259,6 +258,10 @@ export default {
       type: String,
     },
     isShowWechat: {
+      type: Boolean,
+      default: true,
+    },
+    withCredentialsFlag: {
       type: Boolean,
       default: true,
     },
@@ -322,7 +325,7 @@ export default {
     ajax({
       headers: this.headers,
       type: 'GET',
-      withCredentials: this.domain === 'evente.cn',
+      withCredentials: this.withCredentialsFlag,
       action: this.countrycodeAction,
       onSuccess: (res) => {
         if (res.code === 10000) {
@@ -359,7 +362,7 @@ export default {
         type: 'POST',
         data: JSON.stringify(loginData),
         action: this.wechatLoginAction,
-        withCredentials: this.domain === 'evente.cn',
+        withCredentials: this.withCredentialsFlag,
         onSuccess: (res) => {
           if (res.code === 10000) {
             const { data } = res;
@@ -462,7 +465,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.sendChinaData),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.sendAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -525,7 +528,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.loginChinaData),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.bindWechatAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -574,7 +577,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.loginChinaData),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.loginAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -636,7 +639,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.sendEnglishData),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.sendEnglishAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -694,7 +697,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(params),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.loginEnglishAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -733,7 +736,7 @@ export default {
         ajax({
           headers: this.headers,
           type: 'GET',
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: `${this.loginConfirmAction}?email=${userObj.key}`,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -768,7 +771,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(userObj),
           action: this.loginRegisterAction,
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
@@ -857,7 +860,7 @@ export default {
       ajax({
         headers: params,
         type: 'GET',
-        withCredentials: this.domain === 'evente.cn',
+        withCredentials: this.withCredentialsFlag,
         action: `${this.autologinAction}?org_id=${this.orgid}`,
         onSuccess: (res) => {
           if (res.code === 10000) {
@@ -899,7 +902,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(params),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.loginRegisterAction,
           onSuccess: (res) => {
             if (res.code === 10000) {

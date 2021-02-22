@@ -311,6 +311,10 @@ export default {
       default: false,
     },
     env: Object,
+    withCredentialsFlag: {
+      type: [Boolean, String],
+      default: true,
+    },
     //新版英文登录
     protocolsAction: {
       type: String,
@@ -384,7 +388,7 @@ export default {
         type: 'POST',
         data: JSON.stringify(loginData),
         action: this.wechatLoginAction,
-        withCredentials: this.domain === 'evente.cn',
+        withCredentials: this.withCredentialsFlag,
         onSuccess: (res) => {
           if (res.code === 10000) {
             const { data } = res;
@@ -415,7 +419,7 @@ export default {
     ajax({
       headers: this.headers,
       type: 'GET',
-      withCredentials: this.domain === 'evente.cn',
+      withCredentials: this.withCredentialsFlag,
       action: this.countrycodeAction,
       onSuccess: (res) => {
         if (res.code === 10000) {
@@ -524,7 +528,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(this.sendData),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.sendAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -587,7 +591,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(this.loginData),
           action: this.bindWechatAction,
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           onSuccess: (res) => {
             if (res.code === 10000) {
               const { data } = res;
@@ -640,7 +644,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(this.loginData),
           action: this.loginAction,
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           onSuccess: (res) => {
             if (res.code === 10000) {
               const { data } = res;
@@ -700,7 +704,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(this.sendEnglishData),
           action: this.sendAction,
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
@@ -757,7 +761,7 @@ export default {
           type: 'POST',
           data: JSON.stringify(params),
           action: this.loginAction,
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           onSuccess: (res) => {
             if (res.code === 10000) {
               this.errorShow = false;
@@ -797,7 +801,7 @@ export default {
         ajax({
           headers: this.headers,
           type: 'GET',
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: `${this.loginConfirmAction}?email=${userObj.key}`,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -831,7 +835,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(userObj),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.loginRegisterAction,
           onSuccess: (res) => {
             if (res.code === 10000) {
@@ -868,7 +872,7 @@ export default {
           headers: this.headers,
           type: 'POST',
           data: JSON.stringify(userObj),
-          withCredentials: this.domain === 'evente.cn',
+          withCredentials: this.withCredentialsFlag,
           action: this.loginRegisterAction,
           onSuccess: (res) => {
             this.canLogin = true;
@@ -948,7 +952,7 @@ export default {
       ajax({
         headers: params,
         type: 'GET',
-        withCredentials: this.domain === 'evente.cn',
+        withCredentials: this.withCredentialsFlag,
         action: `${this.autologinAction}?org_id=${this.orgid}`,
         onSuccess: (res) => {
           if (res.code === 10000) {
@@ -977,7 +981,7 @@ export default {
       ajax({
         headers: this.headers,
         type: 'GET',
-        withCredentials: this.domain === 'evente.cn',
+        withCredentials: this.withCredentialsFlag,
         action: `${this.protocolsAction}?org_id=${this.orgid}`,
         onSuccess: (res) => {
           if (res.code === 10000) {
